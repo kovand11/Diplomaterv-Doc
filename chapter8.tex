@@ -49,77 +49,10 @@ A kiválasztott akkumulátorral és LDO regulátorral
 
 
 
-%----------------------------------------------------------------------------
-\section{Környezeti szenzor specifikáció}
-%----------------------------------------------------------------------------
-
-A környezeti szenzor egy apró, szabadon hordozható, elsõsorban Lithium-ionos akkumulátorról (de szükség esetén tetszõleges 3.0V és 6.0V közötti
-feszültségforrásról) üzemelõ készülék. Mérete mindösze 31x50 mm. Az eszköz által mért értékek:
-\begin{itemize}  
-	\item Hõmérséklet (BOSCH BME280)
-	\item Nyomás (BOSCH BME280)
-	\item Páratartalom (BOSCH BME280)
-	\item Környezeti fény: piros, zöld, kék és fehér csatornával (Vishay VEML6040)
-	\item UV/A és UV/B érzékelõ (Vishay VEML6075)
-\end{itemize}
-
-Az készülék két m\H{u}ködési módot támogat. Ez elsõben a mikrokontroller egy webszervert implementál, igy a felhasználó egy weblapon keresztül hozzáférhet a mért értékekhez. Hogy más eszközök is kényelmesen használhassák az adatokat, ezek elérhetõek JSON interfészen keresztül is.
-
-A másik módban, energiatakarékossági okokból, a szenzor periódikusan felébreszti magát, elvégez egy mérést, majd az adatokat átküldi a központi egységnek. A fennmaradó idõt mélyalvásban tölti.
-
-Mivel ez az egység készült el elõször, emiatt egyfajta fejlesztõkártaként is funkcionált. A programozáshoz szükséges UART vezetékpáron kívül elérhetõvé tettem a tápvezetékeket, és a mikrokontroller nem használt lábait is:
-\begin{itemize}  
-	\item GND: A táp földje
-	\item RX: UART RX vezeték a programozáshoz
-	\item TX: UART TX vezeték
-	\item 3V3: 3V és 3.6V közötti táp
-	\item G0: Alacsony állapotban UART programozható, magas állapotban normál bootolás
-	\item G4: GPIO4 (szabad)
-	\item G5: GPIO5 (szabad)
-	\item ADC: Analóg digitális átalakító
-\end{itemize}
-
-%----------------------------------------------------------------------------
-\subsection{Alkatrészlista}
-%----------------------------------------------------------------------------
 
 
-\begin{table}[ht]
-	\footnotesize
-	\centering
-	\caption{A környezeti szenzor alkatrész listája}
-	\begin{tabular}{|c|c|c|c|c|c|}
-		\hline
-		& \textbf{Db.} 	& \textbf{Leírás} 	& \textbf{Felh.} 	& \textbf{Gyártó} 	& \textbf{Azonosító} \\ 
-		\hline
-		1 (Ali OK) & 1 & WiFi-s mikrokontroller & U1 & Espressif & ESP8285 \\
-		\hline
-		2 (Mouser úton) & 1 & Rezonátor kristály & - & Epson & FA-128 26Mhz \\
-		\hline
-		3 (Mouser úton) & 1 & Feszültség szabályzó & - & Microchip & MIC5353 \\
-		\hline
-		4 (Ali OK) & 1 & Levegõ szenzor & - & Bosch & BME280 \\
-		\hline
-		5 (Mouser úton) & 1 & RGBW szenzor & - & Vishay & VEML6040 \\
-		\hline  
-		6 (Mouser úton) & 1 & UVA/B szenzor & - & Vishay & VEML6075 \\
-		\hline  
-		7 (Mouser úton) & 1 & Header & - & Omron & XG8V-0831 \\ 
-		\hline 
-		8 (Mouser úton) & 1 & Akku csatlakozó & - & Adafruit  & JST-PH 2-pin \\ 
-		\hline 
-		9 (Mouser úton) & 1 & Nyomógomb & SW1 & Omron & PTS810 \\
-		\hline
-		10 (Lomex -) & 1 & Shottky dióda & - & - & - \\
-		\hline
-		11 (Mouser úton) & 2 & LED (0603) & - & Panasonic & LNJxxx \\
-		\hline
-		12 (Lomex -) & 14 & Ellenállás (0603) & R1..14 & - & - \\
-		\hline
-		13 (Lomex -) & 14 & Kondenzátor (0603) & C1..14 & - & - \\
-		\hline
-	\end{tabular} 
-\end{table}
+
+
 
 
 

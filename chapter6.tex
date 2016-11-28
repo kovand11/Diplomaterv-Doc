@@ -3,8 +3,85 @@
 %----------------------------------------------------------------------------
 
 %----------------------------------------------------------------------------
+\section{Specifikáció}
+%----------------------------------------------------------------------------
+Ezen eszköz egyfajta általános környezeti szenzort valósít meg. A mért jellemzõk:
+
+\begin{itemize}  
+	\item Hõmérséklet (BOSCH BME280)
+	\item Nyomás (BOSCH BME280)
+	\item Páratartalom (BOSCH BME280)
+	\item Környezeti fény: piros, zöld, kék és fehér csatornával (Vishay VEML6040)
+	\item UV/A és UV/B érzékelõ (Vishay VEML6075)
+\end{itemize}
+
+Az szenzor mérete 31mm x 50mm, és a megvalósítás egy kétréteg\H{u} nyomtatott áramkörön történt, magában foglalva a tápellátást és az WiFi antennát is.
+A maximális mobilitást elérendõ, a készüléket egy 1200mAH-ás Li-Po akkumulátorrol táplálom, melynek mérete szinte pontosan megegyezik az áramkörével.
+Mivel ez az egység került elsõként legyártásra, és a kommunikáció megvalósítása nagyban hasonlított a továbbiakban elkészítendõ részegységekhez, emiatt az alap funkcióin kívül, egyfajta fejlesztõi kártyaként is szolgált. A programozáshoz feltétlenül szükséges és a nem felhasznált lábakat egyaránt egy tüskesorra vezettem ki.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/enviromental-sensor-blocks.png}
+	\caption{A környezeti szenzor felépítése} 
+\end{figure}
+
+
+Az készülék két m\H{u}ködési módot támogat. Ez elsõben a mikrokontroller egy webszervert implementál, igy a rendszer bármely eleme, beleértve a felhasználót, TCP/IP protokollon keresztül közvetlenül hozzáférhet a mért értékekhez, akár a központi egység megléte nélkül is. Az egység többféle formátumot támogat:
+\begin{itemize}  
+	\item Ember számára könnyen áttekinthetõ weboldal 
+	\item JSON interface más eszközök számára
+
+\end{itemize}
+A másik módban, energiatakarékossági okokból, a szenzor periódikusan felébreszti magát, elvégez egy mérést, majd az adatokat átküldi a központi egységnek. A fennmaradó idõt mélyalvásban tölti.
+
+
+
+
+
+
+
+ 
+
+%----------------------------------------------------------------------------
 \section{Hardver}
 %----------------------------------------------------------------------------
+
+\begin{table}[ht]
+	\footnotesize
+	\centering
+	\caption{A környezeti szenzor alkatrész listája}
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+		& \textbf{Db.} 	& \textbf{Leírás} 	& \textbf{Felh.} 	& \textbf{Gyártó} 	& \textbf{Azonosító} \\ 
+		\hline
+		1 & 1 & WiFi-s mikrokontroller & U1 & Espressif & ESP8285 \\
+		\hline
+		2 & 1 & Rezonátor kristály & U2 & Epson & FA-128 26Mhz \\
+		\hline
+		3 & 1 & Feszültség szabályzó & U4 & Microchip & MIC5353 \\
+		\hline
+		4 & 1 & Levegõ szenzor & U3 & Bosch & BME280 \\
+		\hline
+		5 & 1 & UVA/B szenzor & U5 & Vishay & VEML6075 \\
+		\hline  
+		6 & 1 & RGBW szenzor & U6 & Vishay & VEML6040 \\
+		\hline  
+		7 & 1 & Header & P1 & Omron & XG8V-0831 \\ 
+		\hline 
+		8 & 1 & Akku csatlakozó & J1 & Adafruit  & JST-PH 2-pin \\ 
+		\hline 
+		9 & 1 & Nyomógomb & SW1 & Omron & PTS810 \\
+		\hline
+		10 & 1 & Shottky dióda & D3 & ST & TMMBAT42 \\
+		\hline
+		11 & 2 & LED (0603) & D1,D2 & Panasonic & LNJxxx \\
+		\hline
+		12 & 14 & Ellenállás (0603) & R1..14 & Viking Tech Corp. & - \\
+		\hline
+		13 & 14 & Kondenzátor (0603) & C1..14 & Yageo, Samsung & - \\
+		\hline
+	\end{tabular} 
+\end{table}
 
 %----------------------------------------------------------------------------
 \section{Szofver}
@@ -13,3 +90,4 @@
 %----------------------------------------------------------------------------
 \section{Prototípus}
 %----------------------------------------------------------------------------
+
