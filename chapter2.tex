@@ -1,7 +1,6 @@
 %----------------------------------------------------------------------------
 \chapter{Komponensek és technológiák}
 %----------------------------------------------------------------------------
-[Ide jönnének azok a részek, amik közösek a komponensek között.]
 
 %----------------------------------------------------------------------------
 \section{WiFi és a IEEE 802.11-es szabvány \cite{wiki-wifi} \cite{wiki-ieee802.11}}
@@ -18,23 +17,19 @@
 A tervezési feladat része volt minden egyes eszközhöz az optimális tápellátási módot kiválasztani. A központi egység és a programozható
 fali aljzat hálózati áramról m\H{u}küdik, míg a környezeti szenzor és a nyitásérzékelõ hordozható energiaellátást igényel.
 
-[A hálózati feszültségrõl való táplálásról majd késõbb írok. Elõzetesen mindenképp izolált megoldást szeretnék alkalmazni, mint pl. a Flyback converter.]
+(A hálózati feszültségrõl való táplálásról majd késõbb írok. Elõzetesen mindenképp izolált megoldást szeretnék alkalmazni, mint pl. a Flyback converter.)
 
 
-Az elsõ és legkézenfekvõbb megoldás a mobil eszközökben rendkívül elterjedt Li-ion akkumulátor. [...]
+Az elsõ és legkézenfekvõbb megoldás a mobil eszközökben rendkívül elterjedt Li-ion akkumulátor. Energia és teljesítménys\H{u}r\H{u}ségben is kiváló, nem mérgezõ, és nem rendelkezik memóriaeffektussal. Töltöttségét rendkívül lassan veszíti el. Még kimerült állapotban is képes 3V feszültséget szolgáltatni, ami azt jelenti, hogy 3-3.6V t\H{u}rés\H{u} áramkörökkel az akkumulátor teljes kapacitását ki tudom használni, és elegendõ egy cella. Mivel töltés után a cellafeszültség elérheti a 4.2V-ot, ezért az áramkör mindenképp védelemre szorul. A Li-ion alapú megoldások rendelkeznek hátrányokkal is. Túltöltés és mélykisülés ellen védõáramkört kell alkalmazni. Ennek hiányában a megoldás t\H{u}zveszélyes. Az akkumulátor cella rendkívül sérülékeny, ezért szükség van a fizikai védelemre. Hátrányként említhetõ meg a Li-ion cella öregedése is, de a legtöbb esetben, mire a teljesítménycsökkenés relevánsá válik, maga a készülég is elavul. Ha mégis hosszú távú üzemre terveznénk, gondolni kell az akkumulátor cserélhetõségére.
 
-Alternatíva lehet 3 darab 1.5V-os ceruzaelem használata. [...]
+Alternatíva lehet három darab 1.5V-os ceruzaelem használata is, de mivel ez esetben, ha nem akarok elfogadhatatlanul rossz hatásfokot, valamilyen kapcsolóüzem\H{u} tápegységet kell használnom, jelentõs méret\H{u} kiegészítõ áramkörrel. Rádiófrekvenciás alkalmazásoknál jelentõsége van a tápellátás zajmentességének is. Mivel a három elem mérete meghaladja azt a áramkör méretet amit alkalmazni szeretnék, ezért ezt a megoldást elvetendõnek gondolom.
 
-Kis mérete miatt felmerühet egy nem újratölthetõ Li-ion gombelem alkalmazása is. [...]
-
-
-
+Kis mérete miatt felmerühet egy nem újratölthetõ Li-ion gombelem alkalmazása is, elsõdlegesen akkor, amikor fontos a kis méret és súly, valamint a készülék csak ritkán, rövid idõtartamokra van bekapcsolva. Mivel a WiFi adó áramfelvétele rövidebb idõszakokban meghaladja a gombelem által biztosított maximumot, ezért szükség van egy további kondenzátor elhelyezésére is, ami viszont nagyban semlegesíti ezen megoldás eredeti elõnyeit.
 
 
 
-%----------------------------------------------------------------------------
-\section{Wifi és a IEEE 802.11-es szabvány}
-%----------------------------------------------------------------------------
+
+
 
 
 

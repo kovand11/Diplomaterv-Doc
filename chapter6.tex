@@ -87,7 +87,21 @@ A másik módban, energiatakarékossági okokból, a szenzor periódikusan felébreszti
 \section{Szofver}
 %----------------------------------------------------------------------------
 
+
+
 %----------------------------------------------------------------------------
 \section{Prototípus}
 %----------------------------------------------------------------------------
+
+A prototípus elkészítésénél a legnagyobb problémát kis lábtávolságú elemek, és a chip alatt lév? érintkezõk jelentették. A megoldást a forraszpaszta és hõlégfúvó jelentette, lényegében imitálva az újraömlesztéses forrasztást. A levegõ hõmérsékletének megválasztásakor figyelembe vettem az adatlapokon megadott ajánlott hõprofilt. 
+
+A VEML6075 chippel (ami az UVA és UVB értékek mérését végzi) a következ? problémák adódtak:
+\begin{itemize}  
+	\item A I2C címére nem reagált
+	\item más eszközök kommunikációját megzavarta (feltételezem, hogy áramot vett fel az SDA vezetékbõl)
+	\item fordítva beforrasztva se m\H{u}ködött
+\end{itemize}
+
+Két okot tudok elképzelni. A chip eleve hibás volt, vagy elõször rossz irányba lett beforrasztva ami tönkretette. 
+
 
