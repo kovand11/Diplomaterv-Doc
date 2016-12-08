@@ -7,9 +7,63 @@
 %----------------------------------------------------------------------------
 
 
-
 %----------------------------------------------------------------------------
-\section{Wifi képes mikrokontroller \cite{esp8266-ds} \cite{esp8266-sysdesc} \cite{esp8266-techref}}
+\section{WiFi képes mikrokontroller (ESP8285) \cite{esp8266-ds} \cite{esp8266-sysdesc} \cite{esp8266-techref}}
+%----------------------------------------------------------------------------
+
+Az ESP8285 egy WiFi képes mikrokontroller teljes TCP/IP implementációval, kifejezetten IOT (Internet of Things) alkalmzásokhoz szánva. A chip 2016 nyarán került forgalomba, de egy korábbi változat, az ESP8266 már 2014 -óta jelen van. Az egyetlen különbség az ESP8285-be integrált 1MB flash memória, ami az esetek többségében feleslegessé tette az ESP8266 még szükséges külsõ memóriamodult. Emiatt minden mindkét változat adatlapjai és a leírások is érvényesek.
+A chipcsalád az utóbbi idõben nagy népszer\H{u}ségre tett szert, köszönhetõen annak, hogy a gyártó kínai mellett angolul is elérhetõvé tette a dokumentációt, illetve megnyitotta az SDK-t. 
+
+Az ESP8285 modul kis méret\H{u}, ára rendkívül kedvezõ (2\$ körül nagy tételben), és csak minimális kiegészítõ áramkört igényel, és antennaválasztásnál is nagy szabadságot enged a felhasználónak.
+
+A modul magját egy Tensilica LX106 egység képzi, ami egy 80Mhz-en (opcionálisan 160Mhz ig növelhetõ) 32 bites RISC architektúrtájú mikrokontroller. A chip alapértelmezettként AT parancsokkal irányítható, soros portról vagy akár egy másik mikrokontrollerrõl. Komplexebb funkcionalitás implementálására is számtalan lehetõség van. A legfontosabbak:
+
+\begin{itemize}  
+	\item GCC alapú toolchain (egy hivatalos gyártó által fenntartott és egy alternatív változat)
+	\item NodeMCU (IOT platform, Lua szkriptnyelven programozható)
+	\item Arduino C++ platform 
+	\item MicroPython (Python szkriptnyelv értelmezõ)
+\end{itemize}
+
+Az egység a tervezés szempontjából legfontosabb tulajdonságai, támogatott protokollok és technológiák: 
+
+\begin{itemize} 
+	\item 802.11 b/g/n/e/i támogatás
+	\item Wifi Direct (P2P)
+	\item Titkosítási szabványok hardveres gyorsítása
+	\item+20 dBm adás
+	\item-91 dbm vétel
+	\item Perifériák: UART, SDIO, SPI, I2C, I2S, IR Remote Control, GPIO, ADC, PWM
+	\item M\H{u}ködési feszültség: 3.0 V - 3.6 V
+	\item Tokozás: QFN32-pin (5 mm x 5 mm)
+	\item Hálózati protokollok: IPv4, TCP, UDP, HTTP, FTP 
+	
+\end{itemize}
+
+A Wifi-s kommunikáció egyik gyenge pontja az energiafogyasztás. A jelsugárzás nagy áramfelvétellel jár együtt, illetve az átlagfogyasztás is viszonylag magas. Ezen hátrány kiküszöbölésére, ha az alkalmazási mód lehet?vé teszi, a chip támogat több energiakímél? m?ködési módot. A jellemz? fogyasztási adatok:
+
+\begin{table}[ht]
+	\footnotesize
+	\centering
+	\caption{ESP8285 fogyasztási adatai}
+	\begin{tabular}{l r}
+		Mód & Fogyasztás \\
+		\hline
+		Tx 802.11n (adás) & 170 mA\\
+
+		Rx 802.11n (vétel) & 56 mA\\
+
+		Modem-Sleep & 15 mA\\
+		
+		Light-Sleep & 0.9 mA\\
+		
+		Deep-Sleep & 10 $\mu A$\\
+		
+		Kikapcsolva & 0.5 $\mu A$\\
+	\end{tabular} 
+\end{table}
+
+
 %----------------------------------------------------------------------------
 \section{Tápellátás}
 %----------------------------------------------------------------------------
