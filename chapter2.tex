@@ -2,16 +2,26 @@
 \chapter{Komponensek és technológiák}
 %----------------------------------------------------------------------------
 
+
+%TODO: peer-to-peer magyar?
 %----------------------------------------------------------------------------
 \section{WiFi és a IEEE 802.11-es szabvány \cite{wiki-wifi} \cite{wiki-ieee802.11}}
 %----------------------------------------------------------------------------
+A WiFi egy vezetéknélküli adatátviteli technológia, IEEE 802.11 melynek technikai részletei a IEEE 802.11 szabványcsomagban vannak szabályozva. A szabvány elsõ verziója 1997-ben került kiadásra, ami azóta számos alkalommal került bõvítésre. Napjainkban a 802.11n-es verziót (2009) megvalósító készülékek a legelterjedtebbek. Ezen eszközök 2.4GHz és 5GHz frekvenciákon üzemelnek, egy antennával az elérhetõ maximális sebesség 150 Mbit/sec, és jellemzõen 70m beltéri és 250m kültéri hatótávolsággal rendelkeznek. Hasznos kiegészítése a szabványnak a WiFi Ad Hoc Mode (vagy másnéven WiFi Direct), ami két eszköz pont-pont (peer-to-peer) összeköttetését teszi lehetõvé.
+
+\textbf{WEP (Wired Equivalent Privacy)} A szabvány legelsõ verziójától kezdve létezik, de használata ellenjavallott, mivel csak alkalmi próbálkozás ellen véd, egy szakember az adás hosszú távú megfigyelésével könnyedén vissza tudja fejteni a kulcsot.
+
+\textbf{WPA (WiFi Protected Access)} A WEP leváltására jött létre. Egy TKIP nev\H{u} titkosítási algoritmust használ, ami már bizonyos idõközönként új kulcsot generál, védelmet nyújtva a brute force támadások ellen. 
+
+ 
+
 
 
 %----------------------------------------------------------------------------
 \section{WiFi képes mikrokontroller (ESP8285) \cite{esp8266-ds} \cite{esp8266-sysdesc} \cite{esp8266-techref}}
 %----------------------------------------------------------------------------
 
-Az ESP8285 egy WiFi képes mikrokontroller teljes TCP/IP implementációval, kifejezetten IOT (Internet of Things) alkalmzásokhoz szánva. A chip 2016 nyarán került forgalomba, de egy korábbi változat, az ESP8266 már 2014 -óta jelen van. Az egyetlen különbség az ESP8285-be integrált 1MB flash memória, ami az esetek többségében feleslegessé tette az ESP8266 még szükséges külsõ memóriamodult. Emiatt minden mindkét változat adatlapjai és a leírások is érvényesek.
+Az ESP8285 egy WiFi képes mikrokontroller teljes TCP/IP implementációval, kifejezetten IOT (Internet of Things) alkalmzásokhoz szánva. A chip 2016 nyarán került forgalomba, de egy korábbi változat, az ESP8266 már 2014 -óta jelen van. Az egyetlen különbség az ESP8285-be integrált 1MB flash memória, ami az esetek többségében feleslegessé tette az ESP8266-nél még szükséges külsõ memóriamodult. Emiatt minden mindkét változat adatlapjai és a leírások is relevánsak.
 A chipcsalád az utóbbi idõben nagy népszer\H{u}ségre tett szert, köszönhetõen annak, hogy a gyártó kínai mellett angolul is elérhetõvé tette a dokumentációt, illetve megnyitotta az SDK-t. 
 
 Az ESP8285 modul kis méret\H{u}, ára rendkívül kedvezõ (2\$ körül nagy tételben), és csak minimális kiegészítõ áramkört igényel, és antennaválasztásnál is nagy szabadságot enged a felhasználónak.
@@ -40,7 +50,7 @@ Az egység a tervezés szempontjából legfontosabb tulajdonságai, támogatott protok
 	
 \end{itemize}
 
-A Wifi-s kommunikáció egyik gyenge pontja az energiafogyasztás. A jelsugárzás nagy áramfelvétellel jár együtt, illetve az átlagfogyasztás is viszonylag magas. Ezen hátrány kiküszöbölésére, ha az alkalmazási mód lehet?vé teszi, a chip támogat több energiakímél? m?ködési módot. A jellemz? fogyasztási adatok:
+A Wifi-s kommunikáció egyik gyenge pontja az energiafogyasztás. A jelsugárzás nagy áramfelvétellel jár együtt, illetve az átlagfogyasztás is viszonylag magas. Ezen hátrány kiküszöbölésére, ha az alkalmazási mód lehetõvé teszi, a chip támogat több energiakímélõ m\H{u}ködési módot. A jellemzõ fogyasztási adatok:
 
 \begin{table}[ht]
 	\footnotesize
@@ -74,7 +84,7 @@ fali aljzat hálózati áramról m\H{u}küdik, míg a környezeti szenzor és a nyitásér
 (A hálózati feszültségrõl való táplálásról majd késõbb írok. Elõzetesen mindenképp izolált megoldást szeretnék alkalmazni, mint pl. a Flyback converter.)
 
 
-Az elsõ és legkézenfekvõbb megoldás a mobil eszközökben rendkívül elterjedt Li-ion akkumulátor. Energia és teljesítménys\H{u}r\H{u}ségben is kiváló, nem mérgezõ, és nem rendelkezik memóriaeffektussal. Töltöttségét rendkívül lassan veszíti el. Még kimerült állapotban is képes 3V feszültséget szolgáltatni, ami azt jelenti, hogy 3-3.6V t\H{u}rés\H{u} áramkörökkel az akkumulátor teljes kapacitását ki tudom használni, és elegendõ egy cella. Mivel töltés után a cellafeszültség elérheti a 4.2V-ot, ezért az áramkör mindenképp védelemre szorul. A Li-ion alapú megoldások rendelkeznek hátrányokkal is. Túltöltés és mélykisülés ellen védõáramkört kell alkalmazni. Ennek hiányában a megoldás t\H{u}zveszélyes. Az akkumulátor cella rendkívül sérülékeny, ezért szükség van a fizikai védelemre. Hátrányként említhetõ meg a Li-ion cella öregedése is, de a legtöbb esetben, mire a teljesítménycsökkenés relevánsá válik, maga a készülég is elavul. Ha mégis hosszú távú üzemre terveznénk, gondolni kell az akkumulátor cserélhetõségére.
+Az elsõ és legkézenfekvõbb megoldás a mobil eszközökben rendkívül elterjedt Li-ion akkumulátor. Energia és teljesítménys\H{u}r\H{u}ségben is kiváló, nem mérgezõ, és nem rendelkezik memóriaeffektussal. Töltöttségét rendkívül lassan veszíti el. Még kimerült állapotban is képes 3V feszültséget szolgáltatni, ami azt jelenti, hogy 3-3.6V t\H{u}rés\H{u} áramkörökkel az akkumulátor teljes kapacitását ki tudom használni, és elegendõ egy cella. Mivel töltés után a cellafeszültség elérheti a 4.2V-ot, ezért az áramkör mindenképp védelemre szorul. A Li-ion alapú megoldások rendelkeznek hátrányokkal is. Túltöltés és mélykisülés ellen védõáramkört kell alkalmazni. Ennek hiányában a megoldás t\H{u}zveszélyes. Az akkumulátor cella rendkívül sérülékeny, ezért szükség van a fizikai védelemre. Hátrányként említhetõ még a Li-ion cella öregedése is, de a legtöbb esetben, mire a teljesítménycsökkenés relevánsá válik, maga a készülég is elavul. Ha mégis hosszú távú üzemre terveznénk, gondolni kell az akkumulátor cserélhetõségére.
 
 Alternatíva lehet három darab 1.5V-os ceruzaelem használata is, de mivel ez esetben, ha nem akarok elfogadhatatlanul rossz hatásfokot, valamilyen kapcsolóüzem\H{u} tápegységet kell használnom, jelentõs méret\H{u} kiegészítõ áramkörrel. Rádiófrekvenciás alkalmazásoknál jelentõsége van a tápellátás zajmentességének is. Mivel a három elem mérete meghaladja azt a áramkör méretet amit alkalmazni szeretnék, ezért ezt a megoldást elvetendõnek gondolom.
 

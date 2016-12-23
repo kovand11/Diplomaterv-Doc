@@ -5,7 +5,7 @@
 %----------------------------------------------------------------------------
 \section{Specifikáció}
 %----------------------------------------------------------------------------
-Ezen eszköz egyfajta általános környezeti szenzort valósít meg. A mért jellemzõk:
+Ezen eszköz egy általános környezeti szenzort valósít meg. A mért jellemzõk:
 
 \begin{itemize}  
 	\item Hõmérséklet (BOSCH BME280)
@@ -15,7 +15,9 @@ Ezen eszköz egyfajta általános környezeti szenzort valósít meg. A mért jellemzõk
 	\item UV/A és UV/B érzékelõ (Vishay VEML6075)
 \end{itemize}
 
-Az szenzor mérete 31mm x 50mm, és a megvalósítás egy kétréteg\H{u} nyomtatott áramkörön történt, magában foglalva a tápellátást és az WiFi antennát is.
+A mért jellemzõk ember számára is releváns információt biztosítanak, illetve automatizálási algoritmusok bemenetét is képezheti. Az eszköz képes egy kék és egy borostyán LED felvillantásával jelezni. 
+
+Az szenzor mérete 31mm x 50mm, a megvalósítás egy kétréteg\H{u} nyomtatott áramkörön történt, magában foglalva a tápellátást és az WiFi antennát is.
 A maximális mobilitást elérendõ, a készüléket egy 1200mAH-ás Li-Po akkumulátorrol táplálom, melynek mérete szinte pontosan megegyezik az áramkörével.
 Mivel ez az egység került elsõként legyártásra, és a kommunikáció megvalósítása nagyban hasonlított a továbbiakban elkészítendõ részegységekhez, emiatt az alap funkcióin kívül, egyfajta fejlesztõi kártyaként is szolgált. A programozáshoz feltétlenül szükséges és a nem felhasznált lábakat egyaránt egy tüskesorra vezettem ki.
 
@@ -28,23 +30,20 @@ Mivel ez az egység került elsõként legyártásra, és a kommunikáció megvalósítása 
 
 Az készülék két m\H{u}ködési módot támogat. Ez elsõben a mikrokontroller egy webszervert implementál, igy a rendszer bármely eleme, beleértve a felhasználót, TCP/IP protokollon keresztül közvetlenül hozzáférhet a mért értékekhez, akár a központi egység megléte nélkül is. Az egység többféle formátumot támogat:
 \begin{itemize}  
-	\item Ember számára könnyen áttekinthetõ weboldal 
+	\item Ember számára könnyen áttekinthetõ weboldal (a fejlesztõi funkciók is itt érhetõek el)
 	\item JSON interface más eszközök számára
 
 \end{itemize}
-A másik módban, energiatakarékossági okokból, a szenzor periódikusan felébreszti magát, elvégez egy mérést, majd az adatokat átküldi a központi egységnek. A fennmaradó idõt mélyalvásban tölti.
+A másik módban, energiatakarékossági okokból, a szenzor periódikusan felébreszti magát, elvégez egy mérést, majd az adatokat átküldi a központi egységnek. A fennmaradó idõt mélyalvásban vagy a modemet kikapcsolva tölti.
 
 
 
-
-
-
-
- 
 
 %----------------------------------------------------------------------------
 \section{Hardver}
 %----------------------------------------------------------------------------
+
+
 
 \begin{table}[ht]
 	\footnotesize
@@ -83,25 +82,108 @@ A másik módban, energiatakarékossági okokból, a szenzor periódikusan felébreszti
 	\end{tabular} 
 \end{table}
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/enviromental-sensor_2d-full.png}
+	\caption{A környezeti szenzor nyákterve} 
+\end{figure}
+
+
+%----------------------------------------------------------------------------
+\subsection{Tápellátás}
+%----------------------------------------------------------------------------
+
+Az egység tápellátására egy Microchip MIC5353 LDO (Low Dropout Voltage) regulátort használok, ami kifejezetten hordozható elektronikákhoz lett kifejlesztve. Kimeneti zaja rendkívül alacsony (30$\mu Vrms$), nyugalmi árama 90$\mu A$ és 100mA-es áramfelvételnél a kiesési feszültség (dropout voltage) mindössze 35mV, lehetõvé téve a Li-ion akkumulátor maximális kihasználását. A teljes hatásfok így 90\% felett van, ami lényegében megegyezik egy kapcsolóüzem\H{u} megoldáséval, annak minden hátránya nélkül (kimenet hullámossága, kiegészítõ áramkör). Az akkumulátor egy JST-PH2 csatlakozóba dugható be. A Li-ion védõáramköre integrálva van akkumulátorba, illetve a töltéshez vásárolt céláramkört használok.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/enviromental-sensor_power-supply.png}
+	\caption{A környezeti szenzor tápáramköre} 
+\end{figure}
+
+%----------------------------------------------------------------------------
+\subsection{Antenna}
+%----------------------------------------------------------------------------
+
+A modulnak szüksége van külsõ antennára a WiFi kommunikációhoz (2.4GHz). A legegyszer\H{u}bb és legolcsóbb megoldás a nyomtatott áramkörön elhelyezett antenna. Az antennát 50 $\Omega$ impedanciához kell illeszteni. A leggyakoribb kialakítások a \textbf{meander antenna} és az \textbf{inverted-F antenna}.
+Az elõbbi helyigénye hozzávetõlegesen 1.5 cm az utóbbié 3 cm. Az adás minõsége jobb az inverted-F kialakítással, és mivel a hely nekem rendelkezésre állt, e mellett döntöttem. Mivel a WiFi kommunikáció kardinális kérdése ezen dolgozatnak, a második félév folyamán érdekes lenne pontosabb méréseket is végezni a hullámterjedéssel kapcsolatban.
+
+%----------------------------------------------------------------------------
+\subsection{Szenzorok}
+%----------------------------------------------------------------------------
+Mivel a VEML6040 (Látható fény detektor) és a VEML6075 (UVA/UVB szenzor) egyaránt a 0x10 I2C slave címmel rendelkezik, ezért egyidej\H{u}leg csak az egyik használható.
+%----------------------------------------------------------------------------
+\subsubsection{VEML6040}
+%----------------------------------------------------------------------------
+
+A VEML6040 egy színérzékeny fotoszenzor. Négy csatornát mér (piros, zöld, kék, és fehér), melyeknek átvitele az emberi szeméhez hasonló.
+Lehetséges alkalmazása a szenzornak egy adott spektrumú fény nagy pontosságú elõállítása visszacsatolt struktúrában. Jellemzõ adatok:
+
+\begin{itemize}  
+	\item I2C interface
+	\item 16 bites csatornafelbontás
+	\item 0.007865 lux/digit érzékenység
+	\item m\H{u}ködési tartomány  2.5 V - 3.6 V 
+\end{itemize}
+
+%----------------------------------------------------------------------------
+\subsubsection{VEML6075}
+%----------------------------------------------------------------------------
+A címütközés miatt ezt szenzort majd késõbb próbálom ki. (még csak egy m\H{u}ködõõ prototípus van)
+
+%----------------------------------------------------------------------------
+\subsubsection{BME280}
+%----------------------------------------------------------------------------
+Elsõsorban viselhetõ és IOT eszközökhöz gyártott kis méret\H{u} szenzor alacsony energiafelvétellel. Hõmérséklet, nyomás és páratartalom adatot biztosít I2C interface-en keresztül. A nyomásadatból származtatással (kell a tengerszinti nyomás) magasság is mérhetõ.
+
+
 %----------------------------------------------------------------------------
 \section{Szofver}
 %----------------------------------------------------------------------------
 
+Az implementációhoz az Arduino által fejlesztett keretrendszert használtam fel. C++11 nyelven magas szinten, mindössze pár sor kóddal már m\H{u}ködõképes webszervert lehet létrehozni. Ha az alapértelmezett paraméterek és mechanizmusok nem megfelelõek, akkor persze jelentõsen nõ a kódkomplexitás. Fontos volt figyelni arra, hogy esetenként az én ESP8285-öm lábkiosztása nem egyezik meg az Arduino által gyártott fejlesztõi kártyával (amihez a könyvtár készült), így azt felül kell definiálni. 
+
+Jelenleg a szenzor által biztosított interface teljes egészében HTTP alapú. Az biztosított oldalstruktúra: 
+\begin{itemize}  
+	\item / (root): Alapértelmezettként bejövõ oldal, (\ref{sensor-webpage}-es ábra)
+	\item /json: A mért adatok JSON formátumban
+	\item /settings: Hova csatlakozzon automatikusan (felhasználó/jelszó)
+	\item /status: Azonosító, MAC cím, detektált periférák
+	\item /developer: Jelenleg a LED-ek kontrollálhatóak távolról
+	\item /debug: Debug kimenet fejlesztéshez
+\end{itemize}
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/sensor-webpage.png}
+	\caption{A környezeti szenzor által szolgáltatott weboldal weboldal}
+	\label{sensor-webpage}
+\end{figure}
+
+A fõoldal 5 másodpercenként frissíti az adatokat, a szervertõl való ismételt lekérdezéssel. Jelenleg a mérések is az oldal lekérdezésének hatására végzõdnek el, maximalizálva az adatok frissességét, de kis mérték\H{u} késleltetést okozva a felhasználónak.
+
+%----------------------------------------------------------------------------
+\subsection{HTML oldal létrehozása}
+%----------------------------------------------------------------------------
+
+A szoftver legnagyobb része a HTML oldalak létrehozásért felelõs. Érdemes kihasználni a procedurális programozás elõnyeit, és lehetõleg ismétlõdõ mintákból felépíteni a weboldalakat. Példaként bemutatom a \ref{sensor-webpage}-es ábrán látható oldal létrehozásának menetét. Segédfüggvény, ami egy sor (tetszõleges kép és szöveg pár) HTML kódjának létrehozásáért felel:
+\lstinputlisting[language=C++]{source/createIconTextLine.txt}
+A mért adatokat paraméterként megkapó és a végleges oldalt elõállító kód: 
+\lstinputlisting[language=C++]{source/createMainPage.txt}
+A képeket, mivel a mikrokontroller nem rendelkezik filerendszerrel, a HTML forráskódjába belekódolva küldöm át (Base64 kódolás). A memória sz\H{u}kössége miatt 32x32 felbontású ikonokat használtam.
 
 
 %----------------------------------------------------------------------------
 \section{Prototípus}
 %----------------------------------------------------------------------------
 
-A prototípus elkészítésénél a legnagyobb problémát kis lábtávolságú elemek, és a chip alatt lév? érintkezõk jelentették. A megoldást a forraszpaszta és hõlégfúvó jelentette, lényegében imitálva az újraömlesztéses forrasztást. A levegõ hõmérsékletének megválasztásakor figyelembe vettem az adatlapokon megadott ajánlott hõprofilt. 
+A prototípus elkészítésénél a legnagyobb problémát kis lábtávolságú elemek, és a chip alatt lévõ érintkezõk jelentették. A megoldást a forraszpaszta és hõlégfúvó jelentette, lényegében imitálva az újraömlesztéses forrasztást. A levegõ hõmérsékletének megválasztásakor figyelembe vettem az adatlapokon megadott ajánlott hõprofilt. Megoldandó továbbá az a probléma is, hogy mikrokontroller által termelt hõ befolyásolja a mért hõmérsékletet. Az adó/vevõ hatótávolsága jónak mondható, több szobára a modemtõl is erõs jelet ad. 
 
-A VEML6075 chippel (ami az UVA és UVB értékek mérését végzi) a következ? problémák adódtak:
-\begin{itemize}  
-	\item A I2C címére nem reagált
-	\item más eszközök kommunikációját megzavarta (feltételezem, hogy áramot vett fel az SDA vezetékbõl)
-	\item fordítva beforrasztva se m\H{u}ködött
-\end{itemize}
-
-Két okot tudok elképzelni. A chip eleve hibás volt, vagy elõször rossz irányba lett beforrasztva ami tönkretette. 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/sensor-proto.png}
+	\caption{A környezeti szenzor elkészült prototípusa} 
+\end{figure}
 
 

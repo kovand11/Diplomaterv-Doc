@@ -1,0 +1,23 @@
+String createMainPage(float temperature,float pressure, float humidity,
+  float ambient,uint16_t red,uint16_t green, uint16_t blue,uint16_t white)
+{
+  String src = "";
+  src += "<!DOCTYPE html><html> <head> <meta http-equiv=\"refresh\" content=\"5\""
+	"/> </head> <body>";  
+  src += createIconTextLine(img_temp, String(temperature) + " &#8451;");
+  src += createIconTextLine(img_pres, String(pressure) + " hPa");
+  src += createIconTextLine(img_hum, String(humidity) + " %");
+  String rgbwText = "<span style=\"color:red\">" + String(red) + "</span>"
+    " <span style=\"color:green\">"
+    + String(green) + "</span> <span style=\"color:blue\">" 
+  + String(blue) + "</span> <span style=\"color:grey\">" + String(white)+"</span>";
+  String bme280Text = "Amb: " + String(ambient) + " lux  " + rgbwText;
+  src += createIconTextLine(img_rgb, bme280Text);
+  src += "<br />";
+  src += "<a href=\"/settings\">Settings</a> ";
+  src += "<a href=\"/status\">Status</a> ";
+  src += "<a href=\"/developer\">Developer</a> ";
+  src += "<a href=\"/debug\">Debug</a> ";
+  src +="</body></html>";  
+  return src;
+}

@@ -6,11 +6,35 @@
 \subsection{Hardver}
 %----------------------------------------------------------------------------
 
+Ennél az egységnél szerettem volna kipróbálni a Qt for Device Creation keretrendszert. A legjellemzõbb felépítés, hogy egy Linux rendszermagra és egy ablakozórendszerre támaszkodva fut a Qt-ban megírt szoftver. Elõnye a teljes rugalmasság, és a gyors fejlesztési és tesztelési ciklusok. Hátránya, hogy kicsivel erõsebb hardvert igényel, mint az alacsony szinten megírt beágyazott rendszerek, de a nagyobb teljesítmény\H{u} SOC-ok (System on a Chip) olcsóvá válása ezt a faktort jelentéktelenné tette.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/rp3-and-display.png}
+	\caption{Raspberry Pi 3 érintõkijelzõvel } 
+\end{figure}
+
 %----------------------------------------------------------------------------
-\subsection{Szoftver}
+\subsubsection{Raspberry Pi 3}
 %----------------------------------------------------------------------------
+
+A Linux-ot futtató board szerepét egy Raspberry Pi 3 játsza. A feladathoz szükséges számítási kapacitás többszörösével rendelkezik, de mivel az elkészülendõ szoftver platformfüggetlen, ezért késõbb tömeggyártás esetén egyszer\H{u}en portolható olcsóbb hardverre is. Elõnye a 3-as verziónak, hogy nem igényel WiFi modult, mivel már intergrálva tartalmazza azt.
+
+%----------------------------------------------------------------------------
+\subsubsection{Érintõkijelzõ (Elecrow 5 inch display for Raspberry Pi)}
+%----------------------------------------------------------------------------
+
+Olyan kijelzõt kerestem, aminek a mérete már megfelelõ egy ujjal kezelhetõ interface kialakításához. A kijelzõ legfontosabb tulajdonságai:
+
+\begin{itemize}  
+	\item 800x480 TFT kijelzõ
+	\item HDMI képinterface
+	\item Rezisztív érintésérzékenység (SPI interface)
+\end{itemize}
 
 %----------------------------------------------------------------------------
 \subsection{Alternatívák}
 %----------------------------------------------------------------------------
+
+Cél volt az, hogy az egyes eszközök a lehetõ legkevésbé függjenek a központi egységtõl. Nyitva akartam hagyni annak a lehetõségét is, hogy ezen részegység funkcionalitása impementálható legyen bármilyen alternatív eszközre mint például egy androidos okostelefon, egy iPad, vagy akár egy böngészõ. Ennek érdekében példáult a hõmérséklet JSON formátumban is elérhetõ.   
 
