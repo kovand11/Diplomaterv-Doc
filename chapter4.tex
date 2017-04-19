@@ -6,8 +6,12 @@
 \section{Specifikáció}
 %----------------------------------------------------------------------------
 
-A terv egy két eszközt fogadó aljzat elkészítése. Mindkét csatorna vezetékmentesen kapcsolható, akár hozzárendelt logika alapján is. (Például, ha a környezeti fény egy adott határ alá csökken, akkor a lámpát tápláló foglalat áramot kap) Az egység opcionálisan képes csatornánként mérni a felvett teljesítményt. A foglalatok állapota fizikai gombokkal is kontrollálható, és a szoftver által beállított állapot felülírható.
-(a hardver a második félévben fog elkészülni)
+
+\begin{itemize}  
+	\item 1 foglalat
+	\item Feszültségmérés, és árammérés
+\end{itemize}
+
 
 %----------------------------------------------------------------------------
 \section{Hardver}
@@ -25,24 +29,39 @@ A terv egy két eszközt fogadó aljzat elkészítése. Mindkét csatorna vezetékmentes
 		\hline
 		2 & 1 & Rezonátor kristály & U2 & Epson & FA-128 26Mhz \\
 		\hline		
-		3 & 1 & Nyomógomb & SW1 & Omron & PTS810 \\
+		3 & 1 & Nyomógomb & SW1 & CandK Components & D6C90 F2 LFS \\
 		\hline
-		4 & x & LED (0603) & D1,D2 & Panasonic & LNJxxx \\
+		4 & 3 & LED (0603) & D1..3 & Panasonic & LNJxxx \\
 		\hline
-		5 & 2 & Relé & SW1,SW2 & Songle & SRD-05VDC-SL-C \\
+		5 & 3 & Olvadóbiztosíték & F1,F2 & Shurter & 3403.0173.11 \\
 		\hline
-		6 & 2 & Tranzisztor & x & x & Relé meghajtása \\
+		6 & 1 & Relé & SW1 & TE Connectivity & RTE24005 \\
 		\hline
-		7 & 2 & Dióda & x & x & Relé meghajtása \\
+		7 & 1 & Tranzisztor & Q1 & ON Semiconductor & MMBT2222ALT1G \\
 		\hline
-		8 & 2 & 230AC->5V & x & Vigortronix & VTX-214-003-105 \\
+		8 & 1 & Egyenirányító & D4 & Rectron & FM4007W-W \\
 		\hline
-		9 & 2 & 5V->3.3V & x & TI & LM3670MF-3.3/NOPB \\
+		9 & 1 & Tépegység 230AC->5V & x & Vigortronix & VTX-214-003-105 \\
 		\hline
-		8 & x & Ellenállás (0603) & R1..14 & Viking Tech Corp. & - \\
+		10 & 1 & Buck 5V->3.3V & U4 & TI & LM3670MF-3.3 \\
 		\hline
-		9 & x & Kondenzátor (0603) & C1..14 & Yageo, Samsung & - \\
+		11 & 1 & Header & P1 & Omron & XG8V-0831 \\ 
 		\hline
+		12 & 1 & Teljesítmény mérõ IC & U3 & ST & STPM10BTR \\
+		\hline
+		13 & 1 & Rezonátor kristály & Y1 & Abracon & ABLS-4.194304MHZ \\
+		\hline
+		14 & 1 & Árammérõ sönt & R25 & Wishay & WSLP5931 \\
+		\hline
+		15 & 1 & AC Csatlakozó & P1 & Qualtek & 703W-00/54 \\
+		\hline
+		16 & 1 & AC Foglalat & P2 & x  & x \\
+		\hline
+		17 & x & Ellenállás (0603) & R1..n & Viking Tech Corp. & - \\
+		\hline
+		18 & x & Kondenzátor (0603) & C1..n & Yageo, Samsung & - \\
+		\hline
+
 	\end{tabular} 
 \end{table}
 

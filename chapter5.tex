@@ -6,13 +6,48 @@
 \section{Specifikáció}
 %----------------------------------------------------------------------------
 
-Ezen egység célja hogy egy mágnes közelségét detektálni tudja (Hall szenzorral), és bármely érzékelt változást WiFi-n keresztül továbbítsa.
+Ezen egység célja hogy egy mágnes közelségét detektálni tudja (Reed kapcsolóval), és bármely érzékelt változást WiFi-n keresztül továbbítsa.
 Ennék a modulnál a legnagyobb kihívást az energiagazdálkodás jelenti. 
 Elsõdleges alkamazása a bejárati ajtó nyitásának érzékelése.
 (a hardver a második félévben fog elkészülni)
 
 %----------------------------------------------------------------------------
-%\section{Hardver}
+\section{Hardver}
+
+
+\begin{table}[ht]
+	\footnotesize
+	\centering
+	\caption{A környezeti szenzor alkatrész listája}
+	\begin{tabular}{|c|c|c|c|c|c|}
+		\hline
+		& \textbf{Db.} 	& \textbf{Leírás} 	& \textbf{Felh.} 	& \textbf{Gyártó} 	& \textbf{Azonosító} \\ 
+		\hline
+		1 & 1 & WiFi-s mikrokontroller & U1 & Espressif & ESP8285 \\
+		\hline
+		2 & 1 & Rezonátor kristály & U2 & Epson & FA-128 26Mhz \\
+		\hline
+		3 & 1 & Feszültség szabályzó & U4 & Microchip & MIC5353 \\
+		\hline
+		4 & 1 & Reed kapcsoló & U4 & Microchip & MIC5353 \\
+		\hline
+		5 & 1 & XOR kapu (2) & U4 & Microchip & MIC5353 \\
+		\hline    
+		6 & 1 & Header & P1 & Omron & XG8V-0831 \\ 
+		\hline 
+		7 & 1 & Akku csatlakozó & J1 & Adafruit  & JST-PH 2-pin \\
+		\hline 		
+		8 & 1 & Nyomógomb & SW1 & Omron & PTS810 \\
+		\hline
+		9 & x & LED (0603) & D1,D2 & Panasonic & LNJxxx \\
+		\hline
+		10 & x & Ellenállás (0603) & R1..n & Viking Tech Corp. & - \\
+		\hline
+		11 & x & Kondenzátor (0603) & C1..n & Yageo, Samsung & - \\
+		\hline
+	\end{tabular} 
+\end{table}
+
 %----------------------------------------------------------------------------
 
 %----------------------------------------------------------------------------
