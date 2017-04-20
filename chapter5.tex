@@ -7,9 +7,10 @@
 %----------------------------------------------------------------------------
 
 Ezen egység célja hogy egy mágnes közelségét detektálni tudja (Reed kapcsolóval), és bármely érzékelt változást WiFi-n keresztül továbbítsa.
-Ennék a modulnál a legnagyobb kihívást az energiagazdálkodás jelenti. 
-Elsõdleges alkamazása a bejárati ajtó nyitásának érzékelése.
-(a hardver a második félévben fog elkészülni)
+Ennék a modulnál a legnagyobb kihívást az energiagazdálkodás jelenti. A maximális üzemidõt elérendõ, azalatt az idõ alatt, amikor a kapcsoló állapota
+nem változik, a központi mikrokontroller mélyalvásban tartózkodik, amibõl csak a állapotváltozásra létrejövõ reset impulzus hatására ébred fel.
+Ekkor a modul felcsatlakozik a beállított hálózatra, és értesíti a központi egységet a saját állapotáról. 
+
 
 %----------------------------------------------------------------------------
 \section{Hardver}
@@ -29,9 +30,9 @@ Elsõdleges alkamazása a bejárati ajtó nyitásának érzékelése.
 		\hline
 		3 & 1 & Feszültség szabályzó & U4 & Microchip & MIC5353 \\
 		\hline
-		4 & 1 & Reed kapcsoló & U4 & Microchip & MIC5353 \\
+		4 & 1 & Reed kapcsoló & U4 & Hamlin & MACD-14-20-25 \\
 		\hline
-		5 & 1 & XOR kapu (2) & U4 & Microchip & MIC5353 \\
+		5 & 1 & XOR kapu (2) & U4 & TI & SN74LVC2G86DCTR \\
 		\hline    
 		6 & 1 & Header & P1 & Omron & XG8V-0831 \\ 
 		\hline 
@@ -39,7 +40,7 @@ Elsõdleges alkamazása a bejárati ajtó nyitásának érzékelése.
 		\hline 		
 		8 & 1 & Nyomógomb & SW1 & Omron & PTS810 \\
 		\hline
-		9 & x & LED (0603) & D1,D2 & Panasonic & LNJxxx \\
+		9 & 1 & LED (0603) & D1 & Panasonic & LNJxxx \\
 		\hline
 		10 & x & Ellenállás (0603) & R1..n & Viking Tech Corp. & - \\
 		\hline
@@ -51,9 +52,34 @@ Elsõdleges alkamazása a bejárati ajtó nyitásának érzékelése.
 %----------------------------------------------------------------------------
 
 %----------------------------------------------------------------------------
-%\section{Szofver}
+\section{Szofver}
 %----------------------------------------------------------------------------
 
+Mivel az eszköz üzemszer\H{u}en nincs bekapcsolva, így tetszõleges idõpontban nem is módosíthatóak a beállításai.
+A m\H{u}ködéshez szükséges információk a következõek:
+
+\begin{itemize}  
+	\item a WiFi hálózat neve (SSID)
+	\item a jelszó
+	\item az értesítendõ szerver IP címe
+\end{itemize}
+
+Ezek az adatok a mikrokontroller törölhetõ memóriájában kerülnek eltárolásra (EEPROM), maximum 64 byte-on, 0-val jelölve a bejegyzés végét.
+A beállítások viszont csak akkor érhetõek el, ha a következõ feltételek valamelyike teljesül:
+
+\begin{itemize}  
+	\item a hálózatnév jelszó kettõs érvénytelen (5 másodpercig nem tud csatlakozni)
+	\item a szerver nem válaszol
+	\item a szerver válasza egy, a setup módba állításra fenntartott kód
+\end{itemize}
+
+Ha valamelyik feltétel teljesült, akkor a mikrokontroller egy saját WiFi hozzáférési pontot (access point) nyit,
+amire felcsatlakozva elérhetõvé válik a beállításokat tartalmazó \H{u}rlap, aminek kitöltése és elküldése után az eszköz újraindul.
+
+
+
+
+
 %----------------------------------------------------------------------------
-%\section{Prototípus}
+\section{Prototípus}
 %----------------------------------------------------------------------------
