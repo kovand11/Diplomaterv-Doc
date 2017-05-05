@@ -93,20 +93,8 @@ A másik módban, energiatakarékossági okokból, a szenzor periódikusan felébreszti
 \subsection{Tápellátás}
 %----------------------------------------------------------------------------
 
-Az egység tápellátására egy Microchip MIC5353 LDO (Low Dropout Voltage) regulátort használok, ami kifejezetten hordozható elektronikákhoz lett kifejlesztve. Kimeneti zaja rendkívül alacsony (30$\mu Vrms$), nyugalmi árama 90$\mu A$ és 100mA-es áramfelvételnél a kiesési feszültség (dropout voltage) mindössze 35mV, lehetõvé téve a Li-ion akkumulátor maximális kihasználását. A teljes hatásfok így 90\% felett van, ami lényegében megegyezik egy kapcsolóüzem\H{u} megoldáséval, annak minden hátránya nélkül (kimenet hullámossága, kiegészítõ áramkör). Az akkumulátor egy JST-PH2 csatlakozóba dugható be. A Li-ion védõáramköre integrálva van akkumulátorba, illetve a töltéshez vásárolt céláramkört használok.
+VISSZAHIVATKOZÁS
 
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=150mm, keepaspectratio]{figures/enviromental-sensor_power-supply.png}
-	\caption{A környezeti szenzor tápáramköre} 
-\end{figure}
-
-%----------------------------------------------------------------------------
-\subsection{Antenna}
-%----------------------------------------------------------------------------
-
-A modulnak szüksége van külsõ antennára a WiFi kommunikációhoz (2.4GHz). A legegyszer\H{u}bb és legolcsóbb megoldás a nyomtatott áramkörön elhelyezett antenna. Az antennát 50 $\Omega$ impedanciához kell illeszteni. A leggyakoribb kialakítások a \textbf{meander antenna} és az \textbf{inverted-F antenna}.
-Az elõbbi helyigénye hozzávetõlegesen 1.5 cm az utóbbié 3 cm. Az adás minõsége jobb az inverted-F kialakítással, és mivel a hely nekem rendelkezésre állt, e mellett döntöttem. Mivel a WiFi kommunikáció kardinális kérdése ezen dolgozatnak, a második félév folyamán érdekes lenne pontosabb méréseket is végezni a hullámterjedéssel kapcsolatban.
 
 %----------------------------------------------------------------------------
 \subsection{Szenzorok}

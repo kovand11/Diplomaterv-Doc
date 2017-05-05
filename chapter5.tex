@@ -14,6 +14,7 @@ Ekkor a modul felcsatlakozik a beállított hálózatra, és értesíti a központi egys
 
 %----------------------------------------------------------------------------
 \section{Hardver}
+%----------------------------------------------------------------------------
 
 
 \begin{table}[ht]
@@ -42,14 +43,27 @@ Ekkor a modul felcsatlakozik a beállított hálózatra, és értesíti a központi egys
 		\hline
 		9 & 1 & LED (0603) & D1 & Panasonic & LNJxxx \\
 		\hline
-		10 & x & Ellenállás (0603) & R1..n & Viking Tech Corp. & - \\
+		10 & 14 & Ellenállás (0603) & R1..14 & Viking Tech Corp. & - \\
 		\hline
-		11 & x & Kondenzátor (0603) & C1..n & Yageo, Samsung & - \\
+		11 & 9 & Kondenzátor (0603) & C1..9 & Yageo, Samsung & - \\
 		\hline
 	\end{tabular} 
 \end{table}
 
+
 %----------------------------------------------------------------------------
+\subsection{Tápellátás}
+%----------------------------------------------------------------------------
+
+Az egység tápellátására egy Microchip MIC5353 LDO (Low Dropout Voltage) regulátort használok, ami kifejezetten hordozható elektronikákhoz lett kifejlesztve. Kimeneti zaja rendkívül alacsony (30$\mu Vrms$), nyugalmi árama 90$\mu A$ és 100mA-es áramfelvételnél a kiesési feszültség (dropout voltage) mindössze 35mV, lehetõvé téve a Li-ion akkumulátor maximális kihasználását. A teljes hatásfok így 90\% felett van, ami lényegében megegyezik egy kapcsolóüzem\H{u} megoldáséval, annak minden hátránya nélkül (kimenet hullámossága, kiegészítõ áramkör). Az akkumulátor egy JST-PH2 csatlakozóba dugható be. A Li-ion védõáramköre integrálva van akkumulátorba, illetve a töltéshez vásárolt céláramkört használok.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/enviromental-sensor_power-supply.png}
+	\caption{A nyitásérzékelõ szenzor tápáramköre} 
+\end{figure}
+
+
 
 %----------------------------------------------------------------------------
 \section{Szofver}
@@ -75,6 +89,8 @@ A beállítások viszont csak akkor érhetõek el, ha a következõ feltételek valamely
 
 Ha valamelyik feltétel teljesült, akkor a mikrokontroller egy saját WiFi hozzáférési pontot (access point) nyit,
 amire felcsatlakozva elérhetõvé válik a beállításokat tartalmazó \H{u}rlap, aminek kitöltése és elküldése után az eszköz újraindul.
+
+
 
 
 

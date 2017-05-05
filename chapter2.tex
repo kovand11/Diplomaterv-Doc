@@ -2,8 +2,6 @@
 \chapter{Komponensek és technológiák}
 %----------------------------------------------------------------------------
 
-
-%TODO: peer-to-peer magyar?
 %----------------------------------------------------------------------------
 \section{WiFi és a IEEE 802.11-es szabvány \cite{wiki-wifi} \cite{wiki-ieee802.11}}
 %----------------------------------------------------------------------------
@@ -13,13 +11,16 @@ A WiFi egy vezetéknélküli adatátviteli technológia, IEEE 802.11 melynek technika
 
 \textbf{WPA (WiFi Protected Access)} A WEP leváltására jött létre. Egy TKIP nev\H{u} titkosítási algoritmust használ, ami már bizonyos idõközönként új kulcsot generál, védelmet nyújtva a brute force támadások ellen. 
 
- 
-
-
 
 %----------------------------------------------------------------------------
 \section{WiFi képes mikrokontroller (ESP8285) \cite{esp8266-ds} \cite{esp8266-sysdesc} \cite{esp8266-techref}}
 %----------------------------------------------------------------------------
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/esp8285.png}
+	\caption{ESP8285 chip} 
+\end{figure}
 
 Az ESP8285 egy WiFi képes mikrokontroller teljes TCP/IP implementációval, kifejezetten IOT (Internet of Things) alkalmzásokhoz szánva. A chip 2016 nyarán került forgalomba, de egy korábbi változat, az ESP8266 már 2014 -óta jelen van. Az egyetlen különbség az ESP8285-be integrált 1MB flash memória, ami az esetek többségében feleslegessé tette az ESP8266-nél még szükséges külsõ memóriamodult. Emiatt minden mindkét változat adatlapjai és a leírások is relevánsak.
 A chipcsalád az utóbbi idõben nagy népszer\H{u}ségre tett szert, köszönhetõen annak, hogy a gyártó kínai mellett angolul is elérhetõvé tette a dokumentációt, illetve megnyitotta az SDK-t. 
@@ -74,6 +75,13 @@ A Wifi-s kommunikáció egyik gyenge pontja az energiafogyasztás. A jelsugárzás na
 \end{table}
 
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/esp8285-cad.png}
+	\caption{ESP8285 chip CAD modellje}
+\end{figure}
+
+
 %----------------------------------------------------------------------------
 \section{Tápellátás}
 %----------------------------------------------------------------------------
@@ -89,6 +97,13 @@ Az elsõ és legkézenfekvõbb megoldás a mobil eszközökben rendkívül elterjedt Li-i
 Alternatíva lehet három darab 1.5V-os ceruzaelem használata is, de mivel ez esetben, ha nem akarok elfogadhatatlanul rossz hatásfokot, valamilyen kapcsolóüzem\H{u} tápegységet kell használnom, jelentõs méret\H{u} kiegészítõ áramkörrel. Rádiófrekvenciás alkalmazásoknál jelentõsége van a tápellátás zajmentességének is. Mivel a három elem mérete meghaladja azt a áramkör méretet amit alkalmazni szeretnék, ezért ezt a megoldást elvetendõnek gondolom.
 
 Kis mérete miatt felmerühet egy nem újratölthetõ Li-ion gombelem alkalmazása is, elsõdlegesen akkor, amikor fontos a kis méret és súly, valamint a készülék csak ritkán, rövid idõtartamokra van bekapcsolva. Mivel a WiFi adó áramfelvétele rövidebb idõszakokban meghaladja a gombelem által biztosított maximumot, ezért szükség van egy további kondenzátor elhelyezésére is, ami viszont nagyban semlegesíti ezen megoldás eredeti elõnyeit.
+
+%----------------------------------------------------------------------------
+\subsection{Antenna}
+%----------------------------------------------------------------------------
+
+A modulnak szüksége van külsõ antennára a WiFi kommunikációhoz (2.4GHz). A legegyszer\H{u}bb és legolcsóbb megoldás a nyomtatott áramkörön elhelyezett antenna. Az antennát 50 $\Omega$ impedanciához kell illeszteni. A leggyakoribb kialakítások a \textbf{meander antenna} és az \textbf{inverted-F antenna}.
+Az elõbbi helyigénye hozzávetõlegesen 1.5 cm az utóbbié 3 cm. Az adás minõsége jobb az inverted-F kialakítással, és mivel a hely nekem rendelkezésre állt, e mellett döntöttem. Mivel a WiFi kommunikáció kardinális kérdése ezen dolgozatnak, a második félév folyamán érdekes lenne pontosabb méréseket is végezni a hullámterjedéssel kapcsolatban.
 
 
 
