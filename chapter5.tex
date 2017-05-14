@@ -55,12 +55,44 @@ Ekkor a modul felcsatlakozik a beállított hálózatra, és értesíti a központi egys
 \subsection{Tápellátás}
 %----------------------------------------------------------------------------
 
-Az egység tápellátására egy Microchip MIC5353 LDO (Low Dropout Voltage) regulátort használok, ami kifejezetten hordozható elektronikákhoz lett kifejlesztve. Kimeneti zaja rendkívül alacsony (30$\mu Vrms$), nyugalmi árama 90$\mu A$ és 100mA-es áramfelvételnél a kiesési feszültség (dropout voltage) mindössze 35mV, lehetõvé téve a Li-ion akkumulátor maximális kihasználását. A teljes hatásfok így 90\% felett van, ami lényegében megegyezik egy kapcsolóüzem\H{u} megoldáséval, annak minden hátránya nélkül (kimenet hullámossága, kiegészítõ áramkör). Az akkumulátor egy JST-PH2 csatlakozóba dugható be. A Li-ion védõáramköre integrálva van akkumulátorba, illetve a töltéshez vásárolt céláramkört használok.
+\label{sec:li-ion-supp}
+
+Az egység tápellátására egy Microchip MIC5353 LDO (Low Dropout Voltage) regulátort használok, ami kifejezetten hordozható elektronikákhoz lett kifejlesztve. Kimeneti zaja rendkívül alacsony (30$\mu Vrms$), nyugalmi árama 90$\mu A$ és 100mA-es áramfelvételnél a kiesési feszültség (dropout voltage) mindössze 35mV, lehetõvé téve a Li-ion akkumulátor maximális kihasználását. A teljes hatásfok így 90\% felett van, ami lényegében megegyezik egy kapcsolóüzem\H{u} megoldáséval, annak minden hátránya nélkül (kimenet hullámossága, kiegészítõ áramkör). Az 1.6mm x 1.6mm -es thermalpad-es chip h\H{u}tést nem igényel.
+
+Az akkumulátor egy JST-PH2 csatlakozóba (Adafruit saját szabvány) dugható be. A Li-ion védõáramköre integrálva van akkumulátorba, illetve a töltéshez vásárolt céláramkört használok.
+
+Az akkumulátor merülési karakterisztikáját egy 3.7 V és 3.5 V közötti lináris csökkenéssel becsülve, elhanyagolva a teljes töltöttségnél elõforduló alacsonyabb és a közel kimerült állapotban szolgáltatott alacsonyabb feszültséget (mivel hatásuk nem jelentõs, és ráadásul ellentétes is), a hatásfok: $\frac{3.3}{\frac{3.7 + 3.5}{2}}=91.67\%$
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/mic5353-block-diagram.png}
+	\caption{MIC5353 blokkdiagramja} 
+\end{figure}
+
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=150mm, keepaspectratio]{figures/enviromental-sensor_power-supply.png}
 	\caption{A nyitásérzékelõ szenzor tápáramköre} 
+\end{figure}
+
+
+%----------------------------------------------------------------------------
+\subsection{Reset áramkör}
+%----------------------------------------------------------------------------
+
+Amikor a Reed kapcsolón nincs változás, a központi mikrokontroller mélyalvásban (lényegében kikapcsolt állapotban) tartózkodik, amibõl egy reset impulzussal ébreszthetõ fel. Ennek elõállítására egy két XOR kaput megvalósító áramkört használok. Az elsõ kapu negálja a kapcsooló jelét. A negált jelbõl egy RC sz\H{u}rõ segítségével elõállítok egy (digitális értelemben) késleltetett jelet. A negált jellel történõ meghajtás további elõnye,
+hogy a kondenzátor árama nem terheli a kapcsolóból és a felhúzó ellenállásból (Rx) álló bemeneti tagot, nagyobb Rx értéket téve lehetõvé.
+Ezután a kívánt kimenet (negatív impulzus, ha változott a bemenet) elérhetõ a kapcsolóról levett, és a negált valamint eltolt jel XOR-olásával.
+Az impulzus szélessége jó közelítéssel megegyezik a RC tag idõállandójával: $\tau=R*C=10k\Omega *1\mu F = 10ms$
+Az IRST-t a mikrokontroller egy portjára kötve, annak konfigurálásával engedélyezhetõ (nagyimpedanciás állapot) és letiltható (logikai 1) a reset logika.
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/opendetector-wakeup.png}
+	\caption{A reset impulzust elõállító logika]} 
 \end{figure}
 
 
@@ -96,6 +128,29 @@ amire felcsatlakozva elérhetõvé válik a beállításokat tartalmazó \H{u}rlap, amin
 
 
 
+
+
+
 %----------------------------------------------------------------------------
 \section{Prototípus}
 %----------------------------------------------------------------------------
+
+
+%----------------------------------------------------------------------------
+\subsection{Felmerült problémák}
+%----------------------------------------------------------------------------
+
+Az ébresztõ áramkör által elõállított reset jel érvényre jutásának megakadályozására hivatott XXX jel az XXX ellenállás kiforrasztásával
+deaktiválásra került, mivel a GPIO konfogurációja csak bootolás után jutott érvényre, és a tranziens megzavarta reset folyamatot.
+Mivel a szerver felé történõ transzfer jellemzõen egy másodpercen belül lezajlik, a tervezett funkcionalitás elvesztése bizonyult lényegesnek.
+
+A GPIO0 láb után épített ellenállásosztás hibásan m\H{u}ködött, mivel jelentõs áram folyt ki az osztóból a láb felé, alkalmanként nem a
+szándékolt módban indult el a mikrokontroller. A környezeti szenzornál alkalmazott megoldás (ami ellenállás cserével és eltávolítással elérhetõ volt) tökéletesen m\H{u}ködött.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/placeholder.png}
+	\caption{Az elkészült nyitásérzékelõ áramkör} 
+\end{figure}
+
+

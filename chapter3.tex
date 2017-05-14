@@ -3,7 +3,7 @@
 %----------------------------------------------------------------------------
 
 %----------------------------------------------------------------------------
-\subsection{Hardver}
+\section{Hardver}
 %----------------------------------------------------------------------------
 
 Ennél az egységnél szerettem volna kipróbálni a Qt for Device Creation keretrendszert. A legjellemzõbb felépítés, hogy egy Linux rendszermagra és egy ablakozórendszerre támaszkodva fut a Qt-ban megírt szoftver. Elõnye a teljes rugalmasság, és a gyors fejlesztési és tesztelési ciklusok. Hátránya, hogy kicsivel erõsebb hardvert igényel, mint az alacsony szinten megírt beágyazott rendszerek, de a nagyobb teljesítmény\H{u} SOC-ok (System on a Chip) olcsóvá válása ezt a faktort jelentéktelenné tette.
@@ -15,13 +15,13 @@ Ennél az egységnél szerettem volna kipróbálni a Qt for Device Creation keretrend
 \end{figure}
 
 %----------------------------------------------------------------------------
-\subsubsection{Raspberry Pi 3}
+\subsection{Raspberry Pi 3}
 %----------------------------------------------------------------------------
 
 A Linux-ot futtató board szerepét egy Raspberry Pi 3 játsza. A feladathoz szükséges számítási kapacitás többszörösével rendelkezik, de mivel az elkészülendõ szoftver platformfüggetlen, ezért késõbb tömeggyártás esetén egyszer\H{u}en portolható olcsóbb hardverre is. Elõnye a 3-as verziónak, hogy nem igényel WiFi modult, mivel már intergrálva tartalmazza azt.
 
 %----------------------------------------------------------------------------
-\subsubsection{Érintõkijelzõ (Elecrow 5 inch display for Raspberry Pi)}
+\subsection{Érintõkijelzõ (Elecrow 5 inch display for Raspberry Pi)}
 %----------------------------------------------------------------------------
 
 Olyan kijelzõt kerestem, aminek a mérete már megfelelõ egy ujjal kezelhetõ interface kialakításához. A kijelzõ legfontosabb tulajdonságai:
@@ -32,9 +32,52 @@ Olyan kijelzõt kerestem, aminek a mérete már megfelelõ egy ujjal kezelhetõ inter
 	\item Rezisztív érintésérzékenység (SPI interface)
 \end{itemize}
 
+A beszerzett kijelzõ meglehetõsen gyenge minõség\H{u}nek bizonyult. A érintési pontokat pontatlanul adta viszza, amint még kalibrációval sem nagyon tudtam javítani. Képernyõ betekintési szögei gyengék, a színek mosottak és kontraszttalanok még szembõl nézve is. 
+
+
 %----------------------------------------------------------------------------
-\subsection{Alternatívák}
+\section{Szoftver}
 %----------------------------------------------------------------------------
 
-Cél volt az, hogy az egyes eszközök a lehetõ legkevésbé függjenek a központi egységtõl. Nyitva akartam hagyni annak a lehetõségét is, hogy ezen részegység funkcionalitása impementálható legyen bármilyen alternatív eszközre mint például egy androidos okostelefon, egy iPad, vagy akár egy böngészõ. Ennek érdekében példáult a hõmérséklet JSON formátumban is elérhetõ.   
+%----------------------------------------------------------------------------
+\subsection{Az alkalmazás}
+%----------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------
+\subsection{A webszerver}
+%----------------------------------------------------------------------------
+
+Az IOT egyik alapelve a meglévõ webes szabványok alkalmazása, ezért a központi egység egy teljes érték\H{u} webszervert valósít meg. Ehhez az Apache HTTP Server (forrás) nyílt forráskódú alkalmazást vettem igénybe, kiegészítve a PHP (PHP: Hypertext preprocessor) modullal. Mivel az összes rendelkezésre álló adat egy adatbázisban tárolódik, ezért akár a grafikus alkalmazástól teljesen függetlenül, bármely funkció tisztán webes alapon is implementálható.
+
+A m\H{u}ködéhez létfontosságú egyetlen funkció a nyitásérzékelõ modul számára nyújtott interface, melyet a következõ PHP kód valósít meg:
+
+
+
+
+%----------------------------------------------------------------------------
+\subsection{Az adatbázis}
+%----------------------------------------------------------------------------
+
+A grafikus alkalmazás, az alapvet? konfiguráción kívül nem tárol adatot, hanem azokhoz lekérdezéseken keresztül jut hozzá. Ehhez a MySQL relációs adatbáziskezel? rendszerét használom. Az okosotthon rendszerhez egy külön adatbázist hoztam létre \textbf{smarhome} alapértelmezett névvel, a következõ táblákkal:
+
+\begin{table}[ht]
+	\footnotesize
+	\centering
+	\caption{A nyitásérzékelõ adatbázis táblája: opendetector}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Név} 	& \textbf{Típus} 	& \textbf{Extra} & \textbf{Leírás} \\ 
+		\hline
+		1 & 1 & WiFi-s mikrokontroller  & WiFi-s mikrokontroller   \\
+		\hline
+	\end{tabular} 
+\end{table}
+
+%----------------------------------------------------------------------------
+\section{Alternatívák}
+%----------------------------------------------------------------------------
+
+Cél volt az, hogy az egyes eszközök a lehetõ legkevésbé függjenek a központi egységtõl. Nyitva akartam hagyni annak a lehetõségét is, hogy ezen részegység funkcionalitása impementálható legyen bármilyen alternatív eszközre mint például egy androidos okostelefon, egy iPad, vagy akár egy böngészõ. Ennek érdekében példáult a hõmérséklet JSON formátumban is elérhetõ.
+
+
 

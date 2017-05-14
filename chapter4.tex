@@ -1,3 +1,7 @@
+%Status: unchecked
+%Todo: bevezet?, specifikáció szövegesítése, hardware bevezet?, weblap (root)
+
+
 %----------------------------------------------------------------------------
 \chapter{Programozható aljzat árammérõvel}
 %----------------------------------------------------------------------------
@@ -70,6 +74,69 @@
 %----------------------------------------------------------------------------
 
 %----------------------------------------------------------------------------
+\section{Paraméteres interface}
+%----------------------------------------------------------------------------
+
+A hálózatba kapcsolt eszközök programozhatóságát nagy mértékben megkönnyíti, ha azok kívülr?l nézve bizonyos szempontból egységesek. Az absztrakció lehet egy, az eszközhöz hozzárendelt paraméterek halmaza, amelyek olvashatóak és esetenként írhatóak is. Például a pillanatnyi teljesítményt a power változó tartalmazza, ami csupán olvasható. Az hogy egy paraméter kívülrõl változónak t?nik, nem jelenti feltétlenül azt, hogy az az eszközön belül mindíg elérhet?, lehet az a lekérdezés által megindított folyamat (legtöbb esetben mérés) eredménye is. Azon funkciók amik beavatkoznak a környezetbe, írható változókként reprezentálhatóak.
+A relé állása a relay változóba írt 0 vagy 1 értékkel állítható. Innentõl kezdve a teljes rendszer a szolgáltatott paraméterek, mint változók manipulálásával programozhatóak.
+Ez a protokol, bár meglehetõsen rugalmas, az összes perifériát szolga (slave) szerepbe kényszeríti, mivel minden tranzakciót (írást/olvasást) a központi egység kezdeményez. Ha valamelyik periférián lenyomott gombhoz akarok akciót rendelni, akkor ezt csak úgy tehetem meg ha a hozzárendelt változót a másik eszközrõl pollolom, ami valamekkora idõveszteséggel jár.
+
+A kiolvasás az WiFi-s eszköz által biztosított JSON (JavaScript Object Notation) interface-en keresztül történik. A JSON egy ember által is olvasható szöveges leírószabvány, ami az XML mellet a web legelterjedtebb formátuma. Az én implementációmban csak az összes változó egyidej\H{u} lekérdezésére van lehetõség, de a visszafele kompatibilitást megtartva hozzá lehetne adni a protokolhoz a változókra történõ sz\H{u}rés lehetõségét. A szenzor által biztosított JSON oldal:
+\begin{lstlisting}
+{
+	"relay": "0",
+	"led": "1",
+	"power": "0.00",
+	"voltage": "0.00",
+	"current": "0.00",
+	"powerfactor": "0.00"
+} 
+\end{lstlisting}
+
+A paraméterek írásához a HTTP (Hypertext Transfer Protocol) GET vagy POST metódusa használható a /control oldalnak átadva. A GET paraméterek címsorba kódolhatóak: 
+\begin{lstlisting}
+http://192.168.0.20/control?relay=1&led=0
+\end{lstlisting}
+A változtatások érvényre jutását az eszköz a Done üzenettel jelzi.
+
+
+
+\begin{table}[ht]
+	\footnotesize
+	\centering
+	\caption{A Programozható aljzat paraméterei}
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		\textbf{Név} & \textbf{Hozzáférés} 	& \textbf{Típus} & \textbf{Leírás}  \\ 
+		\hline
+		relay & írható/olvasható & boolean & a relé állapota \\
+ 		\hline
+ 		led & írható/olvasható & boolean & led állapota \\
+ 		\hline
+ 		power & olvasható & float & teljesítmény (W) \\
+ 		\hline
+ 		voltage & olvasható & float & feszültség (V) \\
+ 		\hline
+ 		current & olvasható & float & áram (A)\\
+ 		\hline
+ 		powerfactor & olvasható & float & teljesítmény tényezõ \\
+ 		\hline		
+	\end{tabular} 
+\end{table}
+
+
+%----------------------------------------------------------------------------
 \section{Prototípus}
 %----------------------------------------------------------------------------
+
+-enable fix
+
+-5V to 3.3V
+
+-relay
+
+-random kikapcsolás
+
+-kommunikáció
+
 

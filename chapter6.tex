@@ -1,6 +1,11 @@
+%Status: unchecked
+%Todo: specifikáció ?+= szöveg, hardware bevezet? bme +=
+
 %----------------------------------------------------------------------------
 \chapter{Környezeti szenzor}
 %----------------------------------------------------------------------------
+
+A levegõ tulajdonságainak, illetve a környezeti fény a monitorozása számtalan épületautómatizálási feladatnál létfontosságú követelmény. A gy\H{u}jtött adatok alapján, vezérelhetõ a f\H{u}tés, párásító berendezéssel elkerülhetõ a levegõ kiszáradása, illetve a fényviszonyoknak megfelelõen kapcsolható a világitás, bárminem\H{u} emberi beavatkozás nélkül. A vezetéknélküli kivetelezés az installáció során elõnyös, a leolvasások ritkításával a fogyasztás kordában tartható. A mért jellemzõk általában lassan változnak, az eszköz rövid idõre történõ kiesése tolerálható.
 
 %----------------------------------------------------------------------------
 \section{Specifikáció}
@@ -19,7 +24,7 @@ A mért jellemzõk ember számára is releváns információt biztosítanak, illetve aut
 
 Az szenzor mérete 31mm x 50mm, a megvalósítás egy kétréteg\H{u} nyomtatott áramkörön történt, magában foglalva a tápellátást és az WiFi antennát is.
 A maximális mobilitást elérendõ, a készüléket egy 1200mAH-ás Li-Po akkumulátorrol táplálom, melynek mérete szinte pontosan megegyezik az áramkörével.
-Mivel ez az egység került elsõként legyártásra, és a kommunikáció megvalósítása nagyban hasonlított a továbbiakban elkészítendõ részegységekhez, emiatt az alap funkcióin kívül, egyfajta fejlesztõi kártyaként is szolgált. A programozáshoz feltétlenül szükséges és a nem felhasznált lábakat egyaránt egy tüskesorra vezettem ki.
+Mivel ez az egység került elsõként legyártásra, és a kommunikáció megvalósítása nagyban hasonlított a továbbiakban elkészítendõ részegységekhez, emiatt az alap funkcióin kívül, egyfajta fejlesztõi kártyaként is szolgált. A programozáshoz feltétlenül szükséges és a nem felhasznált lábakat (3 db GPIO és egy 5.7 V toleráns ADC, amely alkalmas lehet az akkumulátor töltöttségi szintjének meghatározására) egyaránt egy tüskesorra vezettem ki.
 
 \begin{figure}[!ht]
 	\centering
@@ -28,13 +33,17 @@ Mivel ez az egység került elsõként legyártásra, és a kommunikáció megvalósítása 
 \end{figure}
 
 
+
+%reconsider
 Az készülék két m\H{u}ködési módot támogat. Ez elsõben a mikrokontroller egy webszervert implementál, igy a rendszer bármely eleme, beleértve a felhasználót, TCP/IP protokollon keresztül közvetlenül hozzáférhet a mért értékekhez, akár a központi egység megléte nélkül is. Az egység többféle formátumot támogat:
 \begin{itemize}  
 	\item Ember számára könnyen áttekinthetõ weboldal (a fejlesztõi funkciók is itt érhetõek el)
 	\item JSON interface más eszközök számára
-
 \end{itemize}
+
 A másik módban, energiatakarékossági okokból, a szenzor periódikusan felébreszti magát, elvégez egy mérést, majd az adatokat átküldi a központi egységnek. A fennmaradó idõt mélyalvásban vagy a modemet kikapcsolva tölti.
+
+%/reconsider
 
 
 
@@ -42,6 +51,8 @@ A másik módban, energiatakarékossági okokból, a szenzor periódikusan felébreszti
 %----------------------------------------------------------------------------
 \section{Hardver}
 %----------------------------------------------------------------------------
+
+Az alkatrészek kiválasztásánál igyekeztem a legkorszer\H{u}bb megoldásokat használni, figyelve hogy az alapanyagköltség ne szálljon el. Ezzel néha ellentétes követelmény volt a könny\H{u} forraszthatóság és mérhetõség.
 
 
 
@@ -93,15 +104,14 @@ A másik módban, energiatakarékossági okokból, a szenzor periódikusan felébreszti
 \subsection{Tápellátás}
 %----------------------------------------------------------------------------
 
-VISSZAHIVATKOZÁS
+Az eszköz Li-Ion akkumulátorról m\H{u}ködik, hasonlóan a nyitásérzékelõ szenzorhoz, amely a \ref{sec:li-ion-supp} pontban került kifejtésre.
 
 
 %----------------------------------------------------------------------------
 \subsection{Szenzorok}
 %----------------------------------------------------------------------------
-Mivel a VEML6040 (Látható fény detektor) és a VEML6075 (UVA/UVB szenzor) egyaránt a 0x10 I2C slave címmel rendelkezik, ezért egyidej\H{u}leg csak az egyik használható.
 %----------------------------------------------------------------------------
-\subsubsection{VEML6040}
+\subsubsection{VEML6040 \cite{veml6040-ds}}
 %----------------------------------------------------------------------------
 
 A VEML6040 egy színérzékeny fotoszenzor. Négy csatornát mér (piros, zöld, kék, és fehér), melyeknek átvitele az emberi szeméhez hasonló.
@@ -114,13 +124,20 @@ Lehetséges alkalmazása a szenzornak egy adott spektrumú fény nagy pontosságú elõ
 	\item m\H{u}ködési tartomány  2.5 V - 3.6 V 
 \end{itemize}
 
-%----------------------------------------------------------------------------
-\subsubsection{VEML6075}
-%----------------------------------------------------------------------------
-A címütközés miatt ezt szenzort majd késõbb próbálom ki. (még csak egy m\H{u}ködõõ prototípus van)
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/veml6040-blockdiagram.png}
+	\caption{A VEML6040 blokkdiagramja} 
+\end{figure}
 
 %----------------------------------------------------------------------------
-\subsubsection{BME280}
+\subsubsection{VEML6075 \cite{veml6075-ds}}
+%----------------------------------------------------------------------------
+
+A VEML6075 egy UVA és UVB tartományban érzékeny fotodiódát tartalmazó integrált chip. A footprint-je illetve a kommunikációs protokolja teljesen megegyezik a VEML6040-es változattal. Olyannyira, hogy ugyanazzal az I2C slave címmel rendelkezik, emiatt egy idõben a két szenzor nem használható.
+
+%----------------------------------------------------------------------------
+\subsubsection{BME280 \cite{bme280-ds}}
 %----------------------------------------------------------------------------
 Elsõsorban viselhetõ és IOT eszközökhöz gyártott kis méret\H{u} szenzor alacsony energiafelvétellel. Hõmérséklet, nyomás és páratartalom adatot biztosít I2C interface-en keresztül. A nyomásadatból származtatással (kell a tengerszinti nyomás) magasság is mérhetõ.
 
@@ -134,11 +151,11 @@ Az implementációhoz az Arduino által fejlesztett keretrendszert használtam fel. 
 Jelenleg a szenzor által biztosított interface teljes egészében HTTP alapú. Az biztosított oldalstruktúra: 
 \begin{itemize}  
 	\item / (root): Alapértelmezettként bejövõ oldal, (\ref{sensor-webpage}-es ábra)
-	\item /json: A mért adatok JSON formátumban
+	\item /info: Eszközinformáció JSON formátumban
+	\item /json: Paraméterek (fõként mért adatok) JSON formátumban
 	\item /settings: Hova csatlakozzon automatikusan (felhasználó/jelszó)
-	\item /status: Azonosító, MAC cím, detektált periférák
-	\item /developer: Jelenleg a LED-ek kontrollálhatóak távolról
-	\item /debug: Debug kimenet fejlesztéshez
+	\item /status: Azonosító, MAC cím, detektált periférák, futásidej\H{u} memória mennyisége, és firmware információ érhetõ el
+	\item /control: Az eszköz paraméterei irhatóak ezen az oldalon kereszt\H{u}l
 \end{itemize}
 
 
@@ -150,6 +167,44 @@ Jelenleg a szenzor által biztosított interface teljes egészében HTTP alapú. Az b
 \end{figure}
 
 A fõoldal 5 másodpercenként frissíti az adatokat, a szervertõl való ismételt lekérdezéssel. Jelenleg a mérések is az oldal lekérdezésének hatására végzõdnek el, maximalizálva az adatok frissességét, de kis mérték\H{u} késleltetést okozva a felhasználónak.
+
+%----------------------------------------------------------------------------
+\subsection{Paraméteres interface}
+%----------------------------------------------------------------------------
+
+
+Az egységes programozói interface felé a következõ paraméterek érhetõek el, a LINK pontban leírt módon.
+
+\begin{table}[ht]
+	\footnotesize
+	\centering
+	\caption{A Programozható aljzat paraméterei}
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		\textbf{Név} & \textbf{Hozzáférés} 	& \textbf{Típus} & \textbf{Leírás}  \\ 
+		\hline
+		ledblue & írható/olvasható & boolean & a kék led állapota \\
+		\hline
+		ledamber & írható/olvasható & boolean & a borostyán led állapota \\
+		\hline
+		temperature & olvasható & float & hõmérséklet (C) \\
+		\hline
+		pressure & olvasható & float & légnyomás (hPa) \\
+		\hline
+		humidity & olvasható & float & páratartalom (\%)\\
+		\hline
+		ambient & olvasható & float & környezeti fény (lux) \\
+		\hline
+		red & olvasható & float & piros komponens számláló \\
+		\hline
+		green & olvasható & float & zöld komponens számláló \\
+		\hline
+		blue & olvasható & float & kék komponens számláló \\
+		\hline
+		white & olvasható & float & fehér komponens számláló \\
+		\hline		
+	\end{tabular} 
+\end{table}
 
 %----------------------------------------------------------------------------
 \subsection{HTML oldal létrehozása}
@@ -166,12 +221,24 @@ A képeket, mivel a mikrokontroller nem rendelkezik filerendszerrel, a HTML forrá
 \section{Prototípus}
 %----------------------------------------------------------------------------
 
-A prototípus elkészítésénél a legnagyobb problémát kis lábtávolságú elemek, és a chip alatt lévõ érintkezõk jelentették. A megoldást a forraszpaszta és hõlégfúvó jelentette, lényegében imitálva az újraömlesztéses forrasztást. A levegõ hõmérsékletének megválasztásakor figyelembe vettem az adatlapokon megadott ajánlott hõprofilt. Megoldandó továbbá az a probléma is, hogy mikrokontroller által termelt hõ befolyásolja a mért hõmérsékletet. Az adó/vevõ hatótávolsága jónak mondható, több szobára a modemtõl is erõs jelet ad. 
+A prototípus elkészítésénél a legnagyobb problémát kis lábtávolságú elemek, és a chip alatt lévõ érintkezõk jelentették. A megoldást a forraszpaszta és hõlégfúvó jelentette, lényegében imitálva az újraömlesztéses forrasztást. A levegõ hõmérsékletének megválasztásakor figyelembe vettem az adatlapokon megadott ajánlott hõprofilt. Megoldandó továbbá az a probléma is, hogy mikrokontroller által termelt hõ befolyásolja a mért hõmérsékletet. Az adó/vevõ hatótávolsága jónak mondható, több szobára a modemtõl is erõs jelet ad.
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=150mm, keepaspectratio]{figures/sensor-proto.png}
 	\caption{A környezeti szenzor elkészült prototípusa} 
 \end{figure}
+
+%----------------------------------------------------------------------------
+\subsection{Felmerült problémák}
+%----------------------------------------------------------------------------
+
+Sajnos a melegedés hatása nagyobbnak bizonyult mint amire elõzetesen számítottam, egy kültéri mérés folyamán a referenciahõmérõnél 3.5 C fokkal többet mutatott. Ha abból indulok ki, hogy a termelt hõmennyiség nagyjából konstans, a hõleadás pedig egyenesen arányos a hõkülönbséggel, akkor egy konstanssal való viszonylag jó megoldásnak t\H{u}nik. Ezen kívül a szenzornál szellõzést biztosító borítással, hõszigeteléssel, esetleg a mikrokontrolleren h\H{u}tõelem alkalmazással lenne javítható a pontosság.
+
+A két fényérzékelõ szenzor címütközése miatt (engedélyezõ jel sincs), ezért egy idõben csak az egyik lehet beforrasztva. Mivel a VEML6040 (RGBW) által gy\H{u}jtött adatok jóval hasznosabbak, a prototípus ezzel készült el.
+
+
+
+
 
 

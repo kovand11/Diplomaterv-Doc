@@ -102,9 +102,23 @@ Kis mérete miatt felmerühet egy nem újratölthetõ Li-ion gombelem alkalmazása is,
 \subsection{Antenna}
 %----------------------------------------------------------------------------
 
-A modulnak szüksége van külsõ antennára a WiFi kommunikációhoz (2.4GHz). A legegyszer\H{u}bb és legolcsóbb megoldás a nyomtatott áramkörön elhelyezett antenna. Az antennát 50 $\Omega$ impedanciához kell illeszteni. A leggyakoribb kialakítások a \textbf{meander antenna} és az \textbf{inverted-F antenna}.
-Az elõbbi helyigénye hozzávetõlegesen 1.5 cm az utóbbié 3 cm. Az adás minõsége jobb az inverted-F kialakítással, és mivel a hely nekem rendelkezésre állt, e mellett döntöttem. Mivel a WiFi kommunikáció kardinális kérdése ezen dolgozatnak, a második félév folyamán érdekes lenne pontosabb méréseket is végezni a hullámterjedéssel kapcsolatban.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/antennas.png}
+	\caption{Antenna megoldások: Meander (A), Invertált F (B), Chip (C)}
+\end{figure}
 
+A modulnak szüksége van külsõ antennára a WiFi kommunikációhoz (2.4GHz). A legegyszer\H{u}bb és legolcsóbb megoldás a nyomtatott áramkörön elhelyezett antenna. Az antennát 50 $\Omega$ impedanciához kell illeszteni. A leggyakoribb kialakítások a \textbf{meander antenna} és az \textbf{inverted-F antenna}.
+Az elõbbi helyigénye hozzávetõlegesen 1.5 cm az utóbbié 3 cm. Az adás minõsége jobb az inverted-F kialakítással, és mivel a hely nekem rendelkezésre állt, e mellett döntöttem. Így illesztésre nem volt szükség, de mivel nyitva akartam hagyni más antennák kipróbálásának a lehetõségét is, ezért az áramkörön elhelyezhetõ két illesztõ induktivitás.
+
+Az antenna eszköz karakterisztikájával kapcsolatban precíz méréseket nem végeztem, de a WiFi kapcsolat akár 20-30 méter távolságból és falon keresztül is stabil maradt. 
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/antenna.png}
+	\caption{Az illesztett antenna}
+\end{figure}
 
 
 
