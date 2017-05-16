@@ -70,12 +70,33 @@
 \end{table}
 
 %----------------------------------------------------------------------------
+\subsection{Tápellátás}
+%----------------------------------------------------------------------------
+
+Ez az egység a m\H{u}ködéséhez szükséges energiát 230V-os hálózatból veszi fel. A teljesítménymér? chip és a WiFi-s mikrokontroller 3.3V is tápellátást kap, mig a relé meghajtásához 5V-ra van szükség.
+
+%----------------------------------------------------------------------------
+\subsubsection{Vigortronix VTX-214-003-105 \cite{vtx-214-003-105-ds}}
+%----------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------
+\subsubsection{Texas Instruments LM3670MF-3.3 \cite{lm3670mf-ds}}
+%----------------------------------------------------------------------------
+
+%----------------------------------------------------------------------------
+\subsection{Teljesítménymérés}
+%----------------------------------------------------------------------------
+
+Ide pofátlanul sok mehet.
+
+%----------------------------------------------------------------------------
 \section{Szofver}
 %----------------------------------------------------------------------------
 
 %----------------------------------------------------------------------------
 \section{Paraméteres interface}
 %----------------------------------------------------------------------------
+\label{sec:parameters}
 
 A hálózatba kapcsolt eszközök programozhatóságát nagy mértékben megkönnyíti, ha azok kívülr?l nézve bizonyos szempontból egységesek. Az absztrakció lehet egy, az eszközhöz hozzárendelt paraméterek halmaza, amelyek olvashatóak és esetenként írhatóak is. Például a pillanatnyi teljesítményt a power változó tartalmazza, ami csupán olvasható. Az hogy egy paraméter kívülrõl változónak t?nik, nem jelenti feltétlenül azt, hogy az az eszközön belül mindíg elérhet?, lehet az a lekérdezés által megindított folyamat (legtöbb esetben mérés) eredménye is. Azon funkciók amik beavatkoznak a környezetbe, írható változókként reprezentálhatóak.
 A relé állása a relay változóba írt 0 vagy 1 értékkel állítható. Innentõl kezdve a teljes rendszer a szolgáltatott paraméterek, mint változók manipulálásával programozhatóak.
@@ -100,7 +121,6 @@ http://192.168.0.20/control?relay=1&led=0
 A változtatások érvényre jutását az eszköz a Done üzenettel jelzi.
 
 
-
 \begin{table}[ht]
 	\footnotesize
 	\centering
@@ -123,6 +143,8 @@ A változtatások érvényre jutását az eszköz a Done üzenettel jelzi.
  		\hline		
 	\end{tabular} 
 \end{table}
+
+
 
 
 %----------------------------------------------------------------------------

@@ -18,11 +18,23 @@ A WiFi egy vezetéknélküli adatátviteli technológia, IEEE 802.11 melynek technika
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=150mm, keepaspectratio]{figures/esp8285.png}
+	\includegraphics[width=150mm, keepaspectratio]{figures/esp8285-block-diagram.png}
 	\caption{ESP8285 chip} 
 \end{figure}
 
-Az ESP8285 egy WiFi képes mikrokontroller teljes TCP/IP implementációval, kifejezetten IOT (Internet of Things) alkalmzásokhoz szánva. A chip 2016 nyarán került forgalomba, de egy korábbi változat, az ESP8266 már 2014 -óta jelen van. Az egyetlen különbség az ESP8285-be integrált 1MB flash memória, ami az esetek többségében feleslegessé tette az ESP8266-nél még szükséges külsõ memóriamodult. Emiatt minden mindkét változat adatlapjai és a leírások is relevánsak.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/esp8285.png}
+	\caption{ESP8285 blokk diagram} 
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/esp8285-cad.png}
+	\caption{ESP8285 chip CAD modellje}
+\end{figure}
+
+Az ESP8285 egy WiFi képes mikrokontroller teljes TCP/IP implementációval, kifejezetten IOT (Internet of Things) alkalmzásokhoz szánva. A chip 2016 nyarán került forgalomba, de egy korábbi változat, az ESP8266 már 2014-óta jelen van. Az egyetlen különbség az ESP8285-be integrált 1MB flash memória, ami az esetek többségében feleslegessé tette az ESP8266-nél még szükséges külsõ memóriamodult. Emiatt minden mindkét változat adatlapjai és a leírások is relevánsak.
 A chipcsalád az utóbbi idõben nagy népszer\H{u}ségre tett szert, köszönhetõen annak, hogy a gyártó kínai mellett angolul is elérhetõvé tette a dokumentációt, illetve megnyitotta az SDK-t. 
 
 Az ESP8285 modul kis méret\H{u}, ára rendkívül kedvezõ (2\$ körül nagy tételben), és csak minimális kiegészítõ áramkört igényel, és antennaválasztásnál is nagy szabadságot enged a felhasználónak.
@@ -47,8 +59,7 @@ Az egység a tervezés szempontjából legfontosabb tulajdonságai, támogatott protok
 	\item Perifériák: UART, SDIO, SPI, I2C, I2S, IR Remote Control, GPIO, ADC, PWM
 	\item M\H{u}ködési feszültség: 3.0 V - 3.6 V
 	\item Tokozás: QFN32-pin (5 mm x 5 mm)
-	\item Hálózati protokollok: IPv4, TCP, UDP, HTTP, FTP 
-	
+	\item Hálózati protokollok: IPv4, TCP, UDP, HTTP, FTP	
 \end{itemize}
 
 A Wifi-s kommunikáció egyik gyenge pontja az energiafogyasztás. A jelsugárzás nagy áramfelvétellel jár együtt, illetve az átlagfogyasztás is viszonylag magas. Ezen hátrány kiküszöbölésére, ha az alkalmazási mód lehetõvé teszi, a chip támogat több energiakímélõ m\H{u}ködési módot. A jellemzõ fogyasztási adatok:
@@ -75,12 +86,45 @@ A Wifi-s kommunikáció egyik gyenge pontja az energiafogyasztás. A jelsugárzás na
 \end{table}
 
 
+
+
+%----------------------------------------------------------------------------
+\subsection{Antenna}
+%----------------------------------------------------------------------------
+
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=150mm, keepaspectratio]{figures/esp8285-cad.png}
-	\caption{ESP8285 chip CAD modellje}
+	\includegraphics[width=150mm, keepaspectratio]{figures/antennas.png}
+	\caption{Antenna megoldások: Meander (A), Invertált F (B), Chip (C)}
 \end{figure}
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/antenna.png}
+	\caption{Az illesztett antenna}
+\end{figure}
+
+A modulnak szüksége van külsõ antennára a WiFi kommunikációhoz (2.4GHz). A legegyszer\H{u}bb és legolcsóbb megoldás a nyomtatott áramkörön elhelyezett antenna. Az antennát 50 $\Omega$ impedanciához kell illeszteni. A leggyakoribb kialakítások a \textbf{meander antenna} és az \textbf{inverted-F antenna}.
+Az elõbbi helyigénye hozzávetõlegesen 1.5 cm az utóbbié 3 cm. Az adás minõsége jobb az inverted-F kialakítással, és mivel a hely nekem rendelkezésre állt, e mellett döntöttem. Így illesztésre nem volt szükség, de mivel nyitva akartam hagyni más antennák kipróbálásának a lehetõségét is, ezért az áramkörön elhelyezhetõ két illesztõ induktivitás.
+
+Az antenna eszköz karakterisztikájával kapcsolatban precíz méréseket nem végeztem, de a WiFi kapcsolat akár 20-30 méter távolságból és falon keresztül is stabil maradt. 
+
+
+%----------------------------------------------------------------------------
+\subsection{Kötelezõ kiegészítõ elemek}
+%----------------------------------------------------------------------------
+
+Az IC elõállít magának egy referenciaáramot, amihez szüksége van egy nagy pontosságú 12k$\Omega$-os ellenállásra. A tápfeszültség sz\H{u}résére egy 100nF-os, 1$\mu$F-os és 10$\mu$F-os kerámiakondenzátor hármast használok, az ajánlásnak megfelelõen.
+
+Az mikrokontroller küls? rezonátor meglétét igényli. A támogatott frekvenciák 24MHz-t?l 40Mhz-ig terjednek. Mivel a WiFi-s kommunikációnál nem lehet jelentõs frekvenciahiba, vélhetõen a rezonátor pontatlanságára alacsony a tolerancia. A nyomtatott áramkörön érdemes a rezonátorkristályt minél közelebb helyezni a mikrokontrollerhez, viák használata ellenjavallott. Mindhárom eszköznél egy Epson FA-128 26MHz-s kristályt használtam. 
+
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/resonator.png}
+	\caption{A rezonátoráramkör}
+\end{figure}
 
 %----------------------------------------------------------------------------
 \section{Tápellátás}
@@ -98,27 +142,36 @@ Alternatíva lehet három darab 1.5V-os ceruzaelem használata is, de mivel ez eset
 
 Kis mérete miatt felmerühet egy nem újratölthetõ Li-ion gombelem alkalmazása is, elsõdlegesen akkor, amikor fontos a kis méret és súly, valamint a készülék csak ritkán, rövid idõtartamokra van bekapcsolva. Mivel a WiFi adó áramfelvétele rövidebb idõszakokban meghaladja a gombelem által biztosított maximumot, ezért szükség van egy további kondenzátor elhelyezésére is, ami viszont nagyban semlegesíti ezen megoldás eredeti elõnyeit.
 
+
 %----------------------------------------------------------------------------
-\subsection{Antenna}
+\section{Az mikrokontroller felprogramozása}
 %----------------------------------------------------------------------------
 
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=150mm, keepaspectratio]{figures/antennas.png}
-	\caption{Antenna megoldások: Meander (A), Invertált F (B), Chip (C)}
-\end{figure}
+Az mikrokontroller UART (Universal Asynchronous Receiver/Transmitter) protokollon keresztül programozható. A programozás és bootolás üzemmód közötti választás a GPIO0 földre illetve tápra húzásával érhetõ el. Alapvetõen két életképes megoldást tudtam elképzelni:
 
-A modulnak szüksége van külsõ antennára a WiFi kommunikációhoz (2.4GHz). A legegyszer\H{u}bb és legolcsóbb megoldás a nyomtatott áramkörön elhelyezett antenna. Az antennát 50 $\Omega$ impedanciához kell illeszteni. A leggyakoribb kialakítások a \textbf{meander antenna} és az \textbf{inverted-F antenna}.
-Az elõbbi helyigénye hozzávetõlegesen 1.5 cm az utóbbié 3 cm. Az adás minõsége jobb az inverted-F kialakítással, és mivel a hely nekem rendelkezésre állt, e mellett döntöttem. Így illesztésre nem volt szükség, de mivel nyitva akartam hagyni más antennák kipróbálásának a lehetõségét is, ezért az áramkörön elhelyezhetõ két illesztõ induktivitás.
+\begin{itemize} 
+	\item Az eszközöm integrálva tartalmazza az USB/UART átalakítót, és a GPIO0 értékét egy jumperrel lehet állítani. A számítógépre csatlakozás egy micro USB porton keresztül oldom meg. Az USB/UART konverzió feladatára népszer\H{u} megoldás az FTDI FT230X chip, legfõképpen apró mérete és alacsony ára miatt. 
+	\item A szükséges lábakat (GND, 3.3V, RX, TX, GPIO0) egy tüskessorra kivezetem, majd minimális kiegészítõ áramkörrel és egy FTDI UMFT234XD USB portra kapcsolható fejlesztõkártyával programozom az eszközt.
+\end{itemize}
 
-Az antenna eszköz karakterisztikájával kapcsolatban precíz méréseket nem végeztem, de a WiFi kapcsolat akár 20-30 méter távolságból és falon keresztül is stabil maradt. 
+Mindhárom eszköz esetén az utóbbi megoldást alkalmaztam. A program feltöltésének protokoljába mélyebben nem tekintettem bele, mivel rendelkezésre álltak kész megoldások (például az esptool.py szkript).
+
+Nem kevés problámát okozott, hogy az alapértelmezett UART baud rate attól függ hogy milyen frekvenciájú rezonátor kerül felhasználásra. A felhasználói programban természetesen állítható a frekvencia, de a bootoláskor kiadott státuszjel, és felprogramozás sebessége is fix. Az a fix frekvencia oszcilloszkóppal megmérve 74880 Hz volt, ami nem egy szabványos érték (40 MHz-es oszcillátor esetén lenne 115200).
+
+%----------------------------------------------------------------------------
+\section{A nyomtatott áramkörök}
+%----------------------------------------------------------------------------
+
+Az elkészült nyáklaptervek az Elektronikai Technológiai Tanszék laborjában kerültek legyártásra. Jellemzõk:
+
+\begin{itemize} 
+	\item 2 réteg huzalozás (nem volt többre szükség)
+	\item 0.3 mm-es furatátmérõ
+	\item 0.25 mm-es vezeték-vezeték szigetelõ köz (ezt enyhén meg kellett sértenem)	
+\end{itemize}
 
 
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=150mm, keepaspectratio]{figures/antenna.png}
-	\caption{Az illesztett antenna}
-\end{figure}
+
 
 
 

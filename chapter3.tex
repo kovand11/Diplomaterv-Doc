@@ -1,3 +1,5 @@
+%Status: under construction
+%Todo: php Qt hozzáférés
 %----------------------------------------------------------------------------
 \chapter{Központi egység}
 %----------------------------------------------------------------------------
@@ -39,39 +41,177 @@ A beszerzett kijelzõ meglehetõsen gyenge minõség\H{u}nek bizonyult. A érintési p
 \section{Szoftver}
 %----------------------------------------------------------------------------
 
+Mivel a központi egység egy teljes érték\H{u}, Linuxot (Raspbian Jessie) futtató számítógépre, ezért technológiák széles palettájából válogathattam. A grafikus felület Qt keretrendszer segítségével készült el. A további webszerver funciók megvalósításához a LAMP (Linux + Apache + MySQL + PHP) nagy népszer\H{u}ségnek örvendõ megoldáscsomagot használtam. Az egyszer\H{u}ségnél és a kompaktságnál fontosabb szempont volt minél több területrõl fejlesztési tapasztalatot szerezni. 
+
 %----------------------------------------------------------------------------
 \subsection{Az alkalmazás}
 %----------------------------------------------------------------------------
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/placeholder.png}
+	\caption{Az alkalmazás fõoldala} 
+\end{figure}
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/placeholder.png}
+	\caption{Az alkalmazás (részleges) UML osztálydiagrammja} 
+\end{figure}
+
+%----------------------------------------------------------------------------
+\subsubsection{Automatizálás}
+%----------------------------------------------------------------------------
+
+Ki lehetne t\H{u}zni célul, hogy az rendelkezésre álló eszközöket felhsználva, bármilyen köztes logika leprogramozható legyen. Másképp megfogalmazva, bármely beszélt nyelven megfogalmazható egzakt m\H{u}ködés implementálható legyen. Az információelméletben használt Turing teljesség hasonló tartalmat definiál precízen.
+Egy ilyen rendszer implementálása meglehet?sen sok idõt vesz igénybe. Megoldás lehet valamely ECMAScript (Javascript) implementáció felhasználása.
+Qt keretrendszer alatt rendelkezésre áll QtScript modul (bár elavulttá lett nyilvánítva), vagy bármely más modern motor, mint a Google V8-a vagy a Mozilla
+SpiderMonkey-ja. Az eszközök ekkor mint objektumok elérhatõvé tehet?k.
+Ennél én egy egyszer?bb, rögzített számú paraméterb?l álló utasításleíró nyelvet valósítottam meg, a következõ adatokkal
+\begin{itemize}  
+	\item forrás eszköz azonosítója
+	\item forrás paraméter (részletesen a \ref{sec:parameters} pontban)
+	\item operátor: a forrás paraméter és a konstans közötti logikai "<" és ">" m?velet
+	\item konstans: tetszõleges szám
+	\item utasítás
+	\begin{itemize}
+		\item link: a feltétel logikai értéke mindenkor megegyezik a célparaméterrel
+		\item set: ha igazzá válik a feltétel 1-re állítja a célparamétert
+		\item reset: ha hamissá válik a feltétel 0-re állítja a célparamétert
+	\end{itemize}
+	\item cél eszköz azonosítója
+	\item cél paraméter	(részletesen a \ref{sec:parameters} pontban)
+\end{itemize}
+
+
+
+
+
 
 %----------------------------------------------------------------------------
 \subsection{A webszerver}
 %----------------------------------------------------------------------------
 
-Az IOT egyik alapelve a meglévõ webes szabványok alkalmazása, ezért a központi egység egy teljes érték\H{u} webszervert valósít meg. Ehhez az Apache HTTP Server (forrás) nyílt forráskódú alkalmazást vettem igénybe, kiegészítve a PHP (PHP: Hypertext preprocessor) modullal. Mivel az összes rendelkezésre álló adat egy adatbázisban tárolódik, ezért akár a grafikus alkalmazástól teljesen függetlenül, bármely funkció tisztán webes alapon is implementálható.
+Az IOT egyik alapelve a meglévõ webes szabványok alkalmazása, ezért a központi egység egy teljes érték\H{u} webszervert valósít meg. Ehhez az Apache HTTP Server \cite{wiki-apache} nyílt forráskódú alkalmazást vettem igénybe, kiegészítve a PHP \cite{wiki-php} (PHP: Hypertext preprocessor) modullal. Mivel az összes rendelkezésre álló adat egy adatbázisban tárolódik, ezért akár a grafikus alkalmazástól teljesen függetlenül, bármely funkció tisztán webes alapon is implementálható.
 
 A m\H{u}ködéhez létfontosságú egyetlen funkció a nyitásérzékelõ modul számára nyújtott interface, melyet a következõ PHP kód valósít meg:
 
+\lstinputlisting[language=PHP]{source/opendetectorPhp.txt}
 
+%8398241 ambient < 10 set 8396086 relay
+%8398241 temperature > 30 link 8398241 ledamber
 
 
 %----------------------------------------------------------------------------
 \subsection{Az adatbázis}
 %----------------------------------------------------------------------------
 
-A grafikus alkalmazás, az alapvet? konfiguráción kívül nem tárol adatot, hanem azokhoz lekérdezéseken keresztül jut hozzá. Ehhez a MySQL relációs adatbáziskezel? rendszerét használom. Az okosotthon rendszerhez egy külön adatbázist hoztam létre \textbf{smarhome} alapértelmezett névvel, a következõ táblákkal:
+A grafikus alkalmazás, az alapvetõ konfiguráción kívül nem tárol adatot, ehelyett azokhoz lekérdezéseken keresztül jut hozzá. Ehhez a MySQL \cite{wiki-mysql} relációs adatbáziskezelõ rendszerét használom. Az okosotthon rendszerhez egy külön adatbázist hoztam létre \textbf{smarhome} alapértelmezett névvel, a következõ táblákkal:
 
 \begin{table}[ht]
 	\footnotesize
 	\centering
-	\caption{A nyitásérzékelõ adatbázis táblája: opendetector}
+	\caption{A nyitásérzékelõ adatbázis struktúrája: \textbf{opendetector}}
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		\textbf{Név} & \textbf{Típus} & \textbf{Extra} & \textbf{Leírás} \\ 
+		\hline
+		ID & int & AUTO\_INCREMENT & a bejegyzés azonosítója \\
+		\hline
+		DEVICE & int &  & az eszköz azonosítója \\
+		\hline
+		OPEN & tinyint &  & 0:csukott 1:nyitott állapot \\
+		\hline
+		TIMESTAMP & timestamp & CURRENT\_TIMESTAMP & a bejegyzés dátuma és ideje \\
+		\hline
+	\end{tabular} 
+\end{table}
+
+\begin{table}[ht]
+	\footnotesize
+	\centering
+	\caption{A környezeti szenzor adatbázis struktúrája: \textbf{envirnmentalsensor}}
+	\begin{tabular}{|l|l|l|l|}
+		\hline
+		\textbf{Név} 	& \textbf{Típus} 	& \textbf{Extra} & \textbf{Leírás} \\ 
+		\hline
+		ID & int & AUTO\_INCREMENT & a bejegyzés azonosítója \\
+		\hline
+		DEVICE & int &  & az eszköz azonosítója \\
+		\hline
+		TIMESTAMP & timestamp & CURRENT\_TIMESTAMP & a bejegyzés dátuma és ideje \\
+		\hline
+		TEMP & decimal &  & Hõmérséklet \\
+		\hline
+		PRESS & decimal &  & Légnyomás \\
+		\hline
+		HUM & decimal &  & Páratartalom \\
+		\hline
+		AMB & decimal &  & Környezeti fény \\
+		\hline
+		R & int &  & piros csatorna számlálója \\
+		\hline
+		G & int &  & zöld csatorna számlálója \\
+		\hline
+		B & int &  & kék csatorna számlálója \\
+		\hline
+		W & int &  & fehér csatorna számlálója \\
+		\hline
+	\end{tabular} 
+\end{table}
+
+\begin{table}[ht]
+	\footnotesize
+	\centering
+	\caption{A programozható aljzat adatbázis struktúrája: \textbf{wifisocket}}
 	\begin{tabular}{|c|c|c|c|}
 		\hline
 		\textbf{Név} 	& \textbf{Típus} 	& \textbf{Extra} & \textbf{Leírás} \\ 
 		\hline
-		1 & 1 & WiFi-s mikrokontroller  & WiFi-s mikrokontroller   \\
+		ID & int & AUTO\_INCREMENT & a bejegyzés azonosítója \\
+		\hline
+		DEVICE & int &  & az eszköz azonosítója \\
+		\hline
+		TIMESTAMP & timestamp & CURRENT\_TIMESTAMP & a bejegyzés dátuma és ideje \\
+		\hline
+		POWER & decimal &  & a felvett teljesítmény \\
+		\hline
+		VOLTAGE & decimal &  & a mért feszültség \\
+		\hline
+		CURRENT & decimal &  & a mért áram \\
+		\hline
+		POWERFACTOR & decimal &  & a teljesítménytényezõ \\
 		\hline
 	\end{tabular} 
 \end{table}
+
+\begin{table}[ht]
+	\footnotesize
+	\centering
+	\caption{A logoláshoz használt adatbázis struktúra: \textbf{log}}
+	\begin{tabular}{|c|c|c|c|}
+		\hline
+		\textbf{Név} 	& \textbf{Típus} 	& \textbf{Extra} & \textbf{Leírás} \\ 
+		\hline
+		ID & int & AUTO\_INCREMENT & a bejegyzés azonosítója \\
+		\hline
+		DEVICE & int &  & az eszköz azonosítója \\
+		\hline
+		TIMESTAMP & timestamp & CURRENT\_TIMESTAMP & a bejegyzés dátuma és ideje \\
+		\hline
+		LOGLEVEL & tinyint &  & a log típusa \\
+		\hline
+		MESSAGE & text &  & a logolt üzenet \\
+		\hline
+	\end{tabular} 
+\end{table}
+
+
+Az \textbf{envirnmentalsensor} és \textbf{wifisocket} táblák egyszer\H{u}en az eszközrõl történt egy leolvasás eredményét tárolják, meglétük nem létfontosságú, a legtöbb esetben elegendõ a legfrissebb adat, ami tetszõleges id?ben lekérdezhetõ. Ezzel szemben az nyitásérzékelõk állapota egyedül a \textbf{opendetector} táblából olvasható ki, mivel az eszköz csak állapotváltozás (nyitás, csukás) esetén ébred fel, egy bejegyzés megtételének erejéig.
+
+A \textbf{log} táblát egyedül debugolás céljára használtam, de speciális LOGLEVEL byte értékek lefoglalásával akár postaláda jelleg\H{u} kommunikáció is implementálahtó az eszközök között.
 
 %----------------------------------------------------------------------------
 \section{Alternatívák}
