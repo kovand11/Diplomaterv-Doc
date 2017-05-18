@@ -1,6 +1,5 @@
-%Status: unchecked
-%Todo: bevezet?, specifikáció szövegesítése, hardware bevezet?, weblap (root)
-
+%Status: 8 lorems
+%Todo: bevezetõ, specifikáció szövegesítése, hardware bevezetõ, weblap (root)
 
 %----------------------------------------------------------------------------
 \chapter{Programozható aljzat árammérõvel}
@@ -10,11 +9,33 @@
 \section{Specifikáció}
 %----------------------------------------------------------------------------
 
+\begin{figure}[!ht]
+	\centering
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{figures/socket-energie-metering.jpg} % first figure itself
+		\caption{Aljzat teljesítményméréssel}
+	\end{minipage}\hfill
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{figures/socket-w-wifi.png} % second figure itself
+		\caption{WiFi-s konnektor}
+	\end{minipage}
+\end{figure}
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/placeholder.png}
+	\caption{A programozható aljzat blokkdiagramja} 
+\end{figure}
+
 
 \begin{itemize}  
 	\item 1 foglalat
 	\item Feszültségmérés, és árammérés
 \end{itemize}
+
+\blindtext
 
 
 %----------------------------------------------------------------------------
@@ -73,21 +94,102 @@
 \subsection{Tápellátás}
 %----------------------------------------------------------------------------
 
-Ez az egység a m\H{u}ködéséhez szükséges energiát 230V-os hálózatból veszi fel. A teljesítménymér? chip és a WiFi-s mikrokontroller 3.3V is tápellátást kap, mig a relé meghajtásához 5V-ra van szükség.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/wifisocket-power-supply.png}
+	\caption{A tápáramkör} 
+\end{figure}
+
+Ez az egység a m\H{u}ködéséhez szükséges energiát 230V-os hálózatból veszi fel. A teljesítménymérõ chip és a WiFi-s mikrokontroller 3.3V is tápellátást kap, mig a relé meghajtásához 5V-ra van szükség.
 
 %----------------------------------------------------------------------------
 \subsubsection{Vigortronix VTX-214-003-105 \cite{vtx-214-003-105-ds}}
 %----------------------------------------------------------------------------
 
+A Vigortronix VTX konvertersorozata 
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/vigortronix-block.png}
+	\caption{Az VTX-214-003-105 blokkvázlata}
+	\label{fig:vtx-214-003-105-block}
+\end{figure}
+
+A Vigortronix VTX konvertersorozatáról sajnos korlátozott részletesség\H{u} dokumentáció áll rendelkezésre. A tápegység teljesen leválasztott, integrált, a \ref{fig:vtx-214-003-105-block}-es ábrán látható, hogy semmiféle kiegészítõ áramkört nem igényel. Topológiáját tekintve leválasztott kapcsolóüzem\H{u} tápegység. A legfontosabb jellemzõi:
+
+\begin{itemize}  
+	\item 5V egyenfeszültség a kimeneten
+	\item 600mA kimeneti áram
+	\item 100 VAC-tól 275VAC-ig terjedõ bemeneti feszültség
+	\item 47Hz - 63Hz bemeneti frekvencia
+	\item alacsony hullámosság és zaj
+	\item 4200Vrms - es izolácó
+	\item Hiccup mehanizmus (rövid idõre leáll) túlterhelés esetén
+	\item 70\% feletti hatásfok
+	\item 30g-os súly	
+\end{itemize}
+
+
+
+
 %----------------------------------------------------------------------------
 \subsubsection{Texas Instruments LM3670MF-3.3 \cite{lm3670mf-ds}}
 %----------------------------------------------------------------------------
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/lm3670-func-block.png}
+	\caption{Az LM3670MF funkcionális blokkdiagramja}
+\end{figure}
+
+\blindtext
 
 %----------------------------------------------------------------------------
 \subsection{Teljesítménymérés}
 %----------------------------------------------------------------------------
 
-Ide pofátlanul sok mehet.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/placeholder.png}
+	\caption{Az teljesítménymérésért felelõs áramkörrészlet} 
+\end{figure}
+
+\blindtext
+
+%----------------------------------------------------------------------------
+\subsubsection{ST STPM10BTR \cite{stpm10-ds}}
+%----------------------------------------------------------------------------
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/placeholder.png}
+	\caption{Az STPM10BTR blokkvázlata} 
+\end{figure}
+
+
+
+\blindtext
+
+\blindtext
+
+%----------------------------------------------------------------------------
+\subsubsection{Az ,,SPI'' kommunikáció \cite{stpm10-spi}}
+%----------------------------------------------------------------------------
+\blindtext
+
+%----------------------------------------------------------------------------
+\subsection{A kapcsolórelé}
+%----------------------------------------------------------------------------
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/wifisocket-relay.png}
+	\caption{A relét kapcsoló áramkör} 
+\end{figure}
+
+\blindtext
+
+
 
 %----------------------------------------------------------------------------
 \section{Szofver}
@@ -98,11 +200,12 @@ Ide pofátlanul sok mehet.
 %----------------------------------------------------------------------------
 \label{sec:parameters}
 
-A hálózatba kapcsolt eszközök programozhatóságát nagy mértékben megkönnyíti, ha azok kívülr?l nézve bizonyos szempontból egységesek. Az absztrakció lehet egy, az eszközhöz hozzárendelt paraméterek halmaza, amelyek olvashatóak és esetenként írhatóak is. Például a pillanatnyi teljesítményt a power változó tartalmazza, ami csupán olvasható. Az hogy egy paraméter kívülrõl változónak t?nik, nem jelenti feltétlenül azt, hogy az az eszközön belül mindíg elérhet?, lehet az a lekérdezés által megindított folyamat (legtöbb esetben mérés) eredménye is. Azon funkciók amik beavatkoznak a környezetbe, írható változókként reprezentálhatóak.
+A hálózatba kapcsolt eszközök programozhatóságát nagy mértékben megkönnyíti, ha azok kívülrõl nézve bizonyos szempontból egységesek. Az absztrakció lehet egy, az eszközhöz hozzárendelt paraméterek halmaza, amelyek olvashatóak és esetenként írhatóak is. Például a pillanatnyi teljesítményt a power változó tartalmazza, ami csupán olvasható. Az hogy egy paraméter kívülrõl változónak t\H{u}nik, nem jelenti feltétlenül azt, hogy az az eszközön belül mindíg elérhetõ, lehet az a lekérdezés által megindított folyamat (legtöbb esetben mérés) eredménye is. Azon funkciók amik beavatkoznak a környezetbe, írható változókként reprezentálhatóak.
 A relé állása a relay változóba írt 0 vagy 1 értékkel állítható. Innentõl kezdve a teljes rendszer a szolgáltatott paraméterek, mint változók manipulálásával programozhatóak.
 Ez a protokol, bár meglehetõsen rugalmas, az összes perifériát szolga (slave) szerepbe kényszeríti, mivel minden tranzakciót (írást/olvasást) a központi egység kezdeményez. Ha valamelyik periférián lenyomott gombhoz akarok akciót rendelni, akkor ezt csak úgy tehetem meg ha a hozzárendelt változót a másik eszközrõl pollolom, ami valamekkora idõveszteséggel jár.
 
 A kiolvasás az WiFi-s eszköz által biztosított JSON (JavaScript Object Notation) interface-en keresztül történik. A JSON egy ember által is olvasható szöveges leírószabvány, ami az XML mellet a web legelterjedtebb formátuma. Az én implementációmban csak az összes változó egyidej\H{u} lekérdezésére van lehetõség, de a visszafele kompatibilitást megtartva hozzá lehetne adni a protokolhoz a változókra történõ sz\H{u}rés lehetõségét. A szenzor által biztosított JSON oldal:
+
 \begin{lstlisting}
 {
 	"relay": "0",
@@ -118,8 +221,8 @@ A paraméterek írásához a HTTP (Hypertext Transfer Protocol) GET vagy POST metódu
 \begin{lstlisting}
 http://192.168.0.20/control?relay=1&led=0
 \end{lstlisting}
-A változtatások érvényre jutását az eszköz a Done üzenettel jelzi.
 
+A változtatások érvényre jutását az eszköz a ,,Done'' üzenettel jelzi. Abban az esetban, ha bármi hiba merül fel az eszközzel kapcsolatban, nagyobb annak a valószín\H{u}sége, hogy válaszolni se tud az üzenetre.
 
 \begin{table}[ht]
 	\footnotesize
@@ -145,20 +248,77 @@ A változtatások érvényre jutását az eszköz a Done üzenettel jelzi.
 \end{table}
 
 
+%----------------------------------------------------------------------------
+\section{HTML oldal}
+%----------------------------------------------------------------------------
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/placeholder.png}
+	\caption{A programozható aljzat fõoldala (screenshot kell)} 
+\end{figure}
 
+A közvetlenül ember számára is használható fõoldal kialakításánal az AJAX (Asynchronous JavaScript and XML) technikát alkalmaztam. A módszertan lényege, hogy a weboldal újratöltése nélkül, az oldal tarta változik dinamikusan. Az adatok fogadása és küldése asszinkron módon, a szerver (mikrokontroller) fele történõ folyamatos kommunikációval valósul meg, kihasználva a DOM (Document Object Model) nyújtotta funkciókat. 
+
+\lstinputlisting[language=HTML]{source/wifisocketMain.txt}
+
+A xx függvény felelõs a felhasználó által megnyomott kapcsoló állapotának jelzése az eszköz felé. Az yy függvény az eszköz állapotának változása alapján frissíti az weboldalt. Ez elõbbi a /control az utóbbi a /json aloldal szolgáltatásait használja. 
 %----------------------------------------------------------------------------
 \section{Prototípus}
 %----------------------------------------------------------------------------
 
--enable fix
+\blindtext
 
--5V to 3.3V
+%----------------------------------------------------------------------------
+\subsection{Felmerült problémák}
+%----------------------------------------------------------------------------
 
--relay
+A prototípusomon a LM3670MF-3.3 (Buck converter) engedélyezõ jelét földre húztam táp helyett. A hiba könnyen javítható volt új huzalozás szikével történõ kialakításával.
 
--random kikapcsolás
+Mivel a xx és yy között kommunikációnál nincs se leválasztás se szintillesztés, ezért az eredeti tervekkel ellentétben, a teljesítménymérõ is 3.3V-ról került meghajtásra.
 
--kommunikáció
+%----------------------------------------------------------------------------
+\subsubsection{Zavarjelenség}
+%----------------------------------------------------------------------------
+
+\begin{figure}[!ht]
+	\centering
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{figures/wifisocket-glitch1.png} % first figure itself
+		\caption{first figure}
+	\end{minipage}\hfill
+	\begin{minipage}{0.45\textwidth}
+		\centering
+		\includegraphics[width=0.9\textwidth]{figures/wifisocket-glitch2.png} % second figure itself
+		\caption{second figure}
+	\end{minipage}
+\end{figure}
+
+Hálózatról történõ meghajtás során az eszköz, a relé zárásakor gyakran újraindult. Hasonló jelenség csapán a digitrális ág meghajtása során nem lépett fel, az áramkör megbízhatóan m\H{u}ködött. Az újraindulásnak két oka lehet: 
+
+\begin{itemize}  
+	\item Zavarjel jut a reset lábra, ami újraindítja a mikrokontrollert
+	\item A táp átmenetileg az elõírt 3V alá esik
+\end{itemize}
+
+A hiba identifikálása érdekében két mérést végeztem el:
+
+\textbf{1. Mérés:} Az eszközt leválasztó transzformátorra kötve, oszcilloszkópot kötöttem az 5V-os és a 3.3V-os tápágra. A triggeresemény az 5V-os táp jelentõs bezuhanása volt. Látható, hogy a mindkét tápszinten jelentõs zavar (hozzávetõlegesen 150ns-ig fennálló 50MHz-s csillapított oszcilláció) jelent meg. Ilyen frekvenciánál természetesen számít, hogy az áramkör mely pontján történik a mérés, de feltételezhetõ, hogy ez a zavar mindenhol jelen van. Ráadásul mindkét feszültségszintet is több konzdenzátor sz\H{u}ri.
+Az zavar még akkor sem csökkent érdemben, amikor egy extra sz\H{u}rõkondenzátort helyeztem az 5V-os ágra.
+
+
+
+\textbf{2. Mérés:} Kizárandó azt a lehetõséget, hogy a vigo tépegység nem képes kezelni a relé által jelentett terhelést, annak kapcsolóágát egy, az áramfelvétel szempontjából ekvivalens, ellenállással helyettesítettem. Ekkor a hiba megsz\H{u}nt, a tápjelen csak minimális zaj volt érzékelhetõ. 
+
+A hibát tehát a nagyfeszültség\H{u} rész, illetve a digitális logika interakciója okozza. Ezen zavarok megjóslása szinte lehetetlen, gyakran külsõ eredet\H{u}ek, ezért helyes tervezéssel csupán a kockázatok csökkenthetõel, illetve a hatások mérsékelhetõek:
+\begin{itemize}  
+	\item A digitális részek lehetõ legtávolabb helyezése a nagyfeszültség\H{u} területektõl
+	\item A digitális jelek galvanikus leválasztása
+	\item Az integrált áramkörök és esetlegesen a huzalozás árnyákolása
+	\item Nagy potenciálkülönbség\H{u} elemek a lehetõ legtávolabb történõ elhelyezése, vagy bevágás létrehozása az áramkörön
+\end{itemize}
+
+Sajnos az én esetemben az xx nem függetleníthetõ a táptól, ráadásol az SPI-szer\H{u} kommunikáció miatt az yy se. Ez a probléma csak a nyák újratervezésével lehetne javítható, emiatt teljesítménymérõ konfigurálása (kalibrálása) elmaradt, illetve a relé csak kisebb feszültséget tud biztonságosan kapcsolni.
 
 

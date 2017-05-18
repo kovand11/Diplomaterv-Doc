@@ -1,4 +1,4 @@
-%Status: unchecked
+%Status: 1 lorem, needs grammar check
 %Todo: 
 %----------------------------------------------------------------------------
 \chapter{Nyitásérzékelõ}
@@ -80,11 +80,11 @@ Az berendezés 31mm x 50mm-es helyen kívül, semmiféle huzalozást illetve áramforr
 	\caption{A nyitásérzékelõ szenzor tápáramköre} 
 \end{figure}
 
-Az egység tápellátására egy Microchip MIC5353 \cite{mic5353-ds} LDO (Low Dropout Voltage) regulátort használok, ami kifejezetten hordozható elektronikákhoz lett kifejlesztve. Kimeneti zaja rendkívül alacsony (30$\mu Vrms$), nyugalmi árama 90$\mu A$ és 100mA-es áramfelvételnél a kiesési feszültség (dropout voltage) mindössze 35mV, lehetõvé téve a Li-ion akkumulátor maximális kihasználását. A teljes hatásfok így 90\% felett van, ami lényegében megegyezik egy kapcsolóüzem\H{u} megoldáséval, annak minden hátránya nélkül (kimenet hullámossága, kiegészítõ áramkör). Az 1.6mm x 1.6mm-es thermalpad-es chip h\H{u}tést nem igényel.
+Az egység tápellátására egy Microchip MIC5353 \cite{mic5353-ds} LDO (Low Dropout Voltage) regulátort használok, ami kifejezetten hordozható elektronikákhoz lett kifejlesztve. Kimeneti zaja rendkívül alacsony (30$\mu Vrms$), nyugalmi árama 90$\mu A$ és 100mA-es áramfelvételnél a kiesési feszültség (dropout voltage) mindössze 35mV, lehetõvé téve a Li-ion akkumulátor maximális kihasználását. Az 1.6mm x 1.6mm-es thermalpad-es chip h\H{u}tést nem igényel.
 
 Az akkumulátor egy JST-PH2 csatlakozóba (Adafruit saját szabvány) dugható be. A Li-ion védõáramköre integrálva van akkumulátorba, illetve a töltéshez vásárolt céláramkört használok.
 
-Az akkumulátor merülési karakterisztikáját egy 3.7 V és 3.5 V közötti lináris csökkenéssel becsülve, elhanyagolva a teljes töltöttségnél elõforduló alacsonyabb és a közel kimerült állapotban szolgáltatott alacsonyabb feszültséget (mivel hatásuk nem jelentõs, és ráadásul ellentétes is), a hatásfok: $\frac{3.3}{\frac{3.7 + 3.5}{2}}=91.67\%$
+Az akkumulátor merülési karakterisztikáját egy 3.7 V és 3.5 V közötti lináris csökkenéssel becsülve, elhanyagolva a teljes töltöttségnél elõforduló alacsonyabb és a közel kimerült állapotban szolgáltatott alacsonyabb feszültséget (mivel hatásuk nem jelentõs, és ráadásul ellentétes is), a hatásfok: $\frac{3.3}{\frac{3.7 + 3.5}{2}}=91.67\%$. Jelentõsen jobb hatásfokot kapcsolóüzem\H{u} tápegységgel sem lehet elérni. A lineáris regulátor mellett szól az áramhullámosság hiánya, és a jelentõsen kisebb kiegészítõ áramkör.
 
 Készenléti állapotban a domináns fogyasztók által felvett áram, 
 $$I_{tot} = I_{MCU} + I_{XOR} + I_{R8} = 10\mu A + \frac{3.3V}{47k\Omega} + 10 \mu A = 90.21\mu A  $$
@@ -144,16 +144,18 @@ A beállítások viszont csak akkor érhetõek el, ha a következõ feltételek valamely
 Ha valamelyik feltétel teljesült, akkor a mikrokontroller egy saját WiFi hozzáférési pontot (access point) nyit,
 amire felcsatlakozva elérhetõvé válik a beállításokat tartalmazó \H{u}rlap, aminek kitöltése és elküldése után az eszköz újraindul.
 
+Ha minden el?feltétel teljesül, akkor az eszköz indulás után leolvassa a kapcsoló állapotát, felcsatlakozik a beállított szerverre és elküld GET paraméterként elküldi leolvasott értéket. Ezután mélyalvásba teszi magát, amib?l csak a kapcsoló újboli állapotváltozása tudja felébreszteni.
+
 %----------------------------------------------------------------------------
 \section{Prototípus}
 %----------------------------------------------------------------------------
 
-Az elsõként elkészült környezeti szenzor élesztése alatt szerzett tapasztalatok birtokában ezen prototípus elkészítése jóval egyszer\H{u}bbnek bizonyult. Megemlíthetõ, hogy a hõlégfúvó láthatóan károsította a nyomtatott áramkört, egy helyen a forrasztásgátló maszk is elt\H{u}nt. 
+Az elsõként elkészült környezeti szenzor élesztése alatt szerzett tapasztalatok birtokában ezen prototípus elkészítése jóval egyszer\H{u}bbnek bizonyult. Megemlíthetõ, hogy a hõlégfúvó láthatóan károsította a nyomtatott áramkört, egy helyen a forrasztásgátló maszk is elt\H{u}nt. Az ESP8285 az adatlapja szerint 0.3 - 1 másodperc alatt képes a modemre felkapcsolódni, a tapasztalat az mutatta, hogy inkább a felsõ határ az igaz.
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=150mm, keepaspectratio]{figures/opendetector-proto.png}
-	\caption{Az elkészült nyitásérzékelõ áramkör} 
+	\caption{Az elkészült nyitásérzékelõ áramkör (lesz jobb fotó)} 
 \end{figure}
 
 %----------------------------------------------------------------------------

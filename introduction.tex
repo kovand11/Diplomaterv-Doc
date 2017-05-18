@@ -1,12 +1,17 @@
+%Status: 3 lorems much to write besides that
 %----------------------------------------------------------------------------
 \chapter*{Bevezetõ}\addcontentsline{toc}{chapter}{Bevezetõ}
 %----------------------------------------------------------------------------
 
+Az IoT (Internet of Things) alapú okosotthonok jelenleg még nem elterjedtek,
+kiforrott, nagy piaci részesedéssel rendelkezõ megoldás jelenleg még nem létezik. Egyes eszközök persze már rendelkeznek WiFi képességgel, de ez
+ma még inkább marketingfogás, és nem nyújt többet, mint a mobiltelefonról történõ távirányítás lehetõségét. A nem is olyan távoli jövõben viszont az eszközök adatai egységes módon gyüjthetõk és kiértékelhetõek lesznek, és a beavatkozó szervek irányítása (redõny, ajtózár, de akár a kávéfõzõ) ez alapján fog történni.
+\blindtext
 %----------------------------------------------------------------------------
 \section{Motiváció}
 %----------------------------------------------------------------------------
 
-Az IOT és az épületautómatizálás két olyan terület, melynek jelentõsége a következõ évtizedben jelentrõsen nõni fog. Számos technológia mint a kompakt egycsipes WiFi és Bluetooth adók, az NFC (Near Field Communication), az IPv6, a mesterséges inteligencia fejlõdése, és az hogy a legtöbben rendelkenek okostelefonnal és internet kapcsolattal, lehetõséget biztosít eddig elképzelhetetlen színvonalú szolgáltatás eléréséhez. Az okosotthonok által nyújtott érték alapvetõen három kategóriába sorolható:
+Az IOT és az épületautómatizálás két olyan terület, melynek jelentõsége a következõ évtizedben jelentrõsen nõni fog. Számos technológia mint a kompakt egycsipes WiFi és Bluetooth adók, az NFC (Near Field Communication), az IPv6, a mesterséges inteligencia fejlõdése, és az hogy a legtöbben rendelkenek okostelefonnal és Internet kapcsolattal, lehetõséget biztosít eddig elképzelhetetlen színvonalú szolgáltatás eléréséhez. Az okosotthonok által nyújtott érték alapvetõen három kategóriába sorolható:
 
 \begin{itemize}  
 	\item Kényelem
@@ -17,6 +22,8 @@ Az IOT és az épületautómatizálás két olyan terület, melynek jelentõsége a követk
 A rendszerek eladhatósága szempontjából az elsõ kettõnek van nagyobb súlya.
 A feladat specifikációjánál cél volt a maximális rugalmasság megtartása, és a lehetõ legnagyobb tér biztosítása a kísérletezésre, és minden esetben nyílt és elterjedt szabványok alkalamazása. A nyiltságot különösen fontosnak tartom, mivel jelenleg szerintem ez a legnagyobb gátja a hasonló rendszerek elterjedésének.
 
+\blindtext
+
 %----------------------------------------------------------------------------
 \section{A dolgozat felépítése}
 %----------------------------------------------------------------------------
@@ -25,6 +32,8 @@ Elsõként áttekintem az épületautómatizálásról és IOT témakörrõl elérhetõ szakiro
 Ezután minden részegységnek külön fejezetet szentelve, ismertetem az elkészített hardvert és szoftvert, illetve a rendszerbe történõ integrációját.
 Végül a szerzett tapasztalatokat összegezve, megviszgálom a rendszer alkalmazhatóságát és bõvítési lehetõségeit.
 
+\blindtext
+
 
 %----------------------------------------------------------------------------
 \section{Ütemterv}
@@ -32,6 +41,9 @@ Végül a szerzett tapasztalatokat összegezve, megviszgálom a rendszer alkalmazhat
 
 Mivel a három elkészítendõ eszközöm ugyanarra a WiFi képes mikrokontrollerre épül (ESP8266), ezért prioritás volt legalább egyet közülük a minél elõbb elkészíteni, hogy másik kettõt már az összeszedett tapasztalat birtokában tudjam megtervezni. Végül a környezeti szenzorra esett a választás, mivel a tápellátása viszonylag egyszer\H{u} (nem kell hálózati áramról m\H{u}ködnie), viszont nincs szükség extrém energiatakarékosságra.
 
-Elsõ félvre tehát cél volt egy eszköz hardverének és szoftverének elkészítése, a lehetõ legtöbb tapasztalat gyüjtése a chip m\H{u}ködésérõl, a központi egység összeszerelése, és a Linux+X11+Qt-ra épülõ alkalmazásfejlesztés lehetõségeinek megismerése. A másik két eszköz funkcionalitása is pontosításra került.
+Elsõ félvre tehát cél volt az egyik perifériának, a környezeti szenzornak, az elkészítése, és a hozzátartozó (nem végleges) szoftver megírása. Prioritás a lehetõ legtöbb tapasztalat gyüjtése a chip m\H{u}ködésérõl. Összeszerelésre került a kozponti egység is. Megismertem a Linux+X11+Qt-ra épülõ alkalmazásfejlesztés lehetõségeit, illetve bõvítettem a Linuxos (azon belül Debian-os) ismereteimet. Ezen felül a másik két periféria terve is pontosításra került.
 
-A második félévre marad a másik két eszköz megvalósítása, összehangolása és az általuk biztosított funkciókból autómatizálási mechanizmusok kreálása.
+A második félévre jutott a maradék két periféria megtervezése, legyártatása, élesztése, valamint a szoftverük megírása.
+A perifériák elkészülte utánra maradt a központi egység
+
+

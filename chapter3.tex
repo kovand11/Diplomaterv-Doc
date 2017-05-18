@@ -1,14 +1,8 @@
-%Status: under construction
+%Status: 5 lorems construction?
 %Todo: php Qt hozzáférés
 %----------------------------------------------------------------------------
 \chapter{Központi egység}
 %----------------------------------------------------------------------------
-
-%----------------------------------------------------------------------------
-\section{Hardver}
-%----------------------------------------------------------------------------
-
-Ennél az egységnél szerettem volna kipróbálni a Qt for Device Creation keretrendszert. A legjellemzõbb felépítés, hogy egy Linux rendszermagra és egy ablakozórendszerre támaszkodva fut a Qt-ban megírt szoftver. Elõnye a teljes rugalmasság, és a gyors fejlesztési és tesztelési ciklusok. Hátránya, hogy kicsivel erõsebb hardvert igényel, mint az alacsony szinten megírt beágyazott rendszerek, de a nagyobb teljesítmény\H{u} SOC-ok (System on a Chip) olcsóvá válása ezt a faktort jelentéktelenné tette.
 
 \begin{figure}[!ht]
 	\centering
@@ -16,11 +10,25 @@ Ennél az egységnél szerettem volna kipróbálni a Qt for Device Creation keretrend
 	\caption{Raspberry Pi 3 érintõkijelzõvel } 
 \end{figure}
 
+Ennél az egységnél szerettem volna kipróbálni a Qt for Device Creation keretrendszert. A legjellemzõbb felépítés, hogy egy Linux rendszermagra és egy ablakozórendszerre támaszkodva fut a Qt-ban megírt szoftver. Elõnye a teljes rugalmasság, és a gyors fejlesztési és tesztelési ciklusok. Hátránya, hogy kicsivel erõsebb hardvert igényel, mint az alacsony szinten megírt beágyazott rendszerek, de a nagyobb teljesítmény\H{u} SOC-ok (System on a Chip) olcsóvá válása ezt a faktort jelentéktelenné tette.
+
+Mivel a Qt for Device Creation liszenszköteles, ezért a Qt keretrendszer nyilt forráskódú, ingyenesen hozzáférhetõ változatát használtam a fejlesztéshez. Ez a szoftver elkészítése szempontjából semmilyen különbséget nem jelentett, inkább elõny volt, mert hozzáférésem volt számos felhasználói programhoz, amik segítséget nyújtottak a fejlesztés során.
+
+A teljes konstrukció  áll egy kártya PC-bõl, amire egy érintõkijelzõ kerül. A kép a számitógép HDMI csatlakozóján, az érintésinformáció SPI interface-en keresztül kerül átvitelre. 
+
+%----------------------------------------------------------------------------
+\section{Hardver}
+%----------------------------------------------------------------------------
+
 %----------------------------------------------------------------------------
 \subsection{Raspberry Pi 3}
 %----------------------------------------------------------------------------
 
 A Linux-ot futtató board szerepét egy Raspberry Pi 3 játsza. A feladathoz szükséges számítási kapacitás többszörösével rendelkezik, de mivel az elkészülendõ szoftver platformfüggetlen, ezért késõbb tömeggyártás esetén egyszer\H{u}en portolható olcsóbb hardverre is. Elõnye a 3-as verziónak, hogy nem igényel WiFi modult, mivel már intergrálva tartalmazza azt.
+
+\blindtext
+
+Saját gyártmányú board is készíthetõ lett volna, amihez számtalan nyílt forráskódú (hardver esetén kapcsolási rajz, alkatrészlista) adhatott volna kiindulási alapot. Azonban a Raspberry Pi 3 univerzalitása és kedvezõ ára értelmetlenné teszi, hogy egy lényegében ugyanolyan, de az alacsony példányszám miatt többszörösébe kerülõ eszköz készüljön el, jelentõs fejlesztési idõt felemésztve. 
 
 %----------------------------------------------------------------------------
 \subsection{Érintõkijelzõ (Elecrow 5 inch display for Raspberry Pi)}
@@ -47,6 +55,11 @@ Mivel a központi egység egy teljes érték\H{u}, Linuxot (Raspbian Jessie) futtató
 \subsection{Az alkalmazás}
 %----------------------------------------------------------------------------
 
+%A qt bemutatása
+%az alkalmazás funkciói
+A qt bemutatása: \blindtext
+
+A alkalmazás funkciói: \blindtext \blindtext
 
 \begin{figure}[!ht]
 	\centering
@@ -73,7 +86,7 @@ Ennél én egy egyszer?bb, rögzített számú paraméterb?l álló utasításleíró nyelvet
 \begin{itemize}  
 	\item forrás eszköz azonosítója
 	\item forrás paraméter (részletesen a \ref{sec:parameters} pontban)
-	\item operátor: a forrás paraméter és a konstans közötti logikai "<" és ">" m?velet
+	\item operátor: a forrás paraméter és a konstans közötti logikai "<" és ">" m\H{u}velet
 	\item konstans: tetszõleges szám
 	\item utasítás
 	\begin{itemize}
@@ -85,7 +98,29 @@ Ennél én egy egyszer?bb, rögzített számú paraméterb?l álló utasításleíró nyelvet
 	\item cél paraméter	(részletesen a \ref{sec:parameters} pontban)
 \end{itemize}
 
+\textbf{Programozási példa 1.: } Szeretnénk, ha egy lámpa (8396086 azonosítóju WiFi-s aljzatra kötve), abban az esetben ha a kinti napfény már nem elegendõ a jó látási viszonyok biztosításához (amit a 8398241 környezeti szenzor mér), automatikusan felkapcsolódna, és napfelkeltéig úgy is maradna:
 
+\begin{lstlisting}
+8398241 ambient < 10 link 8396086 relay
+\end{lstlisting}
+
+Teszteléskor a lámpa többször fel és lekapcsolódott. A lámpa felkapcsódásakor a mért fényerõsség 10.6 lux volt. A hibát tehát az okozza, hogy a lámpa fénye visszahat a fényszenzor által mért értékre. Megoldás lehet a hiszterízises kapcsolás: 
+
+\begin{lstlisting}
+8398241 ambient < 9.5 set 8396086 relay
+8398241 ambient < 10.5 reset 8396086 relay
+\end{lstlisting}
+
+\textbf{Programozási példa 1.: } A üvegházban a növények nem szeretik ha 5 C\textdegree ~alá megy a hõmérséklet, de még nagyobb a baj, ha az fagypont alá csökken. Ezen események detektálása lehetséges egy környezeti szenzor segítségével (azonosító: 8398241):
+
+\begin{lstlisting}
+8398241 temperature < 5 set 8398241 ledblue
+8398241 temperature < 0 set 8398241 ledamber
+\end{lstlisting}
+
+Az eseményt jelzõ ledek kikapcsolhatóak a központi egységen.
+
+Ennek az egyszer? utasításnyelvnek a legnagyobb korlátja az, hogy csupán egy adat alapján tud döntést hozni, ráadásul a kimenet is csak logikai lehet. Folytonos szabályzás például nem valósítható meg ilyen módon. Véleményem szerint, ha széles tömegeknek készül a termék,  akkor akár ez a limitált funkcionalitás is elegendõ lehet.
 
 
 
@@ -99,10 +134,6 @@ Az IOT egyik alapelve a meglévõ webes szabványok alkalmazása, ezért a központi e
 A m\H{u}ködéhez létfontosságú egyetlen funkció a nyitásérzékelõ modul számára nyújtott interface, melyet a következõ PHP kód valósít meg:
 
 \lstinputlisting[language=PHP]{source/opendetectorPhp.txt}
-
-%8398241 ambient < 10 set 8396086 relay
-%8398241 temperature > 30 link 8398241 ledamber
-
 
 %----------------------------------------------------------------------------
 \subsection{Az adatbázis}
