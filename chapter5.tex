@@ -1,5 +1,4 @@
-%Status: 1 lorem, needs grammar check
-%Todo: 
+%Status: toread, togrammarcheck
 %----------------------------------------------------------------------------
 \chapter{Nyitásérzékelõ}
 %----------------------------------------------------------------------------
@@ -89,7 +88,7 @@ Az akkumulátor merülési karakterisztikáját egy 3.7 V és 3.5 V közötti lináris cs
 Készenléti állapotban a domináns fogyasztók által felvett áram, 
 $$I_{tot} = I_{MCU} + I_{XOR} + I_{R8} = 10\mu A + \frac{3.3V}{47k\Omega} + 10 \mu A = 90.21\mu A  $$
 amit a az akkumulátor $T_1 = \frac{1200 mAh}{I_{tot}} = 13302 h$ hosszan tud ellátni, ami 554 napnak felel meg. Az üzemidõ a valóságban ennél rövidebb lesz. Egy állapotváltozás elküldése hozzávetõlegesen 200 mA*s felvételt jelent. 
-Napi 20 nyitás/csukás-t feltételezve naponta, az üzemidõ $T_2 = \frac{1200 mAh}{I_{tot} + 20*\frac{200mAs}{24 h}} = 7891 h$ ami 366 napot jelent.
+Napi 20 nyitás/csukás-t feltételezve, az üzemidõ $T_2 = \frac{1200 mAh}{I_{tot} + 20*\frac{200mAs}{24 h}} = 7891 h$ ami 366 napot jelent.
 
 %----------------------------------------------------------------------------
 \subsection{Nyitásdetektálás}
@@ -144,13 +143,13 @@ A beállítások viszont csak akkor érhetõek el, ha a következõ feltételek valamely
 Ha valamelyik feltétel teljesült, akkor a mikrokontroller egy saját WiFi hozzáférési pontot (access point) nyit,
 amire felcsatlakozva elérhetõvé válik a beállításokat tartalmazó \H{u}rlap, aminek kitöltése és elküldése után az eszköz újraindul.
 
-Ha minden el?feltétel teljesül, akkor az eszköz indulás után leolvassa a kapcsoló állapotát, felcsatlakozik a beállított szerverre és elküld GET paraméterként elküldi leolvasott értéket. Ezután mélyalvásba teszi magát, amib?l csak a kapcsoló újboli állapotváltozása tudja felébreszteni.
+Ha minden elõfeltétel teljesül, akkor az eszköz indulás után leolvassa a kapcsoló állapotát, felcsatlakozik a beállított szerverre és elküld GET paraméterként elküldi leolvasott értéket. Ezután mélyalvásba teszi magát, amibõl csak a kapcsoló újboli állapotváltozása tudja felébreszteni.
 
 %----------------------------------------------------------------------------
 \section{Prototípus}
 %----------------------------------------------------------------------------
 
-Az elsõként elkészült környezeti szenzor élesztése alatt szerzett tapasztalatok birtokában ezen prototípus elkészítése jóval egyszer\H{u}bbnek bizonyult. Megemlíthetõ, hogy a hõlégfúvó láthatóan károsította a nyomtatott áramkört, egy helyen a forrasztásgátló maszk is elt\H{u}nt. Az ESP8285 az adatlapja szerint 0.3 - 1 másodperc alatt képes a modemre felkapcsolódni, a tapasztalat az mutatta, hogy inkább a felsõ határ az igaz.
+Az elsõként elkészült környezeti szenzor élesztése alatt szerzett tapasztalatok birtokában ezen prototípus elkészítése jóval egyszer\H{u}bbnek bizonyult. Megemlíthetõ, hogy a hõlégfúvó láthatóan károsította a nyomtatott áramkört, egy helyen a forrasztásgátló maszk is elt\H{u}nt. Az ESP8285 az adatlapja szerint 0.3 - 1 másodperc alatt képes a modemre felkapcsolódni, a tapasztalat az mutatta, hogy inkább a felsõ határ az igaz. Az 1.18T - 1.24T erõsség\H{u} mágnesnek hozzávetõlegesen 8mm - 10mm kellet a kapcsoló aktiválásához.
 
 \begin{figure}[!ht]
 	\centering

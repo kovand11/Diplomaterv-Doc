@@ -3,11 +3,13 @@
 \chapter{Komponensek és technológiák}
 %----------------------------------------------------------------------------
 
+Ezen fejezet azokat a komponenseket, eszközöket és technológiákat mutatja be, amelyek nem kötõdnek egy konkrét eszközhöz, de a rendszer elkészítésében fontos szerepet játszottak.
+
 %----------------------------------------------------------------------------
 \section{Vezetéknélküli kommunikáció}
 %----------------------------------------------------------------------------
 
-A megetervezett eszközöknél alapvetõ követelmény a vezetéknélküli m\H{u}ködés. 
+A megtervezett eszközöknél alapvetõ követelmény a vezetéknélküli m\H{u}ködés. A továbbiakban három, IOT rendszerekben használható szabvány kerül bemutatásra. 
 
 %----------------------------------------------------------------------------
 \subsection{WiFi és a IEEE 802.11-es szabvány \cite{wiki-wifi} \cite{wiki-ieee802.11}}
@@ -18,20 +20,47 @@ A WiFi egy vezetéknélküli adatátviteli technológia, IEEE 802.11 melynek technika
 
 \textbf{WPA (WiFi Protected Access)} A WEP leváltására jött létre. Egy TKIP nev\H{u} titkosítási algoritmust használ, ami már bizonyos idõközönként új kulcsot generál, védelmet nyújtva a brute force támadások ellen.
 
-\blindtext
+A legtöbb háztartásban a WiFi adottságnak tekinthetõ. Az okoseszközök számára a meglévõ hálózat nyújtotta lefedettség, és a WiFi-képes eszközök széles köre optimális választássá teszi annak ellenére, hogy az energiaigénye meglehetõsen magas.  
 
 %----------------------------------------------------------------------------
-\subsection{Bluetooth}
+\subsection{Bluetooth \cite{wiki-bluetooth}}
 %----------------------------------------------------------------------------
 
-\blindtext
+A szabvány elsõsorban mobil eszközök kis hatótávolságú rádiós kapcsolatához lett kifejlesztve, megszüntetve a kábelek szülségességét. Az adás a 2.4GHz-es frekvenciasávban történik. Az eszközök PAN-ekbe (Personal Area Netowrk) szervezõdnek, egy mester-hez 7 másik készülék tud csatlakozni.
+
+\begin{table}[ht]
+	\footnotesize
+	\centering
+	\caption{Bluetooth osztályok jellemzõ adatai}
+	\begin{tabular}{|c|c|c|}
+		\hline
+		 & \textbf{Energia} & \textbf{Hatótáv} \\ 
+		\hline
+		\textbf{Class 1} & 100mW & 100m	\\ 
+		\hline
+		\textbf{Class 2} & 2.5mW & 10m	\\ 
+		\hline
+		\textbf{Class 3} & 1 & 1m \\ 
+		\hline		
+	\end{tabular} 
+\end{table}
+
+Az felhasználói eszközök szinte kizárólag \textbf{Class 2}-be tartoznak, a \textbf{Class 1}-et csak az iparban használják. A Bluetooth-al szimmentrikus, pont-pont kapcsolatok létesíthetõek, ellentétben a WiFi-vel ami jóval centralizáltabb.
+
+Okosotthonban történõ alkalmazása nem ideális, mivel egy nagyobb családi ház már nem fedhetõ le egy folyamatosan bekapcsolt állapotban lévõ központi egységgel sem, ráadásul a hét eszközös határ is sz\H{u}kös lehet.
+
 
 %----------------------------------------------------------------------------
-\subsection{Zigbee}
+\subsection{Zigbee \cite{wiki-zigbee}}
 %----------------------------------------------------------------------------
 
-\blindtext
+A Zigbee az IEEE 802.15.4 szabványra épülõ kommunikációs protokol, ami alacsony energiájú digitális rádióadással kreál személyi hálózatokat. Az elsõdleges alkalmazási területének az okosotthonokat, IOT rendszereket és orvosi célú adatgyüjtõ szenzorokat szánják. Célja egy olcsóbb és egyszer\H{u}bb alternatíva nyújtása a WiFi-vel és a Bluetooth-al szemben.
 
+Támogatja a mesh (háló) topológiát amelynek segítségével akár 1000m-es hatótávolság is elérhetõ, ideális eszközs\H{u}r\H{u}ség esetén. Fogyasztása hozzávetõlegesen negyede a WiFi hálózaténak, viszont az adatátvitel sebessége jelentõsen alacsonyabb (250 kbit/s).
+
+Bár a technológia igéretes, még nem terjedt el igazán, szoftveres és hardveres támogatottsága alacsony. Zárt rendszer esetén valószínüleg ez a legjobb választás, de nálam az integrálhatóság prioritás volt, ezért a WiFi-s kommunikáció mellett döntöttem.
+
+%MAYBE: extra info
 
 %----------------------------------------------------------------------------
 \section{WiFi képes mikrokontroller (ESP8285) \cite{esp8266-ds} \cite{esp8266-sysdesc} \cite{esp8266-techref}}
@@ -106,9 +135,6 @@ A Wifi-s kommunikáció egyik gyenge pontja az energiafogyasztás. A jelsugárzás na
 	\end{tabular} 
 \end{table}
 
-
-
-
 %----------------------------------------------------------------------------
 \subsection{Antenna}
 %----------------------------------------------------------------------------
@@ -128,8 +154,7 @@ A Wifi-s kommunikáció egyik gyenge pontja az energiafogyasztás. A jelsugárzás na
 A modulnak szüksége van külsõ antennára a WiFi kommunikációhoz (2.4GHz). A legegyszer\H{u}bb és legolcsóbb megoldás a nyomtatott áramkörön elhelyezett antenna. Az antennát 50 $\Omega$ impedanciához kell illeszteni. A leggyakoribb kialakítások a \textbf{meander antenna} és az \textbf{inverted-F antenna}.
 Az elõbbi helyigénye hozzávetõlegesen 1.5 cm az utóbbié 3 cm. Az adás minõsége jobb az inverted-F kialakítással, és mivel a hely nekem rendelkezésre állt, e mellett döntöttem. Így illesztésre nem volt szükség, de mivel nyitva akartam hagyni más antennák kipróbálásának a lehetõségét is, ezért az áramkörön elhelyezhetõ két illesztõ induktivitás.
 
-Az antenna eszköz karakterisztikájával kapcsolatban precíz méréseket nem végeztem, de a WiFi kapcsolat akár 20-30 méter távolságból és falon keresztül is stabil maradt. 
-
+Az antenna eszköz karakterisztikájával kapcsolatban precíz méréseket nem végeztem, de a WiFi kapcsolat akár 20-30 méter távolságból és falon keresztül is stabil maradt.
 
 %----------------------------------------------------------------------------
 \subsection{Kötelezõ kiegészítõ elemek}
@@ -137,9 +162,7 @@ Az antenna eszköz karakterisztikájával kapcsolatban precíz méréseket nem végezte
 
 Az IC elõállít magának egy referenciaáramot, amihez szüksége van egy nagy pontosságú 12k$\Omega$-os ellenállásra. A tápfeszültség sz\H{u}résére egy 100nF-os, 1$\mu$F-os és 10$\mu$F-os kerámiakondenzátor hármast használok, az ajánlásnak megfelelõen.
 
-Az mikrokontroller küls? rezonátor meglétét igényli. A támogatott frekvenciák 24MHz-t?l 40Mhz-ig terjednek. Mivel a WiFi-s kommunikációnál nem lehet jelentõs frekvenciahiba, vélhetõen a rezonátor pontatlanságára alacsony a tolerancia. A nyomtatott áramkörön érdemes a rezonátorkristályt minél közelebb helyezni a mikrokontrollerhez, viák használata ellenjavallott. Mindhárom eszköznél egy Epson FA-128 26MHz-s kristályt használtam. 
-
-
+Az mikrokontroller külsõ rezonátor meglétét igényli. A támogatott frekvenciák 24MHz-tõl 40Mhz-ig terjednek. Mivel a WiFi-s kommunikációnál nem lehet jelentõs frekvenciahiba, vélhetõen a rezonátor pontatlanságára alacsony a tolerancia. A nyomtatott áramkörön érdemes a rezonátorkristályt minél közelebb helyezni a mikrokontrollerhez, viák használata ellenjavallott. Mindhárom eszköznél egy Epson FA-128 26MHz-s kristályt használtam.
 
 \begin{figure}[!ht]
 	\centering
@@ -156,13 +179,11 @@ fali aljzat hálózati áramról m\H{u}küdik, míg a környezeti szenzor és a nyitásér
 
 (A hálózati feszültségrõl való táplálásról majd késõbb írok. Elõzetesen mindenképp izolált megoldást szeretnék alkalmazni, mint pl. a Flyback converter.)
 
-
 Az elsõ és legkézenfekvõbb megoldás a mobil eszközökben rendkívül elterjedt Li-ion akkumulátor. Energia és teljesítménys\H{u}r\H{u}ségben is kiváló, nem mérgezõ, és nem rendelkezik memóriaeffektussal. Töltöttségét rendkívül lassan veszíti el. Még kimerült állapotban is képes 3V feszültséget szolgáltatni, ami azt jelenti, hogy 3-3.6V t\H{u}rés\H{u} áramkörökkel az akkumulátor teljes kapacitását ki tudom használni, és elegendõ egy cella. Mivel töltés után a cellafeszültség elérheti a 4.2V-ot, ezért az áramkör mindenképp védelemre szorul. A Li-ion alapú megoldások rendelkeznek hátrányokkal is. Túltöltés és mélykisülés ellen védõáramkört kell alkalmazni. Ennek hiányában a megoldás t\H{u}zveszélyes. Az akkumulátor cella rendkívül sérülékeny, ezért szükség van a fizikai védelemre. Hátrányként említhetõ még a Li-ion cella öregedése is, de a legtöbb esetben, mire a teljesítménycsökkenés relevánsá válik, maga a készülég is elavul. Ha mégis hosszú távú üzemre terveznénk, gondolni kell az akkumulátor cserélhetõségére.
 
 Alternatíva lehet három darab 1.5V-os ceruzaelem használata is, de mivel ez esetben, ha nem akarok elfogadhatatlanul rossz hatásfokot, valamilyen kapcsolóüzem\H{u} tápegységet kell használnom, jelentõs méret\H{u} kiegészítõ áramkörrel. Rádiófrekvenciás alkalmazásoknál jelentõsége van a tápellátás zajmentességének is. Mivel a három elem mérete meghaladja azt a áramkör méretet amit alkalmazni szeretnék, ezért ezt a megoldást elvetendõnek gondolom.
 
 Kis mérete miatt felmerühet egy nem újratölthetõ Li-ion gombelem alkalmazása is, elsõdlegesen akkor, amikor fontos a kis méret és súly, valamint a készülék csak ritkán, rövid idõtartamokra van bekapcsolva. Mivel a WiFi adó áramfelvétele rövidebb idõszakokban meghaladja a gombelem által biztosított maximumot, ezért szükség van egy további kondenzátor elhelyezésére is, ami viszont nagyban semlegesíti ezen megoldás eredeti elõnyeit.
-
 
 %----------------------------------------------------------------------------
 \section{Az mikrokontroller felprogramozása}
@@ -187,27 +208,35 @@ Nem kevés problámát okozott, hogy az alapértelmezett UART baud rate attól függ h
 \subsection{Alkatrészek kiválasztása}
 %----------------------------------------------------------------------------
 
-\blindtext
+Az alkatrészek kiválasztásánál elsõdleges szempont volt, hogy a lehetõ legkorszer\H{u}bb technikával dolgozzak. Az ellenállásoknál, kondenzátoroknál a 0603-as méretet preferáltam, mivel az még kézzel forrasztható, de egyúttal nagy s\H{u}r\H{u}ségben helyezhetõ el az áramkörön. A rendelésnél az elsõdleges forrásom a Mouser webáruzház volt. A hatalmas válszték mellett az alkatrészek tulajdonságok szerint is jól kereshetõek voltak. A tervezés során tanulmányoztam hasonló eszközöket, illetve hobbistáknak szóló leírásokat is. Azon termékek amelyekrõl ilyen módon többletinformáció állt a rendelkezésemre, természetesen elõnyt élveztek. Az adatlapokban megadott kiegészítõ áramkörre vonatkozó ajánlásokat minden esetben betartottam. 
 
 %----------------------------------------------------------------------------
 \subsection{Tervezés}
 %----------------------------------------------------------------------------
 
-\blindtext
+A kapcsolási rajzot, és a nyomtattott áramkör terveket egyaránt az Altium Designer tervezõszoftverrel készítettem el. Az alkalmazás az egyik legelterjedtebb, és legtöbb funkcióval rendelkezõ csomag a piacon, ezért a szerzett tapasztalatok késõbb rendkívül hasznosak lehetnek. A szoftver tanulmányi célokra ingyenesen elérhetõ volt. A nyáktervezés menete:
+
+\begin{enumerate}  
+	\item \textbf{A kapcsolási rajz (Schematic) elkészítése:} Az alkatrészeket szimbólumok reprezentálják. Ezen a tervezési szinten az összeköttetések létrehozása történik meg. 
+	\item \textbf{Szimuláció (opcionális):} Ha a komponensekhez készültek m\H{u}ködési modellek, akkor az elkészült kapcsolás viselkedése szimulálható. 
+	\item \textbf{A nyomtatott áramkör elkészítése:} Itt történik a board alakjának definiálása, az alkatrészek és huzalozás elhelyezése. A helyesség ellenõrzése tervezési szabályok (Design Rules) segítségével történik.
+	\item \textbf{A gyártáshoz szükséges file-ok elõállítása:} Ezutén exportálásra kerülnek a gyártáshoz szükséges leírófileok. A Gerber file-ok tartalmazzák az egyes rétegekre (huzalozás, forrasztásgátlás) vonatkozó információkat. A drill file definiálja a furatok bevágások helyét.
+\end{enumerate}
 
 %----------------------------------------------------------------------------
 \subsection{Gyártás}
 %----------------------------------------------------------------------------
 
-Az elkészült nyáklaptervek az Elektronikai Technológiai Tanszék laborjában kerültek legyártásra. Jellemzõk:
+Az elkészült nyáklaptervek az Elektronikai Technológiai Tanszék laborjában kerültek legyártásra. Két huzalozási rétegnél többre nem volt szükség. Az elõírt 0.25mm-es szigetelési közt pár helyen, kis mértékben meg kellett szegnem. A viákhoz 0.5mm-es furatrokat alkalmaztam. 
 
-\begin{itemize} 
-	\item 2 réteg huzalozás (nem volt többre szükség)
-	\item 0.3 mm-es furatátmérõ
-	\item 0.25 mm-es vezeték-vezeték szigetelõ köz (ezt enyhén meg kellett sértenem)	
-\end{itemize}
 
-\blindtext
+
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/pcb-layers.png}
+	\caption{A nyomtatott áramkör felépítése} 
+\end{figure}
 
 
 

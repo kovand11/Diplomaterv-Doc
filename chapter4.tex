@@ -15,27 +15,35 @@
 		\centering
 		\includegraphics[width=0.9\textwidth]{figures/socket-energie-metering.jpg} % first figure itself
 		\caption{Aljzat teljesítményméréssel}
+		\label{fig:existing-socket-powermeter}
 	\end{minipage}\hfill
 	\begin{minipage}{0.45\textwidth}
 		\centering
 		\includegraphics[width=0.9\textwidth]{figures/socket-w-wifi.png} % second figure itself
 		\caption{WiFi-s konnektor}
+		\label{fig:existing-socket-wifi}
 	\end{minipage}
 \end{figure}
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=150mm, keepaspectratio]{figures/placeholder.png}
-	\caption{A programozható aljzat blokkdiagramja} 
+	\includegraphics[width=150mm, keepaspectratio]{figures/wifisocket-blocks.png}
+	\caption{A programozható aljzat blokkdiagramja}
+	\label{fig:wifisocket-blockdiagram} 
 \end{figure}
 
 
+
+
+A piacon rengeteg kapcsolható és teljesítménymérõs aljzat és hosszabító található meg (\ref{fig:existing-socket-powermeter}, \ref{fig:existing-socket-wifi}-es ábrák). Lehetséges, hogy létezik, de nekem nem sikerült olyat találnom ami:
+
 \begin{itemize}  
-	\item 1 foglalat
-	\item Feszültségmérés, és árammérés
+	\item megfizethetõ (30\$-40\$)
+	\item képes a hálózati feszültséget ki és bekapcsolni, tetszõleges logika alapján
+	\item teljesítményt mér nagy pontossággal (beleértve a teljesítménytényezõt)
 \end{itemize}
 
-\blindtext
+Egy programozható aljzat segítségével nem okos eszközök is okossá alakíthatóak (ki és bekapcsolhatóság erejéig). Az eszközömnél az egy kimenet\H{u} moduláris hosszabító kialakítás mellett döntöttem (\ref{fig:wifisocket-blockdiagram}-as ábra). 
 
 
 %----------------------------------------------------------------------------
@@ -106,8 +114,6 @@ Ez az egység a m\H{u}ködéséhez szükséges energiát 230V-os hálózatból veszi fel. 
 \subsubsection{Vigortronix VTX-214-003-105 \cite{vtx-214-003-105-ds}}
 %----------------------------------------------------------------------------
 
-A Vigortronix VTX konvertersorozata 
-
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=150mm, keepaspectratio]{figures/vigortronix-block.png}
@@ -142,7 +148,7 @@ A Vigortronix VTX konvertersorozatáról sajnos korlátozott részletesség\H{u} doku
 	\caption{Az LM3670MF funkcionális blokkdiagramja}
 \end{figure}
 
-\blindtext
+A Texas Instruments LM3670 sorozata egy DC-DC szinkron step-down (buck) konverter, elsõsorban mobil eszközökre optimalizálva. A kimenetét (esetemben 3.3V) 5.5V és 3.3V között képes tartani (low dropout mode). A konverter extrém magas, hozzávetõlegesen 95\%-os hatásfokot nyújt. Az tipikus terhelés melletti 1MHz-es kapcsolási frekvencia miatt elegendõ három (két kondezátor és egy induktivitás) apró felületszerelt elem a chip m\H{u}lödtetéséhez. Annak érdekében, hogy alacsony áram mellett se csökkenjen a hatásfok, az vezérlés PWM-rõl (Pulse Width Modulation) PFM-re (Pulse Frequency Modulation) vált.
 
 %----------------------------------------------------------------------------
 \subsection{Teljesítménymérés}
@@ -150,11 +156,11 @@ A Vigortronix VTX konvertersorozatáról sajnos korlátozott részletesség\H{u} doku
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=150mm, keepaspectratio]{figures/placeholder.png}
+	\includegraphics[width=150mm, keepaspectratio]{figures/wifisocket-power-meter.png}
 	\caption{Az teljesítménymérésért felelõs áramkörrészlet} 
 \end{figure}
 
-\blindtext
+A teljesítményméréshez szükséges a feszültség és az áram folyamatos mintavételezése, mivel nem garantálható a tiszta ohmos terhelés. A jellemzõk mérésére akár használható általános célú mikrokontroller is, de valószínüsíthetõ, hogy komolyabb jelkondicionálás és elõerõsítés nélkül a pontosság még az 1\%-ot sem éri el. Mivel az általam használt mikrokontroller amúgy sem volt alkalmas a feladatra, ezért az ST STPM10BTR IC-jét vettem igénybe a teljesítményméréshez.
 
 %----------------------------------------------------------------------------
 \subsubsection{ST STPM10BTR \cite{stpm10-ds}}
@@ -162,13 +168,32 @@ A Vigortronix VTX konvertersorozatáról sajnos korlátozott részletesség\H{u} doku
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=150mm, keepaspectratio]{figures/placeholder.png}
+	\includegraphics[width=150mm, keepaspectratio]{figures/stpm10-block.png}
 	\caption{Az STPM10BTR blokkvázlata} 
 \end{figure}
 
+Az ST STPM10BTR egy programozható, egyfázisú teljesítménymérõ IC. Képes hatásos, meddõ és látszólagos teljesítmény mérésére. Az hatásos teljesítményt két részre osztja:
 
+\begin{itemize}
+	\item 0. típus: csak az alapharmónikus által felvett teljesítmény
+	\item 1. típus: a felharmónikusok által felvett teljesítmény 
+\end{itemize}
 
-\blindtext
+Az áramnak és a feszültségnek elérhetõ a pillanatnyi és a négyzetes középértéke, valamint mérésre kerül a hálózati frekvencia is. 
+
+A feszültségméréshez a hálózati feszültség sz\H{u}rt és leosztott változatát kell bevezetni az IC-be, figyelembe véve, hogy a bemenet 0.3V-ig toleráns. A kívánt osztás eléréséhez precíziós ellenállásokat használtam. Természetesen az állandó hiba kalibrációval kompenzálható. 
+
+Az árammérés két bementen, négy féle konfigurációban történhet, két bemenet esetén elérhetõ a két áramban fellépõ különbség detektálása (tamper detection):
+
+\begin{itemize}
+	\item egy söntellenállás
+	\item egy áramváltó
+	\item egy áramváltó és egy sönt
+	\item két áramváltó
+\end{itemize}
+
+Én az egy söntellenállásos (0.3m$\Omega$) megoldást választottam, mivel annak volt a legkisebb a helyigénye és a tamper detection funkciót nem igényeltem. 
+
 
 \blindtext
 
@@ -266,6 +291,12 @@ A xx függvény felelõs a felhasználó által megnyomott kapcsoló állapotának jelzés
 %----------------------------------------------------------------------------
 \section{Prototípus}
 %----------------------------------------------------------------------------
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/placeholder.png}
+	\caption{A programozhtó aljzat prototípusa} 
+\end{figure}
 
 \blindtext
 
