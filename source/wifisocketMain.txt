@@ -1,15 +1,78 @@
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus iaculis ligula eget magna
- facilisis convallis. Nam pharetra blandit erat ac mattis. Ut condimentum, ex ut faucibus
- dapibus, quam mi porta massa, nec consectetur urna ex eu magna. Maecenas eget dolor eu nisl
- euismod congue. Sed blandit dui vel quam fringilla posuere. Mauris finibus vitae ante vel
- venenatis. Vivamus tempor diam vel massa scelerisque iaculis. Mauris accumsan mi erat, a
- laoreet justo lobortis sit amet. 
-Vestibulum et fringilla elit. Sed sagittis euismod dui ac mollis. Cras nec erat ut felis
- efficitur commodo ut eget felis. Fusce risus nisi, congue in malesuada nec, mollis eu libero.
- Quisque interdum gravida magna in laoreet. Aenean enim ex, efficitur eget nibh sed, maximus
- sollicitudin nisl. Pellentesque at luctus erat. Nam aliquet neque quis urna dapibus, quis
- ultricies dui maximus. Pellentesque risus eros, maximus ac tempor rhoncus, cursus eget justo.
- Fusce suscipit arcu risus, nec mollis mi ultricies ornare. Class aptent taciti sociosqu ad litora
- torquent per conubia nostra, per inceptos himenaeos. Donec non facilisis lorem. Curabitur eleifend 
-euismod ligula, at ultricies nulla euismod a. Proin hendrerit libero eu arcu iaculis faucibus. Vivamus
- dictum, tellus nec dictum gravida, lectus metus placerat elit, euismod ullamcorper nisl dui. 
+<!DOCTYPE html>
+<html><head><style>
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 80px;
+  height: 44px;
+}
+.switch input {display:none;}
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #ccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 36px;
+  width: 36px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+input:checked + .slider {
+  background-color: #2196F3;
+}
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+input:checked + .slider:before {
+  -webkit-transform: translateX(36px);
+  -ms-transform: translateX(36px);
+  transform: translateX(36px);
+}
+</style></head><body onload="setInterval(refreshData, 500)">
+<h2>Power: <span id="power"></span> W</h2>
+<h3>Voltage: <span id="voltage"></span> V</h3>
+<h3>Current: <span id="current"></span> A</h3>
+<h3>Power factor: <span id="powerfactor"></span></h3>
+<label class="switch">
+  <input id="sw" type="checkbox" onclick="onSwitch(this)">
+  <div class="slider"></div>
+</label>
+<script>
+function onSwitch(sender)
+{
+  var http = new XMLHttpRequest();
+  var url = "/control";
+  var params = "relay=" + (sender.checked?"1":"0");
+  http.open("GET", url+"?"+params, true);
+  http.send(null);
+}
+function refreshData()
+{
+  var http = new XMLHttpRequest();
+  var url = "/json";
+  http.onreadystatechange = function() {
+    if (this.readyState == 4 && this.status == 200) {
+      var arr = JSON.parse(this.responseText);
+      document.getElementById("power").innerHTML = arr.power;
+      document.getElementById("voltage").innerHTML = arr.voltage;
+      document.getElementById("current").innerHTML = arr.current;
+      document.getElementById("powerfactor").innerHTML = arr.powerfactor;
+      document.getElementById("sw").checked = (arr.relay == "1");
+    }
+  }
+  http.open("GET", url, true);
+  http.send(null);
+}
+</script></body></html>

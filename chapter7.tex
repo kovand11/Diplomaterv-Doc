@@ -3,15 +3,35 @@
 \chapter{Értékelés}
 %----------------------------------------------------------------------------
 
-%----------------------------------------------------------------------------
-\section{Tapasztalatok}
-%----------------------------------------------------------------------------
+Az elkészült rendszer, bár az elért eredményekkel nagyobb részt elégedett vagyok, természetesen számos helyen javítható, optimalizálható és fejleszthetõ.
 
-\Blindtext
+A programozható aljzat hardveres funckióit nem sikerült szoftveresen kihasználni. A nyomtatott áramkör tervet érdemes lenne revízionálni, megsz\H{u}ntetve az eszköz használatát jelenleg ellehetetlenítõ zavart. A egy robosztusabb megoldás létrehozásában hasznos lehet más által tervezett, hasonló rendszerek áttekintése, mivel magam csak minimális tapasztalattal rendelkezem hálózatról m\H{u}ködõ eszközök tervezésében. 
+
+Érdekes fejlesztési irány lehet az eszközök modulárissá tétele. A hõmérséklet érzékelés hibája például jelentõsen csökkenthetõ lenne, ha a szenzor külön lapon kapna helyet. Bár ez többlet hellyel és kölséggel jár, de a nyújtott funkcionalitás jóval rugalmasabb lehetne.
+
+Az általam fejlesztett rendszer csak egy apró részhalmaza egy funkcionális okosotthonnak, a potenciális mérõ és beavatkozó eszközök száma lényegében végtelen, és ezek összehangolása és kontrollálása még felfedezetlen és kiaknázatlan terület.
 
 %----------------------------------------------------------------------------
 \section{Továbbfejlesztési lehetõségek}
 %----------------------------------------------------------------------------
 
-\Blindtext
+%----------------------------------------------------------------------------
+\subsection{Felhõ integráció}
+%----------------------------------------------------------------------------
+
+Az a szerep, amit az általam tervezett rendszerben a központi egység betölt, teljes egészében számítási és adat felhõbe vihetõ át. Ez nemcsak kölségcsökkenést jelent (a központ a legdrágább és a legnagyobb fogyasztású elem), de így a gy\H{u}jtött adatok a világ bármely pontjáról könnyedén, egyszer\H{u}en elérhetõek. Ez persze lehetséges kizárólag az Internet Protokol használatával jelenleg is, de a konfiguráció egy informatikában nem jártas ember számára szinte lehetetlen. Saját rendszerünk elérhetõségére publikus API fejleszthetõ.  Központi jelentõsége van ezen rendszerekben a harmadik fél által nyújtott szolgáltatásoknak. Gondoljunk csak arra, hogy hiába van például okosh\H{u}tõnk, amely számontartja tartalmát, valódi értelmet ez a funkció csak akkor nyer, ha hiányzó élelmiszereket önállóan meg tudja rendelni, munkát véve le az ember válláról. 
+
+%----------------------------------------------------------------------------
+\subsection{Okostelefon kliens}
+%----------------------------------------------------------------------------
+
+Tendencia, hogy a személyi számítógépek jelentõsége csökken, és ezzel egyidej\H{u}leg nõ az okostelefonok, tabletek és akár az okosórák részesedése. Emiatt a két legfontosabb platform ma már az Android és az iOS. Mivel egy okostelefon bármikor kieshet a rendszerbõl, ezért annak a szerepe csupán adatmegjelenítés és a felhasználói szándék detektálása lehet, a folyamatos kontrollt ki kell szervezni (például felhõbe). 
+
+%----------------------------------------------------------------------------
+\subsection{IFTTT integráció}
+%----------------------------------------------------------------------------
+
+Az IFTTT egy ingyenes web alapú szolgáltatás, amivel egyszer\H{u} feltételes logikák hozhatóak létre. A triggeresemény több 400 szolgáltatás biztosíthatja, mint például a Facebook, Twitter vagy a Spotify. Rendelkezik mindenki számára nyílt programozói interface-el, amivel a saját eszközeink is a rendszer részévé tehetõek. Például könnyedén leprogramozható az, ha esik az esõ (idõjárás szolgáltatás), és épp elhagyom a lakást (ajtónyitás detektor), akkor figyelmeztet arra (okostelefon), hogy vigyem magammal az esernyõt.
+
+
 

@@ -148,7 +148,7 @@ A Vigortronix VTX konvertersorozatáról sajnos korlátozott részletesség\H{u} doku
 	\caption{Az LM3670MF funkcionális blokkdiagramja}
 \end{figure}
 
-A Texas Instruments LM3670 sorozata egy DC-DC szinkron step-down (buck) konverter, elsõsorban mobil eszközökre optimalizálva. A kimenetét (esetemben 3.3V) 5.5V és 3.3V között képes tartani (low dropout mode). A konverter extrém magas, hozzávetõlegesen 95\%-os hatásfokot nyújt. Az tipikus terhelés melletti 1MHz-es kapcsolási frekvencia miatt elegendõ három (két kondezátor és egy induktivitás) apró felületszerelt elem a chip m\H{u}lödtetéséhez. Annak érdekében, hogy alacsony áram mellett se csökkenjen a hatásfok, az vezérlés PWM-rõl (Pulse Width Modulation) PFM-re (Pulse Frequency Modulation) vált.
+A Texas Instruments LM3670 sorozata egy DC-DC szinkron step-down (buck) konverter, elsõsorban mobil eszközökre optimalizálva. A kimenetét (esetemben 3.3V) 5.5V és 3.3V között képes tartani (low dropout mode). A konverter extrém magas, hozzávetõlegesen 95\%-os hatásfokot nyújt. Az tipikus terhelés melletti 1MHz-es kapcsolási frekvencia miatt elegendõ három (két kondezátor és egy induktivitás) apró felületszerelt elem a chip m\H{u}ködtetéséhez. Annak érdekében, hogy alacsony áram mellett se csökkenjen a hatásfok, az vezérlés PWM-rõl (Pulse Width Modulation) PFM-re (Pulse Frequency Modulation) vált.
 
 %----------------------------------------------------------------------------
 \subsection{Teljesítménymérés}
@@ -183,7 +183,7 @@ Az áramnak és a feszültségnek elérhetõ a pillanatnyi és a négyzetes középértéke,
 
 A feszültségméréshez a hálózati feszültség sz\H{u}rt és leosztott változatát kell bevezetni az IC-be, figyelembe véve, hogy a bemenet 0.3V-ig toleráns. A kívánt osztás eléréséhez precíziós ellenállásokat használtam. Természetesen az állandó hiba kalibrációval kompenzálható. 
 
-Az árammérés két bementen, négy féle konfigurációban történhet, két bemenet esetén elérhetõ a két áramban fellépõ különbség detektálása (tamper detection):
+Az árammérés két bemeneten, négy féle konfigurációban történhet, két bemenet esetén elérhetõ a két áramban fellépõ különbség detektálása (tamper detection):
 
 \begin{itemize}
 	\item egy söntellenállás
@@ -192,15 +192,24 @@ Az árammérés két bementen, négy féle konfigurációban történhet, két bemenet eset
 	\item két áramváltó
 \end{itemize}
 
-Én az egy söntellenállásos (0.3m$\Omega$) megoldást választottam, mivel annak volt a legkisebb a helyigénye és a tamper detection funkciót nem igényeltem. 
-
-
-\blindtext
+Én az egy söntellenállásos (0.3m$\Omega$) megoldást választottam, mivel annak volt a legkisebb a helyigénye és a tamper detection funkciót nem igényeltem.
 
 %----------------------------------------------------------------------------
 \subsubsection{Az ,,SPI'' kommunikáció \cite{stpm10-spi}}
 %----------------------------------------------------------------------------
-\blindtext
+
+A teljesítménymérõ IC-vel való kommunikáció egy speciális SPI-hoz hasonló protokollon keresztült történik:
+
+\begin{itemize}
+	\item  \textbf{SCS} engedélyezõ jel (0 aktív)
+	\item  \textbf{SYN} a kommunikáció iránya (0 olvasás)
+	\item  \textbf{SCL} az órajel
+	\item  \textbf{SDC} az adatvezeték (kétirányú)
+\end{itemize}
+
+Az írást érdemes szoftveresen (GPIO-k állításával) implementálni, még akkor is ha ez lassabb, mivel futásidõben ezen m\H{u}velet ritka, szinte kizárólag csak olvasás történk.
+
+Az olvasás a jelvezetékek ügyes bekötésével már történhet hardveres klasszikus 4 vezetékes SPI-al (MISO, MOSI, SCLK, SS). A MISO kerül az SDA vonalra, mivel ekkor a master fele törénik adatáramlás. Az órajelvezeték is összeköthetõ (SCLK->SCL). A slave select (SS) jel ráköthetõ a slave engedélyezõ jelére (SCS). A SYN jel (konstans 0) elõállítható egy GPIO-val, míg a MOSI jel nem kerül bekötésre.
 
 %----------------------------------------------------------------------------
 \subsection{A kapcsolórelé}
@@ -209,23 +218,31 @@ Az árammérés két bementen, négy féle konfigurációban történhet, két bemenet eset
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=150mm, keepaspectratio]{figures/wifisocket-relay.png}
-	\caption{A relét kapcsoló áramkör} 
+	\caption{A relét kapcsoló áramkör}
+	\label{fig:wifisocket-relay} 
 \end{figure}
 
-\blindtext
-
-
+A hálózati áram kapcsolására egy Schrack RTE24005 DPDT (két pólus, két áramkör) relé került felhasználásra (\ref{fig:wifisocket-relay}-es ábra). A két kapcsolt áramkör a null és a fázis, a két pólus közül az egyik a hálózatra kapcsolódik, a másik a levegõben lóg. A relé 250VAC-ra és 8A-es terhelésre van méretezve. A belsõ tekercs aktiválásához szükséges 5V-ot egy bipoláris tranzisztorral kapcsolom, mivel a relé áramfelvétele 80mA, viszont a mikrokontroller csak 12mA-ig terhelhetõ.
+A kikapcsoláskor a tekercsen maradt áram elvezetésérõl flyback dióda gondoskodik.  
 
 %----------------------------------------------------------------------------
 \section{Szofver}
 %----------------------------------------------------------------------------
 
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, height=150mm, keepaspectratio]{figures/wifisocket-webpage.png}
+	\caption{A programozható aljzat fõoldala}
+	\label{fig:wifisocket-webpage}
+\end{figure}
+
 %----------------------------------------------------------------------------
 \section{Paraméteres interface}
 %----------------------------------------------------------------------------
+
 \label{sec:parameters}
 
-A hálózatba kapcsolt eszközök programozhatóságát nagy mértékben megkönnyíti, ha azok kívülrõl nézve bizonyos szempontból egységesek. Az absztrakció lehet egy, az eszközhöz hozzárendelt paraméterek halmaza, amelyek olvashatóak és esetenként írhatóak is. Például a pillanatnyi teljesítményt a power változó tartalmazza, ami csupán olvasható. Az hogy egy paraméter kívülrõl változónak t\H{u}nik, nem jelenti feltétlenül azt, hogy az az eszközön belül mindíg elérhetõ, lehet az a lekérdezés által megindított folyamat (legtöbb esetben mérés) eredménye is. Azon funkciók amik beavatkoznak a környezetbe, írható változókként reprezentálhatóak.
+A hálózatba kapcsolt eszközök programozhatóságát nagy mértékben megkönnyíti, ha azok kívülrõl nézve bizonyos szempontból egységesek. Az absztrakció lehet egy, az eszközhöz hozzárendelt paraméterek halmaza, amelyek olvashatóak és esetenként írhatóak is. Például a pillanatnyi teljesítményt a power változó tartalmazza, ami csupán olvasható. Az hogy egy paraméter kívülrõl változónak t\H{u}nik, nem jelenti feltétlenül azt, hogy az az eszközön belül mindíg elérhetõ, lehet az egy lekérdezés által megindított folyamat (legtöbb esetben mérés) eredménye is. Azon funkciók amik beavatkoznak a környezetbe, írható változókként reprezentálhatóak.
 A relé állása a relay változóba írt 0 vagy 1 értékkel állítható. Innentõl kezdve a teljes rendszer a szolgáltatott paraméterek, mint változók manipulálásával programozhatóak.
 Ez a protokol, bár meglehetõsen rugalmas, az összes perifériát szolga (slave) szerepbe kényszeríti, mivel minden tranzakciót (írást/olvasást) a központi egység kezdeményez. Ha valamelyik periférián lenyomott gombhoz akarok akciót rendelni, akkor ezt csak úgy tehetem meg ha a hozzárendelt változót a másik eszközrõl pollolom, ami valamekkora idõveszteséggel jár.
 
@@ -277,28 +294,22 @@ A változtatások érvényre jutását az eszköz a ,,Done'' üzenettel jelzi. Abban az 
 \section{HTML oldal}
 %----------------------------------------------------------------------------
 
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=150mm, keepaspectratio]{figures/placeholder.png}
-	\caption{A programozható aljzat fõoldala (screenshot kell)} 
-\end{figure}
-
-A közvetlenül ember számára is használható fõoldal kialakításánal az AJAX (Asynchronous JavaScript and XML) technikát alkalmaztam. A módszertan lényege, hogy a weboldal újratöltése nélkül, az oldal tarta változik dinamikusan. Az adatok fogadása és küldése asszinkron módon, a szerver (mikrokontroller) fele történõ folyamatos kommunikációval valósul meg, kihasználva a DOM (Document Object Model) nyújtotta funkciókat. 
+A közvetlenül ember számára is használható fõoldal kialakításánal az AJAX (Asynchronous JavaScript and XML) technikát alkalmaztam. A módszertan lényege, hogy a weboldal újratöltése nélkül, az oldal tartalma változik dinamikusan. Az adatok fogadása és küldése asszinkron módon, a szerver (mikrokontroller) fele történõ folyamatos kommunikációval valósul meg, kihasználva a DOM (Document Object Model) nyújtotta funkciókat. (\ref{fig:wifisocket-webpage}-es ábra)
 
 \lstinputlisting[language=HTML]{source/wifisocketMain.txt}
 
-A xx függvény felelõs a felhasználó által megnyomott kapcsoló állapotának jelzése az eszköz felé. Az yy függvény az eszköz állapotának változása alapján frissíti az weboldalt. Ez elõbbi a /control az utóbbi a /json aloldal szolgáltatásait használja. 
+A onSwitch() függvény felelõs a felhasználó által megnyomott kapcsoló állapotának jelzése az eszköz felé. Az refreshData() függvény az eszköz állapotának változása alapján frissíti az weboldalt. Ez elõbbi a /control az utóbbi a /json aloldal szolgáltatásait használja. 
 %----------------------------------------------------------------------------
 \section{Prototípus}
 %----------------------------------------------------------------------------
 
 \begin{figure}[!ht]
 	\centering
-	\includegraphics[width=150mm, keepaspectratio]{figures/placeholder.png}
+	\includegraphics[width=150mm, keepaspectratio]{figures/wifisocket-proto.png}
 	\caption{A programozhtó aljzat prototípusa} 
 \end{figure}
 
-\blindtext
+Az eszköz élesztése és tesztelése, mivel hálózati feszültségrõl m\H{u}ködik, kiemelt figyelmet és óvatosságot igényelt. A nagyfeszültség\H{u} vezetékekre nem került forrasztásgátló maszk, így lehetõség volt azok ónnal történõ megvastagítására. Ez garantálta, hogy zárlat esetén az olvadóbiztosíték aktiválódjon, én ne az áramkör égjen el. A tervezésnél cél volt, hogy külsõ, 5V-os tápról is m\H{u}ködtethetõ legyen az aljzat, elõsegítve a felprogramozást és a tesztelést. 
 
 %----------------------------------------------------------------------------
 \subsection{Felmerült problémák}
@@ -306,7 +317,7 @@ A xx függvény felelõs a felhasználó által megnyomott kapcsoló állapotának jelzés
 
 A prototípusomon a LM3670MF-3.3 (Buck converter) engedélyezõ jelét földre húztam táp helyett. A hiba könnyen javítható volt új huzalozás szikével történõ kialakításával.
 
-Mivel a xx és yy között kommunikációnál nincs se leválasztás se szintillesztés, ezért az eredeti tervekkel ellentétben, a teljesítménymérõ is 3.3V-ról került meghajtásra.
+Mivel a ESP8285 és STPM10BTR között kommunikációnál nincs se leválasztás se szintillesztés, ezért az eredeti tervekkel ellentétben, a teljesítménymérõ is 3.3V-ról került meghajtásra.
 
 %----------------------------------------------------------------------------
 \subsubsection{Zavarjelenség}
@@ -335,12 +346,12 @@ Hálózatról történõ meghajtás során az eszköz, a relé zárásakor gyakran újraindul
 
 A hiba identifikálása érdekében két mérést végeztem el:
 
-\textbf{1. Mérés:} Az eszközt leválasztó transzformátorra kötve, oszcilloszkópot kötöttem az 5V-os és a 3.3V-os tápágra. A triggeresemény az 5V-os táp jelentõs bezuhanása volt. Látható, hogy a mindkét tápszinten jelentõs zavar (hozzávetõlegesen 150ns-ig fennálló 50MHz-s csillapított oszcilláció) jelent meg. Ilyen frekvenciánál természetesen számít, hogy az áramkör mely pontján történik a mérés, de feltételezhetõ, hogy ez a zavar mindenhol jelen van. Ráadásul mindkét feszültségszintet is több konzdenzátor sz\H{u}ri.
+\textbf{1. Mérés:} Az eszközt leválasztó transzformátorra kötve, oszcilloszkópot kötöttem az 5V-os és a 3.3V-os tápágra. A triggeresemény az 5V-os táp jelentõs bezuhanása volt. Látható, hogy a mindkét tápszinten jelentõs zavar (hozzávetõlegesen 150ns-ig fennálló 50MHz-s csillapított oszcilláció) jelent meg. A 3.3V-os ág rövid idõre beesett 2V alá. Ilyen frekvenciánál természetesen számít, hogy az áramkör mely pontján történik a mérés, de feltételezhetõ, hogy ez a zavar mindenhol jelen van. Ráadásul mindkét feszültségszintet is több konzdenzátor sz\H{u}ri.
 Az zavar még akkor sem csökkent érdemben, amikor egy extra sz\H{u}rõkondenzátort helyeztem az 5V-os ágra.
 
 
 
-\textbf{2. Mérés:} Kizárandó azt a lehetõséget, hogy a vigo tépegység nem képes kezelni a relé által jelentett terhelést, annak kapcsolóágát egy, az áramfelvétel szempontjából ekvivalens, ellenállással helyettesítettem. Ekkor a hiba megsz\H{u}nt, a tápjelen csak minimális zaj volt érzékelhetõ. 
+\textbf{2. Mérés:} Kizárandó azt a lehetõséget, hogy a Vigortronix tépegység nem képes kezelni a relé által jelentett terhelést, annak kapcsolóágát egy, az áramfelvétel szempontjából ekvivalens, ellenállással helyettesítettem. Ekkor a hiba megsz\H{u}nt, a tápjelen csak minimális zaj volt érzékelhetõ. 
 
 A hibát tehát a nagyfeszültség\H{u} rész, illetve a digitális logika interakciója okozza. Ezen zavarok megjóslása szinte lehetetlen, gyakran külsõ eredet\H{u}ek, ezért helyes tervezéssel csupán a kockázatok csökkenthetõel, illetve a hatások mérsékelhetõek:
 \begin{itemize}  
@@ -350,6 +361,6 @@ A hibát tehát a nagyfeszültség\H{u} rész, illetve a digitális logika interakciój
 	\item Nagy potenciálkülönbség\H{u} elemek a lehetõ legtávolabb történõ elhelyezése, vagy bevágás létrehozása az áramkörön
 \end{itemize}
 
-Sajnos az én esetemben az xx nem függetleníthetõ a táptól, ráadásol az SPI-szer\H{u} kommunikáció miatt az yy se. Ez a probléma csak a nyák újratervezésével lehetne javítható, emiatt teljesítménymérõ konfigurálása (kalibrálása) elmaradt, illetve a relé csak kisebb feszültséget tud biztonságosan kapcsolni.
+Sajnos az én esetemben az STPM10BTR nem függetleníthetõ a táptól, ráadásul a kétirányú SPI-szer\H{u} kommunikáció miatt az ESP8285 se. Ez a probléma csak a nyák újratervezésével lehetne javítható, emiatt teljesítménymérõ konfigurálása (kalibrálása) elmaradt, illetve a relé csak kisebb feszültséget tud biztonságosan kapcsolni.
 
 

@@ -9,12 +9,12 @@ Ezen fejezet azokat a komponenseket, eszközöket és technológiákat mutatja be, am
 \section{Vezetéknélküli kommunikáció}
 %----------------------------------------------------------------------------
 
-A megtervezett eszközöknél alapvetõ követelmény a vezetéknélküli m\H{u}ködés. A továbbiakban három, IOT rendszerekben használható szabvány kerül bemutatásra. 
+A megtervezett eszközöknél alapvetõ követelmény a vezetéknélküli m\H{u}ködés. A továbbiakban három, IOT rendszerekben használható szabvány kerül bemutatásra, kitérve a saját rendszeremben történõ alkalmazhatóságra.
 
 %----------------------------------------------------------------------------
 \subsection{WiFi és a IEEE 802.11-es szabvány \cite{wiki-wifi} \cite{wiki-ieee802.11}}
 %----------------------------------------------------------------------------
-A WiFi egy vezetéknélküli adatátviteli technológia, IEEE 802.11 melynek technikai részletei a IEEE 802.11 szabványcsomagban vannak szabályozva. A szabvány elsõ verziója 1997-ben került kiadásra, ami azóta számos alkalommal került bõvítésre. Napjainkban a 802.11n-es verziót (2009) megvalósító készülékek a legelterjedtebbek. Ezen eszközök 2.4GHz és 5GHz frekvenciákon üzemelnek, egy antennával az elérhetõ maximális sebesség 150 Mbit/sec, és jellemzõen 70m beltéri és 250m kültéri hatótávolsággal rendelkeznek. Hasznos kiegészítése a szabványnak a WiFi Ad Hoc Mode (vagy másnéven WiFi Direct), ami két eszköz pont-pont (peer-to-peer) összeköttetését teszi lehetõvé.
+A WiFi egy vezetéknélküli adatátviteli technológia, melynek technikai részletei a IEEE 802.11 szabványcsomagban vannak szabályozva. A szabvány elsõ verziója 1997-ben került kiadásra, ami azóta számos alkalommal került bõvítésre. Napjainkban a 802.11n-es verziót (2009) megvalósító készülékek a legelterjedtebbek. Ezen eszközök 2.4GHz és 5GHz frekvenciákon üzemelnek, egy antennával az elérhetõ maximális sebesség 150 Mbit/sec, és jellemzõen 70m beltéri és 250m kültéri hatótávolsággal rendelkeznek. Hasznos kiegészítése a szabványnak a WiFi Ad Hoc Mode (vagy másnéven WiFi Direct), ami két eszköz pont-pont (peer-to-peer) összeköttetését teszi lehetõvé.
 
 \textbf{WEP (Wired Equivalent Privacy)} A szabvány legelsõ verziójától kezdve létezik, de használata ellenjavallott, mivel csak alkalmi próbálkozás ellen véd, egy szakember az adás hosszú távú megfigyelésével könnyedén vissza tudja fejteni a kulcsot.
 
@@ -26,7 +26,7 @@ A legtöbb háztartásban a WiFi adottságnak tekinthetõ. Az okoseszközök számára a 
 \subsection{Bluetooth \cite{wiki-bluetooth}}
 %----------------------------------------------------------------------------
 
-A szabvány elsõsorban mobil eszközök kis hatótávolságú rádiós kapcsolatához lett kifejlesztve, megszüntetve a kábelek szülségességét. Az adás a 2.4GHz-es frekvenciasávban történik. Az eszközök PAN-ekbe (Personal Area Netowrk) szervezõdnek, egy mester-hez 7 másik készülék tud csatlakozni.
+A szabvány elsõsorban mobil eszközök kis hatótávolságú rádiós kapcsolatához lett kifejlesztve, megszüntetve a kábelek szülségességét. Az adás a 2.4GHz-es frekvenciasávban történik. Az eszközök PAN-ekbe (Personal Area Network) szervezõdnek, egy mester-hez 7 másik készülék tud csatlakozni.
 
 \begin{table}[ht]
 	\footnotesize
@@ -54,9 +54,9 @@ Okosotthonban történõ alkalmazása nem ideális, mivel egy nagyobb családi ház már
 \subsection{Zigbee \cite{wiki-zigbee}}
 %----------------------------------------------------------------------------
 
-A Zigbee az IEEE 802.15.4 szabványra épülõ kommunikációs protokol, ami alacsony energiájú digitális rádióadással kreál személyi hálózatokat. Az elsõdleges alkalmazási területének az okosotthonokat, IOT rendszereket és orvosi célú adatgyüjtõ szenzorokat szánják. Célja egy olcsóbb és egyszer\H{u}bb alternatíva nyújtása a WiFi-vel és a Bluetooth-al szemben.
+A Zigbee az IEEE 802.15.4 szabványra épülõ kommunikációs protokol, ami alacsony energiájú digitális rádióadással kreál személyi hálózatokat. Az elsõdleges alkalmazási területnek az okosotthonokat, IOT rendszereket és orvosi célú adatgyüjtõ szenzorokat szánják. Célja egy olcsóbb és egyszer\H{u}bb alternatíva nyújtása a WiFi-vel és a Bluetooth-al szemben.
 
-Támogatja a mesh (háló) topológiát amelynek segítségével akár 1000m-es hatótávolság is elérhetõ, ideális eszközs\H{u}r\H{u}ség esetén. Fogyasztása hozzávetõlegesen negyede a WiFi hálózaténak, viszont az adatátvitel sebessége jelentõsen alacsonyabb (250 kbit/s).
+Támogatja a mesh (háló) topológiát, amelynek segítségével akár 1000m-es hatótávolság is elérhetõ, ideális eszköz s\H{u}r\H{u}ség esetén. Fogyasztása hozzávetõlegesen negyede a WiFi hálózaténak, viszont az adatátvitel sebessége jelentõsen alacsonyabb (250 kbit/s).
 
 Bár a technológia igéretes, még nem terjedt el igazán, szoftveres és hardveres támogatottsága alacsony. Zárt rendszer esetén valószínüleg ez a legjobb választás, de nálam az integrálhatóság prioritás volt, ezért a WiFi-s kommunikáció mellett döntöttem.
 
@@ -84,7 +84,7 @@ Bár a technológia igéretes, még nem terjedt el igazán, szoftveres és hardveres t
 	\caption{ESP8285 chip CAD modellje}
 \end{figure}
 
-Az ESP8285 egy WiFi képes mikrokontroller teljes TCP/IP implementációval, kifejezetten IOT (Internet of Things) alkalmzásokhoz szánva. A chip 2016 nyarán került forgalomba, de egy korábbi változat, az ESP8266 már 2014-óta jelen van. Az egyetlen különbség az ESP8285-be integrált 1MB flash memória, ami az esetek többségében feleslegessé tette az ESP8266-nél még szükséges külsõ memóriamodult. Emiatt minden mindkét változat adatlapjai és a leírások is relevánsak.
+Az ESP8285 egy WiFi képes mikrokontroller teljes TCP/IP implementációval, kifejezetten IOT (Internet of Things) alkalmzásokhoz szánva. A chip 2016 nyarán került forgalomba, de egy korábbi változat, az ESP8266 már 2014-óta jelen van. Az egyetlen különbség az ESP8285-be integrált 1MB flash memória, ami az esetek többségében feleslegessé tette az ESP8266-nél még szükséges külsõ memóriamodult. Emiatt mindkét változat adatlapjai és a leírások is relevánsak.
 A chipcsalád az utóbbi idõben nagy népszer\H{u}ségre tett szert, köszönhetõen annak, hogy a gyártó kínai mellett angolul is elérhetõvé tette a dokumentációt, illetve megnyitotta az SDK-t. 
 
 Az ESP8285 modul kis méret\H{u}, ára rendkívül kedvezõ (2\$ körül nagy tételben), és csak minimális kiegészítõ áramkört igényel, és antennaválasztásnál is nagy szabadságot enged a felhasználónak.
@@ -177,7 +177,7 @@ Az mikrokontroller külsõ rezonátor meglétét igényli. A támogatott frekvenciák 24
 A tervezési feladat része volt minden egyes eszközhöz az optimális tápellátási módot kiválasztani. A központi egység és a programozható
 fali aljzat hálózati áramról m\H{u}küdik, míg a környezeti szenzor és a nyitásérzékelõ hordozható energiaellátást igényel.
 
-(A hálózati feszültségrõl való táplálásról majd késõbb írok. Elõzetesen mindenképp izolált megoldást szeretnék alkalmazni, mint pl. a Flyback converter.)
+Hálózatról táplálva az extrém takarékosság értelmét veszíti. Kézenfekvõ megoldásnak t\H{u}nik egy egyben megvehetõ kapcsolóüzem\H{u} tápegység alkalmazása. A beépített védõmechanizmusok és a galvanikus leválasztottság elõny. 
 
 Az elsõ és legkézenfekvõbb megoldás a mobil eszközökben rendkívül elterjedt Li-ion akkumulátor. Energia és teljesítménys\H{u}r\H{u}ségben is kiváló, nem mérgezõ, és nem rendelkezik memóriaeffektussal. Töltöttségét rendkívül lassan veszíti el. Még kimerült állapotban is képes 3V feszültséget szolgáltatni, ami azt jelenti, hogy 3-3.6V t\H{u}rés\H{u} áramkörökkel az akkumulátor teljes kapacitását ki tudom használni, és elegendõ egy cella. Mivel töltés után a cellafeszültség elérheti a 4.2V-ot, ezért az áramkör mindenképp védelemre szorul. A Li-ion alapú megoldások rendelkeznek hátrányokkal is. Túltöltés és mélykisülés ellen védõáramkört kell alkalmazni. Ennek hiányában a megoldás t\H{u}zveszélyes. Az akkumulátor cella rendkívül sérülékeny, ezért szükség van a fizikai védelemre. Hátrányként említhetõ még a Li-ion cella öregedése is, de a legtöbb esetben, mire a teljesítménycsökkenés relevánsá válik, maga a készülég is elavul. Ha mégis hosszú távú üzemre terveznénk, gondolni kell az akkumulátor cserélhetõségére.
 
@@ -228,9 +228,6 @@ A kapcsolási rajzot, és a nyomtattott áramkör terveket egyaránt az Altium Design
 %----------------------------------------------------------------------------
 
 Az elkészült nyáklaptervek az Elektronikai Technológiai Tanszék laborjában kerültek legyártásra. Két huzalozási rétegnél többre nem volt szükség. Az elõírt 0.25mm-es szigetelési közt pár helyen, kis mértékben meg kellett szegnem. A viákhoz 0.5mm-es furatrokat alkalmaztam. 
-
-
-
 
 \begin{figure}[!ht]
 	\centering

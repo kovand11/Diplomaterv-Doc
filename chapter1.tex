@@ -3,25 +3,57 @@
 \chapter{Irodalomkutatás}
 
 
-Ebben a részben kettõ, a saját rendszerem szempontjából releváns, cikket tekintek át. Els?sorban olyan forrásokat kerestem, amik összefoglaló jelleg?ek, és nem egy speciális részterületre fókuszálnak. Mivel a kutatott terület rendkívül gyorsan fejl?dik, fontos volt, hogy a cikkek a lehet? legnaprakészebbek legyenek. Mindkét írás, az adott területen elismert szakmai lapból származik, garantálva azok magas min?ségét.
+Ebben a részben kettõ, a saját rendszerem szempontjából releváns, cikket tekintek át. Elsõsorban olyan forrásokat kerestem, amik összefoglaló jelleg?\H{u}ek, és nem egy speciális részterületre fókuszálnak. Mivel a kutatott terület rendkívül gyorsan fejlõdik, fontos volt, hogy a cikkek a lehetõ legnaprakészebbek legyenek. Mindkét írás, az adott területen elismert szakmai lapból származik, garantálva azok magas minõségét.
 
 %----------------------------------------------------------------------------
 \section{Internet of Things (IoT): A vision, architectural elements, and future directions \cite{iot1}}
 
-A IoT (Internet of Things) bet\H{u}szót elõször Kevin Ashton használta ellátási láncok managementjével kapcsolatban. Az, hogy mit értünk ezen fogalom alatt sokat változott az utóbbi évtizedben.
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/iot-fields.png}
+	\caption{Az IoT felhsználási területei} 
+\end{figure}
 
+A IoT (Internet of Things) bet\H{u}szót elõször Kevin Ashton használta ellátási láncok managementjével kapcsolatban. Az, hogy mit értünk ezen fogalom alatt sokat változott az utóbbi évtizedben. A számítástechnika jövõje túlmutatat a hagyományos asztali számítógépeken, de még az okostelefonokon is. A IoT paradigma modern értelmezése az, hogy a minket körülvevõ objektumok valamilyen módon egy hálózat részét fogják képezni. Ezek a rendszerek észrevétlenül, a környezetbe beleolvadva fogják végezni a dolgukat. Ezen vízió megvalósulásának persze vannak technológiai feltételei is:
 \begin{itemize}  
-	\item IOT paradigma
-	\item Jelentõs kihívás: adatok tárolása feldolgozása és prezentálása
-	\item Infrastruktúra: felhõ
-	\item túlmutat a klasszikus hordozhato eszközökon	
+	\item RFID és szenzorhasználat az érzékelésben
+	\item Vezetéknélküli technológiák, mint a WiFi, a Bluetooth vagy a 4G-LTE hálózatok 
+	\item A (virtuális) infrastruktúrát szolgáltató felhõ
+	\item MEMS technológia a környezeti jellemzõk észlelésében
+	\item az IPv6 az eszközök címzéséhez
 \end{itemize}
 
-\Blindtext
+A cikk szerzõi szerint az IoT paradigma elterjedésének a legnagyobb kihívása az elképesztõ menyiség\H{u} gyüjtött adat tárolása és legfõképp értelmezése. Érdekesség, hogy már mai is az emberiség energiafogyasztásának 5\%-át az Internet generálja.
 
-\newpage
+Az IoT alkalmazási területek terjedhetnek egészen az apró okoskütyüktõl, az ország méret\H{u} infrastruktúra rendszerekig, akár olyan módokon, amit ma még elképzelni sem tudunk.
+
 %----------------------------------------------------------------------------
 \section{WSN- and IOT-Based Smart Homes and Their Extension to Smart Buildings \cite{iot2}}
 %----------------------------------------------------------------------------
 
-\Blindtext
+A cikk egy olyan kutatást mutat be, melynek célja egy megbízható és hatékony WSN (Wireless Sensor Network) létrehozása. A WSN elsõdleges célja az ember kényelmének és jólétének maximalixálása, viselkedési minták megfigyelésével.
+
+\begin{figure}[!ht]
+	\centering
+	\includegraphics[width=150mm, keepaspectratio]{figures/smarthome-layout-sensors.png}
+	\caption{Az épület alaprajza és az elhelyezett szenzorok} 
+\end{figure}
+
+A rendszer a következõ szenzortípusokkal operált:
+
+\begin{itemize}
+	\item Elektromos készülék figyelõ egység
+	\item Erõérzékelõ
+	\item Érintésérzékelõ
+	\item Hõmérsékletérzékelõ 
+	\item Mozgásérzékelõ
+\end{itemize}
+
+A vezetéknélküli átvitelre a szerzõk a ZigBee protokolt használták. Az rendszer központját a ZC (ZigBee Coordinator) képezi, amibõl pontosan egy található minden rendszerben. Ezen eszköz feladata a hálózati kapcsolatok létrehozása, kódok tárolása, és az interferencia elkerülése. A hálózati lefedettség ZR-ekkel (ZigBee Router) bõvíthetõ. Ezen kívül még két fajta eszköz található meh a hálózatban. Az egyik a ZED (Zigbee End Device) ami a végponti eszköz, és a ZEDR ami végponti és router eszköz is egyben. Az általuk felállított rendszer hosszú idõn keresztül megbízhatóan m\H{u}ködött.
+
+A cikk további részét egy matematikai modell leírása teszi ki, amivel számszer\H{u}en mérhetõ a felhsználó konfortja (wellness), valamint statisztikai módszereket muatat be az adatokban meglévõ összefüggések detektálására, és akár események megjóslására.
+
+A cikk végén méréseket végeznek azzal kapcsolatban, hogy a rádiós kapcsolat mennyire robosztus. A legnagyobb packet veszteséget a mikrohullámú sütõ okozta, de az átvitel esélye ekkor is 90\% felett maradt. 
+
+Ha idõs és beteg ember relációjában nézzük a rendszert akkor a kit\H{u}zött cél érthetõ, de általánosságban ez a rendszer nem sokat csinál, személy szerint nem így képzelek el egy okosotthont, viszont az alkalmazott hálózat robosztusnak t\H{u}nik.
+

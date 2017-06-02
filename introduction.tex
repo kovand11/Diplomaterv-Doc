@@ -6,7 +6,8 @@
 Az IoT (Internet of Things) alapú okosotthonok jelenleg még nem elterjedtek,
 kiforrott, nagy piaci részesedéssel rendelkezõ megoldás jelenleg még nem létezik. Egyes eszközök persze már rendelkeznek WiFi képességgel, de ez
 ma még inkább marketingfogás, és nem nyújt többet, mint a mobiltelefonról történõ távirányítás lehetõségét. A nem is olyan távoli jövõben viszont az eszközök adatai egységes módon gyüjthetõk és kiértékelhetõek lesznek, és a beavatkozó szervek irányítása (redõny, ajtózár, de akár a kávéfõzõ) ez alapján fog történni.
-\blindtext
+
+Az okosotthonok energiatakarékosabbak, biztonságosabbak és legfõképpen kényelmesebbek lesznek, ami akkora életminõségbeli ugrást jelenthet, mint anno a közm\H{u}vek bevezetése. Nyilvánvalóan az okoseszközöknek, és a hozzájuk kapcsolódó szolgáltatásoknak el kell érnie egy bizonyos kritikus tömeget ahhoz, a bennük rejlõ pontenciál láthatóvá váljon.
 %----------------------------------------------------------------------------
 \section{Motiváció}
 %----------------------------------------------------------------------------
@@ -22,7 +23,7 @@ Az IOT és az épületautómatizálás két olyan terület, melynek jelentõsége a követk
 A rendszerek eladhatósága szempontjából az elsõ kettõnek van nagyobb súlya.
 A feladat specifikációjánál cél volt a maximális rugalmasság megtartása, és a lehetõ legnagyobb tér biztosítása a kísérletezésre, és minden esetben nyílt és elterjedt szabványok alkalamazása. A nyiltságot különösen fontosnak tartom, mivel jelenleg szerintem ez a legnagyobb gátja a hasonló rendszerek elterjedésének.
 
-\blindtext
+Nem elhanyagolható az a tény, hogy a dolgozat tárgyát képezõ rendszer elkészítése során számos területrõl tudok tapasztalatot szerezni, és technológiák széles körét ismerhetem meg. 
 
 %----------------------------------------------------------------------------
 \section{A dolgozat felépítése}
@@ -30,24 +31,24 @@ A feladat specifikációjánál cél volt a maximális rugalmasság megtartása, és a le
 
 Elsõként áttekintem az épületautómatizálásról és IOT témakörrõl elérhetõ szakirodalmat, különösen figyelve azok aktualitására, illetve arra, hogy a lehetõ legteljesebb képet adják az IOT és okosotthon területek jelenlegi helyzetérõl.
 
-Ezután ismertetésre kerülnek azok az eszközök és technológák amelyeket a dolgozatom során használni fogok, és központi jelentõsége van. 
+Ezután ismertetésre kerülnek azok az eszközök és technológák, amelyeket a dolgozatom során használni fogok, és központi jelentõsége van. 
 
 A soronkövetkezõ fejezetben a központi egység kerül bemutatára, magában foglalva az adatgyüljtésre és az perifériák összehangolására kidolgozott módszereket.
 
-Ezután minden részegységnek külön fejezetet szentelve, ismertetem az elkészített hardvert és szoftvert, illetve a rendszerbe történõ integrációját.
+Ezután minden részegységnek külön fejezetet szentelve, ismertetem az elkészített hardvert és szoftvert, illetve a rendszerbe történõ integrációjukat.
 
-Végül a szerzett tapasztalatokat összegezve, vizsgálom a rendszer alkalmazhatóságát, integrálhatóságát és bõvítési lehetõségeit.
+Végül a szerzett tapasztalatokat összegezve, vizsgálom a rendszer alkalmazhatóságát, illeszthetõségi és bõvítési lehetõségeit.
 
 
 %----------------------------------------------------------------------------
 \section{Ütemterv}
 %----------------------------------------------------------------------------
 
-Mivel a három elkészítendõ eszközöm ugyanarra a WiFi képes mikrokontrollerre épül (ESP8266), ezért prioritás volt legalább egyet közülük a minél elõbb elkészíteni, hogy másik kettõt már az összeszedett tapasztalat birtokában tudjam megtervezni. Végül a környezeti szenzorra esett a választás, mivel a tápellátása viszonylag egyszer\H{u} (nem kell hálózati áramról m\H{u}ködnie), viszont nincs szükség extrém energiatakarékosságra.
+Mivel a három elkészítendõ eszközöm ugyanarra a WiFi képes mikrokontrollerre épül (ESP8266), ezért prioritás volt legalább egyet közülük a minél elõbb elkészíteni, hogy másik kettõt már az összeszedett tapasztalat birtokában tudjam megtervezni. Végül a környezeti szenzorra esett a választás, mivel a tápellátása viszonylag egyszer\H{u} (nem kell hálózati áramról m\H{u}ködnie), viszont nincs szükség extrém energiatakarékosságra sem.
 
-Elsõ félvre tehát cél volt az egyik perifériának, a környezeti szenzornak, az elkészítése, és a hozzátartozó (nem végleges) szoftver megírása. Prioritás a lehetõ legtöbb tapasztalat gyüjtése a chip m\H{u}ködésérõl. Összeszerelésre került a kozponti egység is. Megismertem a Linux+X11+Qt-ra épülõ alkalmazásfejlesztés lehetõségeit, illetve bõvítettem a Linuxos (azon belül Debian-os) ismereteimet. Ezen felül a másik két periféria terve is pontosításra került.
+Elsõ félvre tehát cél volt az egyik perifériának, a környezeti szenzornak, az elkészítése, és a hozzátartozó (nem végleges) szoftver megírása. Fontos volt a lehetõ legtöbb tapasztalat gyüjtése a chip m\H{u}ködésérõl. Összeszerelésre került a kozponti egység is. Megismertem a Linux+X11+Qt-ra épülõ alkalmazásfejlesztés lehetõségeit, illetve bõvítettem a Linuxos (azon belül Debian-os) ismereteimet. Ezen felül a másik két periféria terve is pontosításra került.
 
 A második félévre jutott a maradék két periféria megtervezése, legyártatása, élesztése, valamint a szoftverük megírása.
-A perifériák elkészülte utánra maradt a központi egység létrehozása, és egy egyszer\H{u} automatizálási rendszer kidolgozása, valamint annak elkészülte után a teljes rendszer dokumnetálása.
+A perifériák elkészülte utánra maradt a központi egység létrehozása, és egy egyszer\H{u} automatizálási rendszer kidolgozása, valamint annak elkészülte után a teljes rendszer dokumenetálása.
 
 

@@ -1,5 +1,4 @@
-%Status: 4 lorems construction?
-%Todo: php Qt hozzáférés
+%Status:
 %----------------------------------------------------------------------------
 \chapter{Központi egység}
 %----------------------------------------------------------------------------
@@ -12,7 +11,7 @@
 
 Ennél az egységnél szerettem volna kipróbálni a Qt for Device Creation keretrendszert. A legjellemzõbb felépítés, hogy egy Linux rendszermagra és egy ablakozórendszerre támaszkodva fut a Qt-ban megírt szoftver. Elõnye a teljes rugalmasság, és a gyors fejlesztési és tesztelési ciklusok. Hátránya, hogy kicsivel erõsebb hardvert igényel, mint az alacsony szinten megírt beágyazott rendszerek, de a nagyobb teljesítmény\H{u} SOC-ok (System on a Chip) olcsóvá válása ezt a faktort jelentéktelenné tette.
 
-Mivel a Qt for Device Creation liszenszköteles, ezért a Qt keretrendszer nyilt forráskódú, ingyenesen hozzáférhetõ változatát használtam a fejlesztéshez. Ez a szoftver elkészítése szempontjából semmilyen különbséget nem jelentett, inkább elõny volt, mert hozzáférésem volt számos felhasználói programhoz, amik segítséget nyújtottak a fejlesztés során.
+Mivel a Qt for Device Creation liszenszköteles, ezért a Qt keretrendszer nyilt forráskódú, ingyenesen hozzáférhetõ változatát használtam a fejlesztéshez. Ez a szoftver elkészítése szempontjából semmilyen különbséget nem jelentett, inkább elõny volt, mivel hozzáférésem volt számos felhasználói programhoz, amik segítséget nyújtottak a fejlesztés során.
 
 A teljes konstrukció  áll egy kártya PC-bõl, amire egy érintõkijelzõ kerül. A kép a számitógép HDMI csatlakozóján, az érintésinformáció SPI interface-en keresztül kerül átvitelre. 
 
@@ -24,9 +23,19 @@ A teljes konstrukció  áll egy kártya PC-bõl, amire egy érintõkijelzõ kerül. A ké
 \subsection{Raspberry Pi 3}
 %----------------------------------------------------------------------------
 
-A Linux-ot futtató board szerepét egy Raspberry Pi 3 játsza. A feladathoz szükséges számítási kapacitás többszörösével rendelkezik, de mivel az elkészülendõ szoftver platformfüggetlen, ezért késõbb tömeggyártás esetén egyszer\H{u}en portolható olcsóbb hardverre is. Elõnye a 3-as verziónak, hogy nem igényel WiFi modult, mivel már intergrálva tartalmazza azt.
+A Linux-ot futtató board szerepét egy Raspberry Pi 3 játsza. A feladathoz szükséges számítási kapacitás többszörösével rendelkezik, de mivel az elkészülendõ szoftver platformfüggetlen, ezért késõbb tömeggyártás esetén egyszer\H{u}en portolható olcsóbb hardverre is. Elõnye a 3-as verziónak, hogy nem igényel WiFi modult, mivel már intergrálva tartalmazza azt. A Raspberry Pi 3 jellemzõi:
 
-\blindtext
+\begin{itemize}  
+	\item 35\$-os ár
+	\item SoC: Broadcom BCM2837 (2x-es teljesítmény a 2-es modellhez képest)
+	\item 4 magos ARM Cortex-A53, 1.2GHz frekvenciával
+	\item 1 GB RAM
+	\item 802.11n vezetéknélküli hálózat
+	\item Bluetooth 4.1
+	\item 40 pin-es header
+\end{itemize}
+
+
 
 Saját gyártmányú board is készíthetõ lett volna, amihez számtalan nyílt forráskódú (hardver esetén kapcsolási rajz, alkatrészlista) adhatott volna kiindulási alapot. Azonban a Raspberry Pi 3 univerzalitása és kedvezõ ára értelmetlenné teszi, hogy egy lényegében ugyanolyan, de az alacsony példányszám miatt többszörösébe kerülõ eszköz készüljön el, jelentõs fejlesztési idõt felemésztve. 
 
@@ -49,7 +58,7 @@ A beszerzett kijelzõ meglehetõsen gyenge minõség\H{u}nek bizonyult. A érintési p
 \section{Szoftver}
 %----------------------------------------------------------------------------
 
-Mivel a központi egység egy teljes érték\H{u}, Linuxot (Raspbian Jessie) futtató számítógépre, ezért technológiák széles palettájából válogathattam. A grafikus felület Qt keretrendszer segítségével készült el. A további webszerver funciók megvalósításához a LAMP (Linux + Apache + MySQL + PHP) nagy népszer\H{u}ségnek örvendõ megoldáscsomagot használtam. Az egyszer\H{u}ségnél és a kompaktságnál fontosabb szempont volt minél több területrõl fejlesztési tapasztalatot szerezni. 
+Mivel a központi egység egy teljes érték\H{u}, Linuxot (Raspbian Jessie) futtató számítógépen került megvalósításra, ezért technológiák széles palettájából válogathattam. A grafikus felület Qt keretrendszer segítségével készült el. A további webszerver funciók megvalósításához a LAMP (Linux + Apache + MySQL + PHP) nagy népszer\H{u}ségnek örvendõ megoldáscsomagot használtam. Az egyszer\H{u}ségnél és a kompaktságnál fontosabb szempont volt minél több területrõl fejlesztési tapasztalatot szerezni. 
 
 %----------------------------------------------------------------------------
 \subsection{Az alkalmazás}
@@ -59,38 +68,48 @@ Mivel a központi egység egy teljes érték\H{u}, Linuxot (Raspbian Jessie) futtató
 \subsubsection{A Qt keretrendszer \cite{wiki-qt} \cite{qt-doc}}
 %----------------------------------------------------------------------------
 
-%----------------------------------------------------------------------------
-\subsubsection{Bels? felépítés}
-%----------------------------------------------------------------------------
+A Qt egy keresztplatformos grafikus alkalmazás feljlesztõ keretrendszer. Ezen megoldással fejlesztett alkalmazások futtathatók a forráskód (jelentõs) megváltoztatása nélkül többek között a következõ platformokon:
+
+\begin{itemize}
+	\item Windows
+	\item Linux (X11 és Wayland)
+	\item Android
+	\item iOS
+\end{itemize}
+
+Bár a Qt-val készült alkalmazások nem biztosítanak olyan minõségérzetett mobil eszközökön mint a natív (az adott platformra fejlesztett) alkalmazások, gyors megoldás lehet ha a hadvererek minél szélesebb körét szerentnénk lefedni. A keretrendszer a szabványos C++-ra épül kiegészítésekkel, amiket a MOC (Meta Object Compiler) szintén visszavezet C++-ra. Grafikus felületek, a mögöttes logikát megvalósító kódtól független leírására egy újabb opció a QML (Qt Modeling Language) leírónyelv. Ezt a megoldást lassabnak találtam, ezért maradtam a klasszikus widget-es felületnél. A keretrendszer beépítve tartalmaz JSON értelmezõt, és SQL adatbázis hozzáférést.
+
+Az alkalmazás három oldalt biztosít a felhasználónak a \ref{fig:smarthome-main-exp}-es ábrán látható módon. A váltás a bal oldali felsõ gombokkal történik:
+\begin{itemize}
+	\item Widget-ek (tetszõlehes számú és típusú)
+	\item Beállítások
+	\item Programozás
+\end{itemize}
 
 %----------------------------------------------------------------------------
 \subsubsection{A widgetek}
 %----------------------------------------------------------------------------
 
-%az alkalmazás funkciói
-A alkalmazás funkciói: \blindtext \blindtext
+A widgetek célja egy eszköz adatainak megjelenítése valamint annak funkcióinak elérhetõvé tétele, grafikus módon. Minden eszköz kap egy meghatározott méret\H{u} csíkot a kijelzõbõl. Túltelítõdés esetén a widgetlista görgethetõ. A \ref{sec:parameters}-es pontban bemutatásra kerülõ paraméteres interface az eszközökhöz való hozzáférést meglehetõsen homogénné teszi. Ezt kihasználandó létrehozható egy absztrakt õsosztály (LineWidget) az összes jelenlegi és jövõbeli widget számára, amely az interakció alacsony szint\H{u} aspektusait kezeli (TCP/IP kommunikáció, JSON értelmezés, idõzítések). Az ebbõl származtatott tényleges eszközwidgetek dolga, hogy létrehozza a saját layout-ját, és az eszközt magas szint\H{u} interface-en keresztül (kulcs érték párokkal) kezelje, lehetõvé téve esetleges újabb eszközök gyors implementálását.
+
+Az nyitásérzékelõ widget kivételt képez, mivel a forrás is teljesen máshogy viselkedik, nem kérdezhetõ le bármely idõpillanatban. Itt a mögöttes eszköz szerepét az opendetektor adatbázis játsza, és az tényleges érzékelõk állapotára a tárolt bejegyzésekbõl következtet az alkalmazás.
+
+
 
 \begin{figure}[!ht]
 	\centering
 	\includegraphics[width=150mm, keepaspectratio]{figures/smarthome-mainpage-w-explanation.png}
-	\caption{Az alkalmazás fõoldala} 
-\end{figure}
-
-
-\begin{figure}[!ht]
-	\centering
-	\includegraphics[width=150mm, keepaspectratio]{figures/placeholder.png}
-	\caption{Az alkalmazás (részleges) UML osztálydiagrammja} 
+	\caption{Az alkalmazás fõoldala}
+	\label{fig:smarthome-main-exp}
 \end{figure}
 
 %----------------------------------------------------------------------------
 \subsubsection{Automatizálás}
 %----------------------------------------------------------------------------
 
-Ki lehetne t\H{u}zni célul, hogy az rendelkezésre álló eszközöket felhsználva, bármilyen köztes logika leprogramozható legyen. Másképp megfogalmazva, bármely beszélt nyelven megfogalmazható egzakt m\H{u}ködés implementálható legyen. Az információelméletben használt Turing teljesség hasonló tartalmat definiál precízen.
+Ki lehetne t\H{u}zni célul, a rendelkezésre álló eszközöket felhsználva, bármilyen köztes logika leprogramozhatóságának lehetõségét. Másképp megfogalmazva, bármely beszélt nyelven megfogalmazható egzakt m\H{u}ködés implementálható legyen. Az információelméletben használt Turing teljesség hasonló tartalmat definiál precízen.
 Egy ilyen rendszer implementálása meglehetõsen sok idõt vesz igénybe. Megoldás lehet valamely ECMAScript (Javascript) implementáció felhasználása.
-Qt keretrendszer alatt rendelkezésre áll QtScript modul (bár elavulttá lett nyilvánítva), vagy bármely más modern motor, mint a Google V8-a vagy a Mozilla
-SpiderMonkey-ja. Az eszközök ekkor mint objektumok elérhatõvé tehetõk.
+Qt keretrendszer alatt rendelkezésre áll a QtScript modul (bár elavulttá lett nyilvánítva), vagy bármely más modern motor, mint a Google V8-a vagy a Mozilla SpiderMonkey-ja. Az eszközök ekkor mint objektumok elérhetõvé tehetõk.
 Ennél én egy egyszer\H{u}bb, rögzített számú paraméterbõl álló utasításleíró nyelvet valósítottam meg, a következõ adatokkal
 \begin{itemize}  
 	\item forrás eszköz azonosítója
@@ -107,20 +126,20 @@ Ennél én egy egyszer\H{u}bb, rögzített számú paraméterbõl álló utasításleíró nye
 	\item cél paraméter	(részletesen a \ref{sec:parameters} pontban)
 \end{itemize}
 
-\textbf{Programozási példa 1.: } Szeretnénk, ha egy lámpa (8396086 azonosítóju WiFi-s aljzatra kötve), abban az esetben ha a kinti napfény már nem elegendõ a jó látási viszonyok biztosításához (amit a 8398241 környezeti szenzor mér), automatikusan felkapcsolódna, és napfelkeltéig úgy is maradna:
+\textbf{Programozási példa 1.: } Szeretnénk, ha egy lámpa (8396086 azonosítójú WiFi-s aljzatra kötve), abban az esetben, ha a kinti napfény már nem elegendõ a jó látási viszonyok biztosításához (amit a 8398241 környezeti szenzor mér), automatikusan felkapcsolódna, és napfelkeltéig úgy is maradna:
 
 \begin{lstlisting}
 8398241 ambient < 10 link 8396086 relay
 \end{lstlisting}
 
-Teszteléskor a lámpa többször fel és lekapcsolódott. A lámpa felkapcsódásakor a mért fényerõsség 10.6 lux volt. A hibát tehát az okozza, hogy a lámpa fénye visszahat a fényszenzor által mért értékre. Megoldás lehet a hiszterízises kapcsolás: 
+Teszteléskor a lámpa többször fel és lekapcsolódott. A felkapcsódásakor mért fényerõsség 10.6 lux volt. A hibát tehát az okozza, hogy a lámpa fénye visszahat a fényszenzor által mért értékre. Megoldás lehet a hiszterízises kapcsolás: 
 
 \begin{lstlisting}
 8398241 ambient < 9.5 set 8396086 relay
 8398241 ambient < 10.5 reset 8396086 relay
 \end{lstlisting}
 
-\textbf{Programozási példa 1.: } A üvegházban a növények nem szeretik ha 5 C\textdegree ~alá megy a hõmérséklet, de még nagyobb a baj, ha az fagypont alá csökken. Ezen események detektálása lehetséges egy környezeti szenzor segítségével (azonosító: 8398241):
+\textbf{Programozási példa 2.: } A üvegházban a növények nem szeretik ha 5 C\textdegree ~alá megy a hõmérséklet, de még nagyobb a baj, ha az fagypont alá csökken. Ezen események detektálása lehetséges egy környezeti szenzor segítségével (azonosító: 8398241):
 
 \begin{lstlisting}
 8398241 temperature < 5 set 8398241 ledblue
@@ -129,7 +148,7 @@ Teszteléskor a lámpa többször fel és lekapcsolódott. A lámpa felkapcsódásakor a 
 
 Az eseményt jelzõ ledek kikapcsolhatóak a központi egységen.
 
-Ennek az egyszer\H{u} utasításnyelvnek a legnagyobb korlátja az, hogy csupán egy adat alapján tud döntést hozni, ráadásul a kimenet is csak logikai lehet. Folytonos szabályzás például nem valósítható meg ilyen módon. Véleményem szerint, ha széles tömegeknek készül a termék,  akkor akár ez a limitált funkcionalitás is elegendõ lehet.
+Ennek az egyszer\H{u} utasításnyelvnek a legnagyobb korlátja az, hogy csupán egy adat alapján tud döntést hozni, ráadásul a kimenet is csak logikai lehet. Folytonos szabályzás például nem valósítható meg ilyen módon. Véleményem szerint, ha széles tömegeknek készül a termék, akkor akár ez a limitált funkcionalitás is elegendõ lehet.
 
 
 
@@ -257,7 +276,7 @@ A \textbf{log} táblát egyedül debugolás céljára használtam, de speciális LOGLEVE
 \section{Alternatívák}
 %----------------------------------------------------------------------------
 
-Cél volt az, hogy az egyes eszközök a lehetõ legkevésbé függjenek a központi egységtõl. Nyitva akartam hagyni annak a lehetõségét is, hogy ezen részegység funkcionalitása impementálható legyen bármilyen alternatív eszközre mint például egy androidos okostelefon, egy iPad, vagy akár egy böngészõ. Ennek érdekében példáult a hõmérséklet JSON formátumban is elérhetõ.
+Cél volt az, hogy az egyes eszközök a lehetõ legkevésbé függjenek a központi egységtõl. Nyitva akartam hagyni annak a lehetõségét is, hogy ezen részegység funkcionalitása impementálható legyen bármilyen alternatív eszközre mint például egy androidos okostelefon, egy iPad, vagy akár egy böngészõ. Minden adat nyilt és elterjedt protokollokon (TCP/IP, JSON, SQL) keresztül is elérhetõ.
 
 
 
